@@ -7,4 +7,13 @@ function tambah (){
     return y
 }
 
+function cek() {
+    if (x/2)
+        console.log("genap")
+    else
+        console.log("ganjil")
+}
+
+
 console.log(tambah())
+console.log(cek())
