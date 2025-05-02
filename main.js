@@ -17,9 +17,12 @@ function cek() {
 
 let salam1= "hallo"
 let salam2= "hallo hai"
+let salam3= "hallo hai hallo"
+
 
 
 console.log(tambah())
 console.log(cek())
 console.log(salam1)
 console.log(salam2)
+console.log(salam3)
