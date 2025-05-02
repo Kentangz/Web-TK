@@ -15,20 +15,8 @@ function cek() {
     }
 }
 
-function cek2() {
-    if (x % 2 === 0) {
-        return "ganjil";
-    }
-    if ( x% 2 ===1){
-        return "genap"
-    } 
-    else {
-        return "undifined";
-    }
-}
-
-
+let salam1= "hallo"
 
 console.log(tambah())
 console.log(cek())
-console.log(cek2())
+console.log(salam1)
