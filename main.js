@@ -8,12 +8,23 @@ function tambah (){
 }
 
 function cek() {
-    if (x/2)
-        console.log("genap")
-    else
-        console.log("ganjil")
+    if (x % 2 === 0) {
+        return "genap";
+    } else {
+        return "ganjil";
+    }
 }
+
+function cek1() {
+    if (x % 2 === 0) {
+        return "ganjil";
+    } else {
+        return "genap";
+    }
+}
+
 
 
 console.log(tambah())
 console.log(cek())
+console.log(cek1())
