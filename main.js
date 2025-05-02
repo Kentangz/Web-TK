@@ -15,11 +15,15 @@ function cek() {
     }
 }
 
-function cek1() {
+function cek2() {
     if (x % 2 === 0) {
         return "ganjil";
-    } else {
-        return "genap";
+    }
+    if ( x% 2 ===1){
+        return "genap"
+    } 
+    else {
+        return "undifined";
     }
 }
 
@@ -27,4 +31,4 @@ function cek1() {
 
 console.log(tambah())
 console.log(cek())
-console.log(cek1())
+console.log(cek2())
