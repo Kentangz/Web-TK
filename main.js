@@ -16,7 +16,10 @@ function cek() {
 }
 
 let salam1= "hallo"
+let salam2= "hallo hai"
+
 
 console.log(tambah())
 console.log(cek())
 console.log(salam1)
+console.log(salam2)
