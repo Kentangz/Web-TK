@@ -17,7 +17,7 @@ export function createNavbarHTML(options = {}) {
                 <ul class="nav-links">
                     ${createNavItem('beranda', 'Beranda', activePage)}
                     ${createNavItem('program-sekolah', 'Program Sekolah', activePage)}
-                    ${createNavItem('fasilitas', 'Fasilitas & Prestasi', activePage)}
+                    ${createNavItem('fasilitas-prestasi', 'Fasilitas & Prestasi', activePage)}
                     ${createNavItem('jadwal', 'Jadwal TK & KB', activePage)}
                     ${createNavItem('pendaftaran', 'Pendaftaran', activePage)}
                     ${createNavItem('contact', 'Contact', activePage, 'contact-btn')}
@@ -30,8 +30,22 @@ export function createNavbarHTML(options = {}) {
 //func inner item
 function createNavItem(id, text, activePage, className = 'nav-link') {
     const isActive = activePage === id ? 'active' : '';
-    return `<li><a href="#${id}" class="${className} ${isActive}">${text}</a></li>`;
+    
+    //mapping
+    const pageMap = {
+        'beranda': 'beranda',
+        'program-sekolah': 'program-sekolah',
+        'fasilitas-prestasi': 'fasilitas-prestasi',
+        'jadwal': 'jadwal',
+        'pendaftaran': 'pendaftaran',
+        'contact': 'contact'
+    };
+
+    const href = pageMap[id] || '#beranda'; //fallback
+
+    return `<li><a href="${href}" class="${className} ${isActive}">${text}</a></li>`;
 }
+
 
 //import func 
 export function initNavbarFunctionality() {

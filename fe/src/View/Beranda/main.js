@@ -1,14 +1,9 @@
 // Import styles and assets
-import './style.css'
-import javascriptLogo from './assets/javascript.svg'
-import viteLogo from '/vite.svg'
-import logoImage from '/Component/assets/logo.png' // Import the logo for navbar
+//import './style.css'
+import logoImage from '/Component/assets/logo.png'
+import { createNavbarHTML,initNavbarFunctionality} from '/Component/Navbar/navbar.js'
 
-// Import components
-import { setupCounter } from './counter.js'
-import { createNavbarHTML,initNavbarFunctionality} from '/Component/navbar.js'
 
-// Initialize the main app content with navbar included in innerHTML
 document.querySelector('#beranda').innerHTML = `
   ${createNavbarHTML({
     logoSrc: logoImage,
@@ -17,22 +12,8 @@ document.querySelector('#beranda').innerHTML = `
   })}
   <div>
     <h1>HI</h1>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
   </div>
 `
 
-setupCounter(document.querySelector('#counter'))
 initNavbarFunctionality();
 
