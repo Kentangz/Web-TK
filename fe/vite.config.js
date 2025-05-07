@@ -6,12 +6,4 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig({
-  build: {
-    rollupOptions: {
-      input: {
-        index: resolve(__dirname, 'index.html'),
-        guru: resolve(__dirname, 'Guru/guru.html'),
-      },
-    },
-  },
 });
