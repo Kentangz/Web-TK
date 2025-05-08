@@ -10,12 +10,30 @@ export function createSidebarHTML(activePage = '') {
       </div>
       <ul>
         <li class="${activePage === 'dashboard' ? 'active' : ''}">Dashboard</li>
-        <li class="${activePage === 'beranda' ? 'active' : ''}">Beranda</li>
-        <li class="${activePage === 'program' ? 'active' : ''}">Program Sekolah</li>
+        <li class="dropdown ${activePage === 'beranda' || activePage === 'beranda' ? 'open' : ''}">
+          Beranda
+          <ul>
+            <li class="${activePage === 'Visi & Misi' ? 'active' : ''}">Visi & Misi</li>
+            <li class="${activePage === 'Tujuan & Strategi' ? 'active' : ''}">Tujuan & Strategi</li>
+            <li class="${activePage === 'Gallery' ? 'active' : ''}">Gallery</li>
+          </ul>
+        </li>
+        <li class="dropdown ${activePage === 'Program Sekolah' || activePage === 'program-sekolah' ? 'open' : ''}">
+          Program Sekolah
+          <ul>
+            <li class="${activePage === 'Kegiatan Unggulan' ? 'active' : ''}">Kegiatan Unggulan</li>
+            <li class="${activePage === 'Galeri Kegiatan' ? 'active' : ''}">Galeri Kegiatan</li>
+            <li class="${activePage === 'Kegiatan Penunjang' ? 'active' : ''}">Kegiatan Penunjang</li>
+            <li class="${activePage === 'Output Yang Dihasilkan' ? 'active' : ''}">Output Yang Dihasilkan</li>
+            <li class="${activePage === 'Kurikulum Plus' ? 'active' : ''}">Kurikulum Plus</li>
+          </ul>
+        </li>
         <li class="dropdown ${activePage === 'fasilitas' || activePage === 'prestasi' ? 'open' : ''}">
           Fasilitas & Prestasi
           <ul>
             <li class="${activePage === 'fasilitas' ? 'active' : ''}">Fasilitas</li>
+            <li class="${activePage === 'prestasi' ? 'active' : ''}">Prestasi</li>
+            <li class="${activePage === 'prestasi' ? 'active' : ''}">Prestasi</li>
             <li class="${activePage === 'prestasi' ? 'active' : ''}">Prestasi</li>
           </ul>
         </li>

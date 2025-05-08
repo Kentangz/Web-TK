@@ -4,9 +4,9 @@ body, html {
   padding: 0;
 }
 
-/* Pastikan konten tidak tertimpa sidebar */
+
 .main-content {
-  margin-left: 360px; /* sesuai lebar .sidebar */
+  margin-left: 360px; 
   padding: 20px;
   box-sizing: border-box;
 }
@@ -14,20 +14,19 @@ body, html {
 
 .logo-container {
   display: flex;
-  flex-direction: row; /* sebelumnya column */
+  flex-direction: row;
   align-items: center;
-  gap: 10px; /* spasi antara logo dan teks */
+  gap: 15px;
   margin-bottom: 20px;
 }
 
 .logo-container img.logo {
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
 }
 
 .sidebar ul li.active {
-  background-color: #1e5a70;
-  font-weight: bold;
+  background-color: #054c65;
 }
 
 
@@ -42,7 +41,7 @@ body, html {
   }
   
   .sidebar h2 {
-    font-size: 18px;
+    font-size:24px;
     margin-bottom: 20px;
   }
   
@@ -52,7 +51,7 @@ body, html {
   }
   
   .sidebar ul li {
-    padding: 10px;
+    padding: 20px;
     margin-bottom: 5px;
     cursor: pointer;
     background-color: #2e6f87;
