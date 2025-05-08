@@ -23,7 +23,6 @@ export function createSidebarHTML(activePage = '') {
         <li class="${activePage === 'contact' ? 'active' : ''}">Contact</li>
         <li class="${activePage === 'guru' ? 'active' : ''}">Guru</li>
       </ul>
-
     </div>
   `;
 }
