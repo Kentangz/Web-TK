@@ -1,4 +1,5 @@
 import './style.css';
+
 export function createNavbarHTML(options = {}) {
     const {
         logoSrc = '/logo.svg',
