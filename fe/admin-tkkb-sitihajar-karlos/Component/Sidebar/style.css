@@ -6,7 +6,7 @@ body, html {
 
 /* Pastikan konten tidak tertimpa sidebar */
 .main-content {
-  margin-left: 250px; /* sesuai lebar .sidebar */
+  margin-left: 360px; /* sesuai lebar .sidebar */
   padding: 20px;
   box-sizing: border-box;
 }
@@ -32,7 +32,7 @@ body, html {
 
 
 .sidebar {
-    width: 250px;
+    width: 360px;
     background-color: #3b8bab;
     color: white;
     height: 100vh;

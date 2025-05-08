@@ -1,3 +1,4 @@
+import '../global.css'
 import './style.css';
 import { createSidebarHTML, initSidebarFunctionality } from '../Component/Sidebar/sidebar.js';
 
