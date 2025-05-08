@@ -1,6 +1,6 @@
 import './style.css'
 import '../global.css'
-import logoImage from '/public/logo.png'
+import logoImage from '/logo.svg'
 import { createNavbarHTML,initNavbarFunctionality} from '../Component/Navbar/navbar.js'
 
 
