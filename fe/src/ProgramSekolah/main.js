@@ -1,7 +1,6 @@
 import '../global.css'
 import './style.css'
-import logoImage from '/public/logo.png'
-
+import logoImage from '/logo.svg'
 import { createNavbarHTML,initNavbarFunctionality } from '../Component/Navbar/navbar'
 
 document.querySelector('#program-sekolah').innerHTML = `

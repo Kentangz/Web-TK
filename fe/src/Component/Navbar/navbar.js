@@ -1,8 +1,7 @@
-
 import './style.css';
 export function createNavbarHTML(options = {}) {
     const {
-        logoSrc = 'logo.png',
+        logoSrc = '/logo.svg',
         schoolName = 'TK & KB SITI HAJAR',
         activePage = 'beranda'
     } = options;
