@@ -14,4 +14,5 @@ document.querySelector('#program-sekolah').innerHTML = `
   <h1>Progam Sekolah</h1>
   </div>
 `
+
 initNavbarFunctionality();
