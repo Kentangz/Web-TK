@@ -1,7 +1,7 @@
-// Import styles and assets
-//import './style.css'
-import logoImage from '/Component/assets/logo.png'
-import { createNavbarHTML,initNavbarFunctionality} from '/Component/Navbar/navbar.js'
+import './style.css'
+import '../global.css'
+import logoImage from '/public/logo.png'
+import { createNavbarHTML,initNavbarFunctionality} from '../Component/Navbar/navbar.js'
 
 
 document.querySelector('#beranda').innerHTML = `
@@ -11,7 +11,7 @@ document.querySelector('#beranda').innerHTML = `
     activePage: 'beranda'
   })}
   <div>
-    <h1>HI</h1>
+    <h1>Beranda</h1>
   </div>
 `
 
