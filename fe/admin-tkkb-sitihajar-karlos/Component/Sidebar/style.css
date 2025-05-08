@@ -1,0 +1,75 @@
+/* Reset body and html */
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+/* Pastikan konten tidak tertimpa sidebar */
+.main-content {
+  margin-left: 250px; /* sesuai lebar .sidebar */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+.logo-container {
+  display: flex;
+  flex-direction: row; /* sebelumnya column */
+  align-items: center;
+  gap: 10px; /* spasi antara logo dan teks */
+  margin-bottom: 20px;
+}
+
+.logo-container img.logo {
+  width: 60px;
+  height: 60px;
+}
+
+.sidebar ul li.active {
+  background-color: #1e5a70;
+  font-weight: bold;
+}
+
+
+.sidebar {
+    width: 250px;
+    background-color: #3b8bab;
+    color: white;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed;
+  }
+  
+  .sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    background-color: #2e6f87;
+    border-radius: 5px;
+  }
+  
+  .sidebar ul li:hover {
+    background-color: #245c6f;
+  }
+  
+  .sidebar .dropdown ul {
+    display: none;
+    margin-top: 5px;
+    margin-left: 10px;
+  }
+  
+  .sidebar .dropdown.open ul {
+    display: block;
+  }
+  
