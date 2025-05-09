@@ -3,3 +3,7 @@
 :root{
     font-family: "Acme", sans-serif;
 }
+.main-content {
+    margin-left: 360px;
+    padding: 20px;
+  }
