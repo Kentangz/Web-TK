@@ -11,7 +11,9 @@ export default defineConfig({
                 fasilitasprestasi:'fasilitas-prestasi.html',
                 jadwal:'jadwal.html',
                 pendaftaran:'pendaftaran.html',
-                contact:'contact.html'
+                contact:'contact.html',
+
+                admin:'admin-tkkb-sitihajar-karlos/dashboard.html',
             }
         }
     }
