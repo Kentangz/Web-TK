@@ -1,10 +1,10 @@
 import '../../global.css'
 import './style.css'
-import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar';
+import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
 
 document.querySelector('#visi-misi').innerHTML = `
   ${createSidebarHTML({
-    activePage: 'dashboard',
+    activePage: 'visi-misi',
     logoSrc: '/logo.svg',
     schoolName: 'TK & KB SITI HAJAR'
   })}

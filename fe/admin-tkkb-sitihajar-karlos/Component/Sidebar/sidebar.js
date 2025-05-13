@@ -56,29 +56,29 @@ const paths = {
   fasilitas: '/fasilitas-prestasi',
   jadwal: '/jadwal'
 };
-
+// mapping
 const pageMap = {
-  'dashboard': `${basePath}/dashboard.html`,
-  'guru': `${basePath}/guru.html`,
-  'contact': `${basePath}/contact.html`,
+  'dashboard': `${basePath}/dashboard`,
+  'guru': `${basePath}/guru`,
+  'contact': `${basePath}/contact`,
 
   'visi-misi': `${basePath}${paths.beranda}/visi-misi`,
   'tujuan-strategi': `${basePath}${paths.beranda}/tujuan-strategi`,
   'gallery-beranda': `${basePath}${paths.beranda}/gallery-beranda`,
 
-  'kegiatan-unggulan': `${basePath}${paths.programSekolah}/kegiatan-unggulan/kegiatan-unggulan`,
-  'galeri-kegiatan': `${basePath}${paths.programSekolah}/galeri-kegiatan/galeri-kegiatan`,
-  'kegiatan-penunjang': `${basePath}${paths.programSekolah}/kegiatan-penunjang/kegiatan-penunjang`,
-  'output': `${basePath}${paths.programSekolah}/output/output`,
-  'kurikulum-plus': `${basePath}${paths.programSekolah}/kurikulum-plus/kurikulum-plus`,
+  'kegiatan-unggulan': `${basePath}${paths.programSekolah}/kegiatan-unggulan`,
+  'galeri-kegiatan': `${basePath}${paths.programSekolah}/galeri-kegiatan`,
+  'kegiatan-penunjang': `${basePath}${paths.programSekolah}/kegiatan-penunjang`,
+  'output': `${basePath}${paths.programSekolah}/output`,
+  'kurikulum-plus': `${basePath}${paths.programSekolah}/kurikulum-plus`,
 
-  'fasilitas': `${basePath}${paths.fasilitas}/fasilitas.html`,
-  'galeri-fasilitas': `${basePath}${paths.fasilitas}/galeri-fasilitas.html`,
-  'prestasi': `${basePath}${paths.fasilitas}/prestasi.html`,
-  'galeri-prestasi': `${basePath}${paths.fasilitas}/galeri-prestasi.html`,
+  'fasilitas': `${basePath}${paths.fasilitas}/fasilitas`,
+  'galeri-fasilitas': `${basePath}${paths.fasilitas}/galeri-fasilitas`,
+  'prestasi': `${basePath}${paths.fasilitas}/prestasi`,
+  'galeri-prestasi': `${basePath}${paths.fasilitas}/galeri-prestasi`,
 
-  'jadwal-a-b': `${basePath}${paths.jadwal}/jadwal-a-b.html`,
-  'kelompok-bermain': `${basePath}${paths.jadwal}/kelompok-bermain.html`
+  'jadwal-a-b': `${basePath}${paths.jadwal}/jadwal-a-b`,
+  'kelompok-bermain': `${basePath}${paths.jadwal}/kelompok-bermain`
 };
 
 function createSidebarItem(id, label, activePage) {
@@ -110,24 +110,53 @@ function createDropdown(id, label, items, activePage) {
 export function initSidebarFunctionality() {
   const dropdowns = document.querySelectorAll('.sidebar .dropdown');
 
+  // Buka dropdown berdasarkan localStorage saat halaman dimuat
+  const savedGroup = localStorage.getItem('openDropdown');
+  if (savedGroup) {
+    const target = document.querySelector(`.dropdown-title[data-group="${savedGroup}"]`);
+    if (target) {
+      target.parentElement.classList.add('open');
+    }
+  }
+
+  // Handle klik pada dropdown title
   dropdowns.forEach(dropdown => {
     const title = dropdown.querySelector('.dropdown-title');
     title.addEventListener('click', function () {
+      const isOpen = dropdown.classList.contains('open');
+
+      // Tutup semua dropdown lain
       dropdowns.forEach(d => {
         if (d !== dropdown) d.classList.remove('open');
       });
+
+      // Toggle dropdown ini
       dropdown.classList.toggle('open');
+
+      // Update localStorage
+      if (!isOpen) {
+        localStorage.setItem('openDropdown', title.dataset.group);
+      } else {
+        localStorage.removeItem('openDropdown');
+      }
     });
   });
 
-  // Menutup semua dropdown saat submenu diklik
+  // Simpan dropdown yang terbuka saat link diklik
   const allLinks = document.querySelectorAll('.sidebar a');
   allLinks.forEach(link => {
     link.addEventListener('click', () => {
-      dropdowns.forEach(d => d.classList.remove('open'));
+      const parentDropdown = link.closest('.dropdown');
+      if (parentDropdown) {
+        const groupId = parentDropdown.querySelector('.dropdown-title').dataset.group;
+        localStorage.setItem('openDropdown', groupId);
+      } else {
+        localStorage.removeItem('openDropdown');
+      }
     });
   });
 }
+
 
 export function createSidebar(options = {}) {
   const html = createSidebarHTML(options);
