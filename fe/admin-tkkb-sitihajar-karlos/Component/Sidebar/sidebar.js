@@ -98,14 +98,15 @@ function createDropdown(id, label, items, activePage) {
   }).join('');
 
   return `
-    <li class="dropdown ${isOpen ? 'open' : ''}">
-      <div class="dropdown-title ${isActiveGroup}" data-group="${id}">${label}</div>
+    <li class="dropdown ${isOpen ? 'open' : ''} ${isActiveGroup}">
+      <div class="dropdown-title" data-group="${id}">${label}</div>
       <ul>
         ${subItems}
       </ul>
     </li>
   `;
 }
+
 
 export function initSidebarFunctionality() {
   const dropdowns = document.querySelectorAll('.sidebar .dropdown');
@@ -157,7 +158,7 @@ export function initSidebarFunctionality() {
   });
 }
 
-
+//
 export function createSidebar(options = {}) {
   const html = createSidebarHTML(options);
   return {
