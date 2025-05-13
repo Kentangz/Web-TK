@@ -49,33 +49,36 @@ export function createSidebarHTML(options = {}) {
   `;
 }
 
-// Path mapping untuk routing
+const basePath = '/admin-tkkb-sitihajar-karlos';
+const paths = {
+  beranda: '/beranda',
+  programSekolah: '/program-sekolah',
+  fasilitas: '/fasilitas-prestasi',
+  jadwal: '/jadwal'
+};
+
 const pageMap = {
-  'dashboard': 'dashboard',
-  'guru': 'Guru/guru.html',
-  'contact': '/Contact/contact.html',
+  'dashboard': `${basePath}/dashboard.html`,
+  'guru': `${basePath}/guru.html`,
+  'contact': `${basePath}/contact.html`,
 
-  // Beranda
-  'visi-misi': 'beranda/visi-misi',
-  'tujuan-strategi': '/Beranda/Tujuan-Strategi/tujuan-strategi.html',
-  'gallery-beranda': '/Beranda/Gallery/gallery-beranda.html',
+  'visi-misi': `${basePath}${paths.beranda}/visi-misi`,
+  'tujuan-strategi': `${basePath}${paths.beranda}/tujuan-strategi`,
+  'gallery-beranda': `${basePath}${paths.beranda}/gallery-beranda`,
 
-  // Program Sekolah
-  'kegiatan-unggulan': '/Program-Sekolah/Kegiatan-Unggulan/kegiatan-unggulan.html',
-  'galeri-kegiatan': '/Program-Sekolah/Galeri-Kegiatan/galeri-kegiatan.html',
-  'kegiatan-penunjang': '/Program-Sekolah/Kegiatan-Penunjang/kegiatan-penunjang.html',
-  'output': '/Program-Sekolah/Output/output.html',
-  'kurikulum-plus': '/Program-Sekolah/Kurikulum-Plus/kurikulum-plus.html',
+  'kegiatan-unggulan': `${basePath}${paths.programSekolah}/kegiatan-unggulan/kegiatan-unggulan`,
+  'galeri-kegiatan': `${basePath}${paths.programSekolah}/galeri-kegiatan/galeri-kegiatan`,
+  'kegiatan-penunjang': `${basePath}${paths.programSekolah}/kegiatan-penunjang/kegiatan-penunjang`,
+  'output': `${basePath}${paths.programSekolah}/output/output`,
+  'kurikulum-plus': `${basePath}${paths.programSekolah}/kurikulum-plus/kurikulum-plus`,
 
-  // Fasilitas & Prestasi
-  'fasilitas': '/Fasilitas-Prestasi/Fasilitas/fasilitas.html',
-  'galeri-fasilitas': '/Fasilitas-Prestasi/Galeri-Fasilitas/galeri-fasilitas.html',
-  'prestasi': '/Fasilitas-Prestasi/Prestasi/prestasi.html',
-  'galeri-prestasi': '/Fasilitas-Prestasi/Galeri-Prestasi/galeri-prestasi.html',
+  'fasilitas': `${basePath}${paths.fasilitas}/fasilitas.html`,
+  'galeri-fasilitas': `${basePath}${paths.fasilitas}/galeri-fasilitas.html`,
+  'prestasi': `${basePath}${paths.fasilitas}/prestasi.html`,
+  'galeri-prestasi': `${basePath}${paths.fasilitas}/galeri-prestasi.html`,
 
-  // Jadwal
-  'jadwal-a-b': '/Jadwal/jadwal-a-b.html',
-  'kelompok-bermain': '/Jadwal/kelompok-bermain.html'
+  'jadwal-a-b': `${basePath}${paths.jadwal}/jadwal-a-b.html`,
+  'kelompok-bermain': `${basePath}${paths.jadwal}/kelompok-bermain.html`
 };
 
 function createSidebarItem(id, label, activePage) {
