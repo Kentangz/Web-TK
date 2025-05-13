@@ -14,6 +14,7 @@ export default defineConfig({
                 contact:'contact.html',
 
                 admin:'admin-tkkb-sitihajar-karlos/dashboard.html',
+                visimisi:'admin-tkkb-sitihajar-karlos/visi-misi.html',
             }
         }
     }

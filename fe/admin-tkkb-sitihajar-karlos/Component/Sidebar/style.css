@@ -57,7 +57,7 @@ body{
   margin: 5px auto;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.5s ease;
+  transition: background-color 0.2s ease;
 }
 
 .sidebar ul li:hover {

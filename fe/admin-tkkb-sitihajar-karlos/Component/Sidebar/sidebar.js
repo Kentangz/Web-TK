@@ -1,79 +1,142 @@
 import './style.css';
-import logoImage from '/logo.svg';
 
-export function createSidebarHTML(activePage = '') {
+export function createSidebarHTML(options = {}) {
+  const {
+    logoSrc = '/logo.svg',
+    schoolName = 'TK & KB SITI HAJAR',
+    activePage = 'dashboard'
+  } = options;
+
   return `
-<div class="sidebar">
-  <div class="logo-container">
-    <img src="${logoImage}" alt="Logo" class="logo" />
-    <h2>TK & KB SITI HAJAR</h2>
-  </div>
-  <ul>
-    <li class="${activePage === 'dashboard' ? 'active' : ''}">Dashboard</li>
-
-    <li class="dropdown ${['visi-misi', 'tujuan-strategi', 'gallery-beranda'].includes(activePage) ? 'open' : ''}">
-      Beranda
+    <div class="sidebar">
+      <div class="logo-container">
+        <img src="${logoSrc}" alt="Logo" class="logo" />
+        <h2>${schoolName}</h2>
+      </div>
       <ul>
-        <li class="${activePage === 'visi-misi' ? 'active' : ''}">Visi & Misi</li>
-        <li class="${activePage === 'tujuan-strategi' ? 'active' : ''}">Tujuan & Strategi</li>
-        <li class="${activePage === 'gallery-beranda' ? 'active' : ''}">Gallery</li>
+        ${createSidebarItem('dashboard', 'Dashboard', activePage)}
+
+        ${createDropdown('beranda', 'Beranda', [
+          { id: 'visi-misi', label: 'Visi & Misi' },
+          { id: 'tujuan-strategi', label: 'Tujuan & Strategi' },
+          { id: 'gallery-beranda', label: 'Gallery' }
+        ], activePage)}
+
+        ${createDropdown('program-sekolah', 'Program Sekolah', [
+          { id: 'kegiatan-unggulan', label: 'Kegiatan Unggulan' },
+          { id: 'galeri-kegiatan', label: 'Galeri Kegiatan' },
+          { id: 'kegiatan-penunjang', label: 'Kegiatan Penunjang' },
+          { id: 'output', label: 'Output Yang Dihasilkan' },
+          { id: 'kurikulum-plus', label: 'Kurikulum Plus' }
+        ], activePage)}
+
+        ${createDropdown('fasilitas-prestasi', 'Fasilitas & Prestasi', [
+          { id: 'fasilitas', label: 'Fasilitas' },
+          { id: 'galeri-fasilitas', label: 'Galeri Fasilitas' },
+          { id: 'prestasi', label: 'Prestasi' },
+          { id: 'galeri-prestasi', label: 'Galeri Prestasi' }
+        ], activePage)}
+
+        ${createDropdown('jadwal', 'Jadwal TK & KB', [
+          { id: 'jadwal-a-b', label: 'Kelompok A & B' },
+          { id: 'kelompok-bermain', label: 'Kelompok Bermain' }
+        ], activePage)}
+
+        ${createSidebarItem('guru', 'Guru', activePage)}
+        ${createSidebarItem('contact', 'Contact', activePage)}
       </ul>
-    </li>
-
-    <li class="dropdown ${[
-      'kegiatan-unggulan', 'galeri-kegiatan', 'kegiatan-penunjang', 'output', 'kurikulum-plus'
-    ].includes(activePage) ? 'open' : ''}">
-      Program Sekolah
-      <ul>
-        <li class="${activePage === 'kegiatan-unggulan' ? 'active' : ''}">Kegiatan Unggulan</li>
-        <li class="${activePage === 'galeri-kegiatan' ? 'active' : ''}">Galeri Kegiatan</li>
-        <li class="${activePage === 'kegiatan-penunjang' ? 'active' : ''}">Kegiatan Penunjang</li>
-        <li class="${activePage === 'output' ? 'active' : ''}">Output Yang Dihasilkan</li>
-        <li class="${activePage === 'kurikulum-plus' ? 'active' : ''}">Kurikulum Plus</li>
-      </ul>
-    </li>
-
-    <li class="dropdown ${['fasilitas', 'galeri-fasilitas', 'prestasi', 'galeri-prestasi'].includes(activePage) ? 'open' : ''}">
-      Fasilitas & Prestasi
-      <ul>
-        <li class="${activePage === 'fasilitas' ? 'active' : ''}">Fasilitas</li>
-        <li class="${activePage === 'galeri-fasilitas' ? 'active' : ''}">Galeri Fasilitas</li>
-        <li class="${activePage === 'prestasi' ? 'active' : ''}">Prestasi</li>
-        <li class="${activePage === 'galeri-prestasi' ? 'active' : ''}">Galeri Prestasi</li>
-      </ul>
-    </li>
-
-    <li class="dropdown ${['jadwal-a-b', 'kelompok-bermain'].includes(activePage) ? 'open' : ''}">
-      Jadwal TK & KB
-      <ul>
-        <li class="${activePage === 'jadwal-a-b' ? 'active' : ''}">Kelompok A & B</li>
-        <li class="${activePage === 'kelompok-bermain' ? 'active' : ''}">Kelompok Bermain</li>
-      </ul>
-    </li>
-
-    <li class="${activePage === 'contact' ? 'active' : ''}">Contact</li>
-    <li class="${activePage === 'guru' ? 'active' : ''}">Guru</li>
-  </ul>
-</div>
-
+    </div>
   `;
 }
 
-//dropdown func
+// Path mapping untuk routing
+const pageMap = {
+  'dashboard': 'dashboard',
+  'guru': 'Guru/guru.html',
+  'contact': '/Contact/contact.html',
+
+  // Beranda
+  'visi-misi': 'beranda/visi-misi',
+  'tujuan-strategi': '/Beranda/Tujuan-Strategi/tujuan-strategi.html',
+  'gallery-beranda': '/Beranda/Gallery/gallery-beranda.html',
+
+  // Program Sekolah
+  'kegiatan-unggulan': '/Program-Sekolah/Kegiatan-Unggulan/kegiatan-unggulan.html',
+  'galeri-kegiatan': '/Program-Sekolah/Galeri-Kegiatan/galeri-kegiatan.html',
+  'kegiatan-penunjang': '/Program-Sekolah/Kegiatan-Penunjang/kegiatan-penunjang.html',
+  'output': '/Program-Sekolah/Output/output.html',
+  'kurikulum-plus': '/Program-Sekolah/Kurikulum-Plus/kurikulum-plus.html',
+
+  // Fasilitas & Prestasi
+  'fasilitas': '/Fasilitas-Prestasi/Fasilitas/fasilitas.html',
+  'galeri-fasilitas': '/Fasilitas-Prestasi/Galeri-Fasilitas/galeri-fasilitas.html',
+  'prestasi': '/Fasilitas-Prestasi/Prestasi/prestasi.html',
+  'galeri-prestasi': '/Fasilitas-Prestasi/Galeri-Prestasi/galeri-prestasi.html',
+
+  // Jadwal
+  'jadwal-a-b': '/Jadwal/jadwal-a-b.html',
+  'kelompok-bermain': '/Jadwal/kelompok-bermain.html'
+};
+
+function createSidebarItem(id, label, activePage) {
+  const isActive = activePage === id ? 'active' : '';
+  const href = pageMap[id] || '#';
+  return `<li class="${isActive}"><a href="${href}" data-id="${id}">${label}</a></li>`;
+}
+
+function createDropdown(id, label, items, activePage) {
+  const isOpen = items.some(item => item.id === activePage);
+  const isActiveGroup = isOpen ? 'active' : '';
+
+  const subItems = items.map(item => {
+    const isActive = activePage === item.id ? 'active' : '';
+    const href = pageMap[item.id] || '#';
+    return `<li class="${isActive}"><a href="${href}" data-id="${item.id}">${item.label}</a></li>`;
+  }).join('');
+
+  return `
+    <li class="dropdown ${isOpen ? 'open' : ''}">
+      <div class="dropdown-title ${isActiveGroup}" data-group="${id}">${label}</div>
+      <ul>
+        ${subItems}
+      </ul>
+    </li>
+  `;
+}
+
 export function initSidebarFunctionality() {
   const dropdowns = document.querySelectorAll('.sidebar .dropdown');
+
   dropdowns.forEach(dropdown => {
-    dropdown.addEventListener('click', function (e) {
-      if (e.target.closest('ul') && e.target !== this) return;
+    const title = dropdown.querySelector('.dropdown-title');
+    title.addEventListener('click', function () {
       dropdowns.forEach(d => {
-        if (d !== this) {
-          d.classList.remove('open');
-        }
+        if (d !== dropdown) d.classList.remove('open');
       });
-      this.classList.toggle('open');
+      dropdown.classList.toggle('open');
+    });
+  });
+
+  // Menutup semua dropdown saat submenu diklik
+  const allLinks = document.querySelectorAll('.sidebar a');
+  allLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      dropdowns.forEach(d => d.classList.remove('open'));
     });
   });
 }
 
-
-
+export function createSidebar(options = {}) {
+  const html = createSidebarHTML(options);
+  return {
+    html,
+    mount(target = document.body) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html.trim();
+      const sidebarElement = tempDiv.firstChild;
+      target.appendChild(sidebarElement);
+      initSidebarFunctionality();
+      return this;
+    }
+  };
+}
