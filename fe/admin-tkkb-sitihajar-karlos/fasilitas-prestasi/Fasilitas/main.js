@@ -11,6 +11,7 @@ document.querySelector('#fasilitas').innerHTML = `
   <div class="main-content">
     <h1>Fasilitas</h1>
     <p>Welcome to the Fasilitas page!</p>
+    <p>testing testing testing testing testing testing testing testing</p>
   </div>
 `;
 
