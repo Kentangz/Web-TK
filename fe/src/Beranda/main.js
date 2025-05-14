@@ -12,6 +12,7 @@ document.querySelector('#beranda').innerHTML = `
   })}
   <div>
     <h1>Beranda</h1>
+    p>Welcome to the Beranda page!</p>
   </div>
 `
 
