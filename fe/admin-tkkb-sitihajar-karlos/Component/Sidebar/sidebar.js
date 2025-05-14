@@ -110,28 +110,25 @@ function createDropdown(id, label, items, activePage) {
 
 export function initSidebarFunctionality() {
   const dropdowns = document.querySelectorAll('.sidebar .dropdown');
-
-  // Buka dropdown berdasarkan localStorage saat halaman dimuat
+  // dropdown based on localStorage
   const savedGroup = localStorage.getItem('openDropdown');
   if (savedGroup) {
     const target = document.querySelector(`.dropdown-title[data-group="${savedGroup}"]`);
     if (target) {
       target.parentElement.classList.add('open');
     }
-  }
 
-  // Handle klik pada dropdown title
+  }
+  // klik dropdown title
   dropdowns.forEach(dropdown => {
     const title = dropdown.querySelector('.dropdown-title');
     title.addEventListener('click', function () {
       const isOpen = dropdown.classList.contains('open');
 
-      // Tutup semua dropdown lain
+      // Tutup semua dropdown
       dropdowns.forEach(d => {
         if (d !== dropdown) d.classList.remove('open');
       });
-
-      // Toggle dropdown ini
       dropdown.classList.toggle('open');
 
       // Update localStorage
@@ -143,7 +140,7 @@ export function initSidebarFunctionality() {
     });
   });
 
-  // Simpan dropdown yang terbuka saat link diklik
+  // Simpan dropdown saat diklik
   const allLinks = document.querySelectorAll('.sidebar a');
   allLinks.forEach(link => {
     link.addEventListener('click', () => {
@@ -158,7 +155,7 @@ export function initSidebarFunctionality() {
   });
 }
 
-//
+// func create Sidebar
 export function createSidebar(options = {}) {
   const html = createSidebarHTML(options);
   return {

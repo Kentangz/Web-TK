@@ -100,31 +100,27 @@ body{
   background-color: #2c6176;
 }
 
-/* line bar*/
 .sidebar .dropdown > ul {
   padding-left: 5px;
   border-left: 4px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Buat seluruh li bisa diklik melalui <a> yang memenuhi kotaknya */
 .sidebar ul li > a {
   display: block;
   width: 100%;
   height: 100%;
-  padding: 0; /* Pastikan padding ada di li, bukan di a */
+  padding: 0;
 }
 
-/* Pastikan <li> punya padding dan pointer diaktifkan */
 .sidebar ul li,
 .sidebar .dropdown ul li {
   position: relative;
-  padding: 20px; /* Untuk item utama */
+  padding: 20px;
   cursor: pointer;
 }
 
-/* Submenu */
 .sidebar .dropdown ul li {
-  padding: 10px; /* Untuk submenu */
+  padding: 10px;
   font-size: 13px;
   cursor: pointer;
 }
