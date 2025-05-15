@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class VisiResource extends JsonResource
+class MisiResource extends JsonResource
 {
     public function toArray(Request $request)
     {
         return [
             'id' => $this->id,
-            'visi_description' => $this->visi_description,
+            'misi_description' => $this->misi_description,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
@@ -23,7 +23,7 @@ class VisiResource extends JsonResource
         if ($this instanceof ResourceCollection) {
             return [
                 'status' => true,
-                'message' => 'Visi data retrieved successfully',
+                'message' => 'Misi data retrieved successfully',
             ];
         }
 
