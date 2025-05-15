@@ -28,7 +28,7 @@ class VisiResource extends JsonResource
 
         return [
             'status' => true,
-            'message' => 'Data Visi Sukses Diedit',
+            'message' => 'Success',
         ];
     }
 }

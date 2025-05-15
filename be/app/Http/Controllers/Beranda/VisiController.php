@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Beranda;
 
 use App\Http\Controllers\Controller;
-use App\Models\Models\Beranda\Visi; 
+use App\Models\Beranda\Visi; 
 use App\Http\Resources\Beranda\VisiResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
