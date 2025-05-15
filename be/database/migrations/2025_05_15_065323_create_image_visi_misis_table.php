@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('photo_visi_misis', function (Blueprint $table) {
+        Schema::create('image_visi_misis', function (Blueprint $table) {
             $table->id();
+            $table->string('image');
             $table->timestamps();
         });
     }
