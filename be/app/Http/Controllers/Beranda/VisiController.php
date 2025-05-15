@@ -28,7 +28,7 @@ class VisiController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'visi_description' => 'required|string|max:255',
+            'visi_description' => 'required|text',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -56,7 +56,7 @@ public function update(Request $request, $id)
     }
 
     $validator = Validator::make($request->all(), [
-        'visi_description' => 'required|string|max:255',
+        'visi_description' => 'required|text',
     ]);
     if ($validator->fails()) {
         return response()->json([

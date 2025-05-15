@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('misis', function (Blueprint $table) {
             $table->id();
+            $table->text('misi_description');
             $table->timestamps();
         });
     }
