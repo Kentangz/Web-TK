@@ -11,5 +11,4 @@ class Misi extends Model
 
     protected $fillable = [
         'misi_description',
-    ];
-}
+    ]

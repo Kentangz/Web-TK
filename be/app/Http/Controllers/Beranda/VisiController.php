@@ -28,7 +28,7 @@ class VisiController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request-
             'visi_description' => 'required|string',
         ]);
 
@@ -65,7 +65,7 @@ class VisiController extends Controller
     public function destroy($id)
     {
         $visi = Visi::find($id);
-        if (!$visi) {
+        if (!$visi) 
             return VisiResource::notFoundResponse('Visi data not found');
         }
         
