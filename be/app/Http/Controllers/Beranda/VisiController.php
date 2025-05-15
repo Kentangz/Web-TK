@@ -51,7 +51,7 @@ public function update(Request $request, $id)
     if (!$visi) {
         return response()->json([
             'status' => false,
-            'message' => 'Data Visi tidak ditemukan',
+            'message' => 'Visi data not found',
         ], 404);
     }
 
@@ -61,7 +61,7 @@ public function update(Request $request, $id)
     if ($validator->fails()) {
         return response()->json([
             'status' => false,
-            'message' => 'Validasi gagal',
+            'message' => 'Validation failed',
             'errors' => $validator->errors(),
         ], 422);
     }
@@ -77,7 +77,7 @@ public function update(Request $request, $id)
         if (!$visi) {
             return response()->json([
                 'status' => false,
-                'message' => 'Data Visi tidak ditemukan',
+                'message' => 'Visi data not found',
             ], 404);
         }
         
@@ -85,7 +85,7 @@ public function update(Request $request, $id)
 
         return response()->json([
             'status' => true,
-            'message' => 'Data Visi berhasil dihapus',
+            'message' => 'Visi data has been deleted successfully',
         ]);
     }
 }
