@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Beranda;
 
 use App\Http\Controllers\Controller;
-use App\Models\Models\Beranda\Visi; 
+use App\Models\Beranda\Visi; 
 use App\Http\Resources\Beranda\VisiResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +28,7 @@ class VisiController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'visi_description' => 'required|string|max:255',
+            'visi_description' => 'required|text',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -51,17 +51,17 @@ public function update(Request $request, $id)
     if (!$visi) {
         return response()->json([
             'status' => false,
-            'message' => 'Data Visi tidak ditemukan',
+            'message' => 'Visi data not found',
         ], 404);
     }
 
     $validator = Validator::make($request->all(), [
-        'visi_description' => 'required|string|max:255',
+        'visi_description' => 'required|text',
     ]);
     if ($validator->fails()) {
         return response()->json([
             'status' => false,
-            'message' => 'Validasi gagal',
+            'message' => 'Validation failed',
             'errors' => $validator->errors(),
         ], 422);
     }
@@ -77,7 +77,7 @@ public function update(Request $request, $id)
         if (!$visi) {
             return response()->json([
                 'status' => false,
-                'message' => 'Data Visi tidak ditemukan',
+                'message' => 'Visi data not found',
             ], 404);
         }
         
@@ -85,7 +85,7 @@ public function update(Request $request, $id)
 
         return response()->json([
             'status' => true,
-            'message' => 'Data Visi berhasil dihapus',
+            'message' => 'Visi data has been deleted successfully',
         ]);
     }
 }

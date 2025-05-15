@@ -22,13 +22,13 @@ class VisiResource extends JsonResource
         if ($this instanceof ResourceCollection) {
             return [
                 'status' => true,
-                'message' => 'Data Visi Berhasil Diambil',
+                'message' => 'Visi data retrieved successfully',
             ];
         }
 
         return [
             'status' => true,
-            'message' => 'Data Visi Sukses Diedit',
+            'message' => 'Success',
         ];
     }
 }
