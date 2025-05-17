@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class ImageVisiMisi extends Model
+class ImageTujuanStrategi extends Model
 {
     use HasFactory;
 
@@ -17,7 +17,7 @@ class ImageVisiMisi extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ($image) => asset('/storage/beranda-images/visi-misi/' . $image),
+            get: fn ($image) => asset('/storage/beranda-images/tujuan-strategi/' . $image),
         );
     }
 }

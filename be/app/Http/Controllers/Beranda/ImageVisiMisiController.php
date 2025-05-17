@@ -40,7 +40,7 @@ class ImageVisiMisiController extends Controller
         }
 
         $image = $request->file('image');
-        $image->storeAs('beranda-images/', $image->hashName());
+        $image->storeAs('beranda-images/visi-misi/', $image->hashName());
 
         $images = ImageVisiMisi::create([
             'image' => $image->hashName(),
@@ -64,8 +64,8 @@ class ImageVisiMisiController extends Controller
         }
 
         $image = $request->file('image');
-        $image->storeAs('beranda-images/', $image->hashName());
-        Storage::delete('beranda-images/' . basename($images->image));
+        $image->storeAs('beranda-images/visi-misi/', $image->hashName());
+        Storage::delete('beranda-images/visi-misi/' . basename($images->image));
 
         $images->update([
             'image' => $image->hashName(),
@@ -73,14 +73,14 @@ class ImageVisiMisiController extends Controller
         return new ImageVisiMisiResource($images);
     }
 
-    
+
     public function destroy($id)
     {
         $images = ImageVisiMisi::find($id);
         if (!$images) {
             return ImageVisiMisiResource::notFoundResponse('Image data not found');
         }
-        Storage::delete('beranda-images/' . basename($images->image));
+        Storage::delete('beranda-images/visi-misi/' . basename($images->image));
         $images->delete();
 
         return response()->json(['message' => 'Image deleted successfully']);
