@@ -13,23 +13,25 @@ class KegiatanUnggulanController extends Controller
 {
         public function index()
     {
-        $images = KegiatanUnggulan::all();
-        return KegiatanUnggulanResource::collection($images);
+        $datas = KegiatanUnggulan::all();
+        return KegiatanUnggulanResource::collection($datas);
     }
 
     public function show($id)
     {
-        $image = KegiatanUnggulan::find($id);
-        if (!$image) {
-            return KegiatanUnggulanResource::notFoundResponse('Image data not found');
+        $data = KegiatanUnggulan::find($id);
+        if (!$data) {
+            return KegiatanUnggulanResource::notFoundResponse('Data data not found');
         }
 
-        return new KegiatanUnggulanResource($image);
+        return new KegiatanUnggulanResource($data);
     }
+
+    
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'deskripsi_kegiatan' => 'required|string|max:255',
         ]);
 
@@ -37,68 +39,62 @@ class KegiatanUnggulanController extends Controller
             return KegiatanUnggulanResource::validationErrorResponse($validator);
         }
 
-        $image = $request->file('image');
-        $image->storeAs('/program-sekolah-images/kegiatan-unggulan/', $image->hashName());
+        $data = $request->file('icon');
+        $data->storeAs('/program-sekolah-images/kegiatan-unggulan/', $data->hashName());
 
-        $images = KegiatanUnggulan::create([
-            'image' => $image->hashName(),
+        $datas = KegiatanUnggulan::create([
+            'icon' => $data->hashName(),
             'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
         ]);
-        return new KegiatanUnggulanResource($images);
+        return new KegiatanUnggulanResource($datas);
     }
+
     public function update(Request $request, $id)
     {
-        $images = KegiatanUnggulan::find($id);
-        if (!$images) {
-            return KegiatanUnggulanResource::notFoundResponse('Image data not found');
+        $datas = KegiatanUnggulan::find($id);
+        if (!$datas) {
+            return KegiatanUnggulanResource::notFoundResponse('Data data not found');
         }
 
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'deskripsi_kegiatan' => 'required|string|max:255',
+            'deskripsi_kegiatan' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
             return KegiatanUnggulanResource::validationErrorResponse($validator);
         }
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $image->storeAs('/program-sekolah-images/kegiatan-unggulan/', $image->hashName());
-            Storage::delete('/program-sekolah-images/kegiatan-unggulan/' . basename($images->image));
+        if ($request->hasFile('icon')) {
+            $icon = $request->file('icon');
+            $icon->storeAs('/program-sekolah-images/kegiatan-unggulan/', $icon->hashName());
+            Storage::delete('/program-sekolah-images/kegiatan-unggulan/' . basename($datas->icon));
 
-            $images->update([
-                'image' => $image->hashName(),
+            $datas->update([
+                'icon' => $icon->hashName(),
                 'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
             ]);
         }else{
-            $images->update([
+            $datas->update([
                 'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
             ]);
 
         }
-
-
-        $images->update([
-            'image' => $image->hashName(),
-            'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
-        ]);
-        return new KegiatanUnggulanResource($images);
+        return new KegiatanUnggulanResource($datas);
     }
 
     public function destroy($id)
     {
-        $images = KegiatanUnggulan::find($id);
-        if (!$images) {
-            return KegiatanUnggulanResource::notFoundResponse('Image data not found');
+        $datas = KegiatanUnggulan::find($id);
+        if (!$datas) {
+            return KegiatanUnggulanResource::notFoundResponse('Data data not found');
         }
 
-        Storage::delete('/program-sekolah-images/kegiatan-unggulan/' . basename($images->image));
-        $images->delete();
+        Storage::delete('/program-sekolah-images/kegiatan-unggulan/' . basename($datas->icon));
+        $datas->delete();
 
         return response()->json([
             'status' => true,
-            'message' => 'Image data deleted successfully',
+            'message' => 'Data deleted successfully',
         ]);
     }
 }

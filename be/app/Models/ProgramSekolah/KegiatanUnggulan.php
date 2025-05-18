@@ -11,14 +11,14 @@ class KegiatanUnggulan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'image',
+        'icon',
         'deskripsi_kegiatan',
     ];
 
-    public function image():Attribute
+    public function icon():Attribute
     {
         return Attribute::make(
-            get: fn ($image) => asset('/storage/program-sekolah-images/kegiatan-unggulan/' . $image),
+            get: fn ($icon) => asset('/storage/program-sekolah-images/kegiatan-unggulan/' . $icon),
         );
     }
 }

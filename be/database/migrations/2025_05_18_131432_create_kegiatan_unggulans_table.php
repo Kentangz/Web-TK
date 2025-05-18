@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kegiatan_unggulans', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
+            $table->string('icon');
             $table->string('deskripsi_kegiatan');
             $table->timestamps();
         });
