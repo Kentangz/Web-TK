@@ -10,6 +10,8 @@ use App\Http\Controllers\Beranda\TujuanController;
 use App\Http\Controllers\Beranda\StrategiController;
 use App\Http\Controllers\Beranda\ImageTujuanStrategiController;
 
+use App\Http\Controllers\ProgramSekolah\KegiatanUnggulanController;
+
 
 
 Route::get('/user', function (Request $request) {
@@ -23,4 +25,5 @@ Route::apiResource('/beranda/tujuan', TujuanController::class);
 Route::apiResource('/beranda/strategi', StrategiController::class);
 Route::apiResource('/beranda/gallerytujuan', ImageTujuanStrategiController::class);
 
+Route::apiResource('/program-sekolah/kegiatan-unggulan', KegiatanUnggulanController::class);
 
