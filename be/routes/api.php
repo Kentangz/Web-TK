@@ -11,6 +11,7 @@ use App\Http\Controllers\Beranda\StrategiController;
 use App\Http\Controllers\Beranda\ImageTujuanStrategiController;
 
 use App\Http\Controllers\ProgramSekolah\KegiatanUnggulanController;
+use App\Http\Controllers\ProgramSekolah\GalleryKegiatanController;
 
 
 
@@ -26,4 +27,4 @@ Route::apiResource('/beranda/strategi', StrategiController::class);
 Route::apiResource('/beranda/gallerytujuan', ImageTujuanStrategiController::class);
 
 Route::apiResource('/program-sekolah/kegiatan-unggulan', KegiatanUnggulanController::class);
-
+Route::apiResource('/program-sekolah/gallerykegiatan', GalleryKegiatanController::class);
