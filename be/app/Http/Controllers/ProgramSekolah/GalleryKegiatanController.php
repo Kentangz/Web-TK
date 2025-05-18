@@ -60,8 +60,7 @@ class GalleryKegiatanController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'nama_kegiatan' => 'required|string|max:255',
+            'nama_kegiatan' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
