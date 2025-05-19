@@ -25,6 +25,6 @@ Route::apiResource('/beranda/tujuan', TujuanController::class);
 Route::apiResource('/beranda/strategi', StrategiController::class);
 Route::apiResource('/beranda/gallerytujuan', ImageTujuanStrategiController::class);
 
-Route::apiResource('/program-sekolah/kegiatanunggulan', KegiatanUnggulanController::class);
-Route::apiResource('/program-sekolah/gallerykegiatan', GalleryKegiatanController::class);
-Route::apiResource('/program-sekolah/kegiatanpenunjang', KegiatanPenunjangController::class);
+Route::apiResource('/programsekolah/kegiatanunggulan', KegiatanUnggulanController::class);
+Route::apiResource('/programsekolah/gallerykegiatan', GalleryKegiatanController::class);
+Route::apiResource('/programsekolah/kegiatanpenunjang', KegiatanPenunjangController::class);
