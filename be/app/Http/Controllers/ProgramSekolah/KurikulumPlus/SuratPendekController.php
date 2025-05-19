@@ -72,7 +72,7 @@ class SuratPendekController extends Controller
         
         return response()->json([
             'status' => true,
-            'message' => 'Surat Pendek data yang Dihasilkan deleted successfully',
+            'message' => 'Surat Surat Pendek data yang Dihasilkan deleted successfully',
         ]);
     }
 }
