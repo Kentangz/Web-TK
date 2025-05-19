@@ -8,6 +8,7 @@ use App\Http\Resources\Beranda\VisiResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class VisiController extends Controller
 {
     public function index()

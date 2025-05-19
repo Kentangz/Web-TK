@@ -8,6 +8,7 @@ use App\Http\Resources\ProgramSekolah\OutputResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class OutputController extends Controller
 {
     public function index()

@@ -8,6 +8,7 @@ use App\Http\Resources\Beranda\MisiResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class MisiController extends Controller
 {
     public function index()

@@ -8,6 +8,7 @@ use App\Http\Resources\ProgramSekolah\KurikulumPlus\HaditsResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class HaditsController extends Controller
 {
     public function index()

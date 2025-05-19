@@ -8,6 +8,7 @@ use App\Http\Resources\Beranda\TujuanResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class TujuanController extends Controller
 {
     public function index()

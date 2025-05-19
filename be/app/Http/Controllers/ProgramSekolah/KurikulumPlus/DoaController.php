@@ -8,6 +8,7 @@ use App\Http\Resources\ProgramSekolah\KurikulumPlus\DoaResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class DoaController extends Controller
 {
     public function index()
