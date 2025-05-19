@@ -13,6 +13,7 @@ use App\Http\Controllers\Beranda\ImageTujuanStrategiController;
 use App\Http\Controllers\ProgramSekolah\KegiatanUnggulanController;
 use App\Http\Controllers\ProgramSekolah\GalleryKegiatanController;
 use App\Http\Controllers\ProgramSekolah\KegiatanPenunjangController;
+use App\Http\Controllers\ProgramSekolah\OutputController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -28,3 +29,4 @@ Route::apiResource('/beranda/gallerytujuan', ImageTujuanStrategiController::clas
 Route::apiResource('/programsekolah/kegiatanunggulan', KegiatanUnggulanController::class);
 Route::apiResource('/programsekolah/gallerykegiatan', GalleryKegiatanController::class);
 Route::apiResource('/programsekolah/kegiatanpenunjang', KegiatanPenunjangController::class);
+Route::apiResource('/programsekolah/output', OutputController::class);
