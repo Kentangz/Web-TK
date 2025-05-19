@@ -9,23 +9,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
+
 class ImageTujuanStrategiController extends Controller
 {
     public function index()
     {
-        $images = ImageTujuanStrategi::all();
-        return ImageTujuanStrategiResource::collection($images);
+        $data = ImageTujuanStrategi::all();
+        return ImageTujuanStrategiResource::collection($data);
     }
 
 
     public function show($id)
     {
-        $image = ImageTujuanStrategi::find($id);
-        if (!$image) {
-            return ImageTujuanStrategiResource::notFoundResponse('Image data not found');
+        $data = ImageTujuanStrategi::find($id);
+        if (!$data) {
+            return ImageTujuanStrategiResource::notFoundResponse();
         }
 
-        return new ImageTujuanStrategiResource($image);
+        return new ImageTujuanStrategiResource($data);
     }
 
 
@@ -42,18 +43,18 @@ class ImageTujuanStrategiController extends Controller
         $image = $request->file('image');
         $image->storeAs('/beranda-images/tujuan-strategi/', $image->hashName());
 
-        $images = ImageTujuanStrategi::create([
+        $data = ImageTujuanStrategi::create([
             'image' => $image->hashName(),
         ]);
-        return new ImageTujuanStrategiResource($images);
+        return new ImageTujuanStrategiResource($data);
     }
 
 
     public function update(Request $request, $id)
     {
-        $images = ImageTujuanStrategi::find($id);
-        if (!$images) {
-            return ImageTujuanStrategiResource::notFoundResponse('Image data not found');
+        $data = ImageTujuanStrategi::find($id);
+        if (!$data) {
+            return ImageTujuanStrategiResource::notFoundResponse();
         }
 
         $validator = Validator::make($request->all(), [
@@ -65,24 +66,27 @@ class ImageTujuanStrategiController extends Controller
 
         $image = $request->file('image');
         $image->storeAs('/beranda-images/tujuan-strategi/', $image->hashName());
-        Storage::delete('/beranda-images/tujuan-strategi/' . basename($images->image));
+        Storage::delete('/beranda-images/tujuan-strategi/' . basename($data->image));
 
-        $images->update([
+        $data->update([
             'image' => $image->hashName(),
         ]);
-        return new ImageTujuanStrategiResource($images);
+        return new ImageTujuanStrategiResource($data);
     }
 
     
     public function destroy($id)
     {
-        $images = ImageTujuanStrategi::find($id);
-        if (!$images) {
-            return ImageTujuanStrategiResource::notFoundResponse('Image data not found');
+        $data = ImageTujuanStrategi::find($id);
+        if (!$data) {
+            return ImageTujuanStrategiResource::notFoundResponse();
         }
-        Storage::delete('/beranda-images/tujuan-strategi/' . basename($images->image));
-        $images->delete();
+        Storage::delete('/beranda-images/tujuan-strategi/' . basename($data->image));
+        $data->delete();
 
-        return response()->json(['message' => 'Image deleted successfully']);
+        return response()->json([
+            'status' => true,
+            'message' => 'Image data deleted successfully',
+        ]);
     }
 }

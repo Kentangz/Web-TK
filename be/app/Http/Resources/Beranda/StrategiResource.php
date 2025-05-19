@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
+
 class StrategiResource extends JsonResource
 {
     public function toArray(Request $request)
@@ -33,7 +34,7 @@ class StrategiResource extends JsonResource
         ];
     }
 
-    public static function notFoundResponse($message = 'Data not found')
+    public static function notFoundResponse($message = 'Strategi data not found')
     {
         return response()->json([
             'status' => false,

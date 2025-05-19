@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Http\Resources\Beranda;
+namespace App\Http\Resources\ProgramSekolah;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 
-class MisiResource extends JsonResource
+class KegiatanUnggulanResource extends JsonResource
 {
+    
     public function toArray(Request $request)
     {
-        return [
-            'id' => $this->id,
-            'misi_description' => $this->misi_description,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+        return[
+            'id'=>$this->id,
+            'icon'=>$this->icon,
+            'deskripsi_kegiatan'=>$this->deskripsi_kegiatan,
+            'created_at'=>$this->created_at,
+            'updated_at'=>$this->updated_at,
         ];
     }
 
@@ -24,7 +26,7 @@ class MisiResource extends JsonResource
         if ($this instanceof ResourceCollection) {
             return [
                 'status' => true,
-                'message' => 'Misi data retrieved successfully',
+                'message' => 'Kegiatan Unggulan data retrieved successfully',
             ];
         }
 
@@ -33,8 +35,7 @@ class MisiResource extends JsonResource
             'message' => 'Success',
         ];
     }
-
-    public static function notFoundResponse($message = 'Misi data not found')
+    public static function notFoundResponse($message = 'Kegiatan Unggulan data not found')
     {
         return response()->json([
             'status' => false,
@@ -50,4 +51,4 @@ class MisiResource extends JsonResource
             'errors' => $validator->errors(),
         ], 422);
     }
-}
+};

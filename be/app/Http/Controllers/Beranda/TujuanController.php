@@ -8,22 +8,23 @@ use App\Http\Resources\Beranda\TujuanResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class TujuanController extends Controller
 {
     public function index()
     {
-        $tujuans = Tujuan::all();
-        return TujuanResource::collection($tujuans);
+        $data = Tujuan::all();
+        return TujuanResource::collection($data);
     }
 
     public function show($id)
     {
-        $tujuan = Tujuan::find($id);
-        if (!$tujuan) {
-            return TujuanResource::notFoundResponse('Tujuan data not found');
+        $data = Tujuan::find($id);
+        if (!$data) {
+            return TujuanResource::notFoundResponse();
         }
 
-        return new TujuanResource($tujuan);
+        return new TujuanResource($data);
     }
 
     public function store(Request $request)
@@ -36,18 +37,18 @@ class TujuanController extends Controller
             return TujuanResource::validationErrorResponse($validator);
         }
 
-        $tujuan = Tujuan::create([
+        $data = Tujuan::create([
             'tujuan_description' => $request->tujuan_description,
         ]);
 
-        return new TujuanResource($tujuan);
+        return new TujuanResource($data);
     }
 
     public function update(Request $request, $id)
     {
-        $tujuan = Tujuan::find($id);
-        if (!$tujuan) {
-            return TujuanResource::notFoundResponse('Tujuan data not found');
+        $data = Tujuan::find($id);
+        if (!$data) {
+            return TujuanResource::notFoundResponse();
         }
 
         $validator = Validator::make($request->all(), [
@@ -57,17 +58,17 @@ class TujuanController extends Controller
             return TujuanResource::validationErrorResponse($validator);
         }
 
-        $tujuan->update($request->all());
-        return new TujuanResource($tujuan);
+        $data->update($request->all());
+        return new TujuanResource($data);
     }
     public function destroy($id)
     {
-        $tujuan = Tujuan::find($id);
-        if (!$tujuan) {
-            return TujuanResource::notFoundResponse('Tujuan data not found');
+        $data = Tujuan::find($id);
+        if (!$data) {
+            return TujuanResource::notFoundResponse();
         }
 
-        $tujuan->delete();
+        $data->delete();
         return response()->json([
             'status' => true,
             'message' => 'Tujuan data deleted successfully',

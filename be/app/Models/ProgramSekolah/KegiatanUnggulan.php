@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Models\Beranda;
+namespace App\Models\ProgramSekolah;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 
-class ImageVisiMisi extends Model
+class KegiatanUnggulan extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'image',
+        'icon',
+        'deskripsi_kegiatan',
     ];
 
-    protected function image(): Attribute
+    public function icon():Attribute
     {
         return Attribute::make(
-            get: fn ($image) => asset('/storage/beranda-images/visi-misi/' . $image),
+            get: fn ($icon) => asset('/storage/program-sekolah-images/kegiatan-unggulan/' . $icon),
         );
     }
 }

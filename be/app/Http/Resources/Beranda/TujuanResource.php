@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
+
 class TujuanResource extends JsonResource
 {
     public function toArray(Request $request)
@@ -33,7 +34,7 @@ class TujuanResource extends JsonResource
         ];
     }
 
-    public static function notFoundResponse($message = 'Data not found')
+    public static function notFoundResponse($message = 'Tujuan data not found')
     {
         return response()->json([
             'status' => false,

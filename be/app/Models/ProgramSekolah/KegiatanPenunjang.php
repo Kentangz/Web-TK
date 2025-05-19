@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Models\Beranda;
+namespace App\Models\ProgramSekolah;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory; 
 
 
-class Visi extends Model
+class KegiatanPenunjang extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'visi_description',
+    protected $fillable=[
+        'kegiatan_penunjang'
     ];
 }

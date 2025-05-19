@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Models\Beranda;
+namespace App\Models\ProgramSekolah\KurikulumPlus;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
-class Tujuan extends Model
+class SuratPendek extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'tujuan_description',
+    'surat_name',
     ];
 }

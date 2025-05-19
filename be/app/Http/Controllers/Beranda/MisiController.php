@@ -8,22 +8,23 @@ use App\Http\Resources\Beranda\MisiResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class MisiController extends Controller
 {
     public function index()
     {
-        $misis = Misi::all();
-        return MisiResource::collection($misis);
+        $data = Misi::all();
+        return MisiResource::collection($data);
     }
 
     public function show($id)
     {
-        $misi = Misi::find($id);
-        if (!$misi) {
-            return MisiResource::notFoundResponse('Misi data not found');
+        $data = Misi::find($id);
+        if (!$data) {
+            return MisiResource::notFoundResponse();
         }
 
-        return new MisiResource($misi);
+        return new MisiResource($data);
     }
 
     public function store(Request $request)
@@ -36,18 +37,18 @@ class MisiController extends Controller
             return MisiResource::validationErrorResponse($validator);
         }
 
-        $misi = Misi::create([
+        $data = Misi::create([
             'misi_description' => $request->misi_description,
         ]);
 
-        return new MisiResource($misi);
+        return new MisiResource($data);
     }
 
     public function update(Request $request, $id)
     {
-        $misi = Misi::find($id);
-        if (!$misi) {
-            return MisiResource::notFoundResponse('Misi data not found');
+        $data = Misi::find($id);
+        if (!$data) {
+            return MisiResource::notFoundResponse();
         }
 
         $validator = Validator::make($request->all(), [
@@ -57,20 +58,19 @@ class MisiController extends Controller
             return MisiResource::validationErrorResponse($validator);
         }
 
-        $misi->update($request->all());
+        $data->update($request->all());
 
-        return new MisiResource($misi);
+        return new MisiResource($data);
     }
 
     public function destroy($id)
     {
-        $misi = Misi::find($id);
-        if (!$misi) {
-            return MisiResource::notFoundResponse('Misi data not found');
+        $data = Misi::find($id);
+        if (!$data) {
+            return MisiResource::notFoundResponse();
         }
 
-        $misi->delete();
-
+        $data->delete();
         return response()->json([
             'status' => true,
             'message' => 'Misi data deleted successfully',
