@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('surat_pendeks', function (Blueprint $table) {
+        Schema::create('hadits', function (Blueprint $table) {
             $table->id();
-            $table->string('surat_name');
+            $table->string('hadits_name');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('surat_pendeks');
+        Schema::dropIfExists('hadits');
     }
 };

@@ -16,6 +16,8 @@ use App\Http\Controllers\ProgramSekolah\KegiatanPenunjangController;
 use App\Http\Controllers\ProgramSekolah\OutputController;
 use App\Http\Controllers\ProgramSekolah\KurikulumPlus\SuratPendekController;
 use App\Http\Controllers\ProgramSekolah\KurikulumPlus\DoaController;
+use App\Http\Controllers\ProgramSekolah\KurikulumPlus\HaditsController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -35,4 +37,5 @@ Route::apiResources([
     '/programsekolah/output' => OutputController::class,
     '/programsekolah/kurikulumplus/suratpendek' => SuratPendekController::class,
     '/programsekolah/kurikulumplus/doa' => DoaController::class,
+    '/programsekolah/kurikulumplus/hadits' => HaditsController::class,
 ]);
