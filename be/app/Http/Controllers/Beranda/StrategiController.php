@@ -12,18 +12,18 @@ class StrategiController extends Controller
 {
     public function index()
     {
-        $strategis = Strategi::all();
-        return StrategiResource::collection($strategis);
+        $data = Strategi::all();
+        return StrategiResource::collection($data);
     }
 
     public function show($id)
     {
-        $strategi = Strategi::find($id);
-        if (!$strategi) {
-            return StrategiResource::notFoundResponse('Strategi data not found');
+        $data = Strategi::find($id);
+        if (!$data) {
+            return StrategiResource::notFoundResponse();
         }
 
-        return new StrategiResource($strategi);
+        return new StrategiResource($data);
     }
 
     public function store(Request $request)
@@ -36,18 +36,18 @@ class StrategiController extends Controller
             return StrategiResource::validationErrorResponse($validator);
         }
 
-        $strategi = Strategi::create([
+        $data = Strategi::create([
             'strategi_description' => $request->strategi_description,
         ]);
 
-        return new StrategiResource($strategi);
+        return new StrategiResource($data);
     }
 
     public function update(Request $request, $id)
     {
-        $strategi = Strategi::find($id);
-        if (!$strategi) {
-            return StrategiResource::notFoundResponse('Strategi data not found');
+        $data = Strategi::find($id);
+        if (!$data) {
+            return StrategiResource::notFoundResponse();
         }
 
         $validator = Validator::make($request->all(), [
@@ -57,18 +57,20 @@ class StrategiController extends Controller
             return StrategiResource::validationErrorResponse($validator);
         }
 
-        $strategi->update($request->all());
+        $data->update($request->all());
 
-        return new StrategiResource($strategi);
+        return new StrategiResource($data);
     }
     public function destroy($id)
     {
-        $strategi = Strategi::find($id);
-        if (!$strategi) {
-            return StrategiResource::notFoundResponse('Strategi data not found');
+        $data = Strategi::find($id);
+        if (!$data) {
+            return StrategiResource::notFoundResponse();
         }
-
-        $strategi->delete();
-        return response()->json(['message' => 'Strategi deleted successfully'], 200);
+        $data->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'Strategi data deleted successfully',
+        ]);
     }
 }

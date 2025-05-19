@@ -34,7 +34,7 @@ class KegiatanUnggulanResource extends JsonResource
             'message' => 'Success',
         ];
     }
-    public static function notFoundResponse($message = 'Data not found')
+    public static function notFoundResponse($message = 'Kegiatan Unggulan data not found')
     {
         return response()->json([
             'status' => false,

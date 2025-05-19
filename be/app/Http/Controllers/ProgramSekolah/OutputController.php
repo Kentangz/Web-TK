@@ -12,8 +12,8 @@ class OutputController extends Controller
 {
     public function index()
     {
-        $datas = Output::all();
-        return OutputResource::collection($datas);
+        $data = Output::all();
+        return OutputResource::collection($data);
     }
 
     public function show($id)

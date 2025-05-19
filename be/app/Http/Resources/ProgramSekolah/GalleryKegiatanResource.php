@@ -34,7 +34,7 @@ class GalleryKegiatanResource extends JsonResource
         ];
     }
 
-    public static function notFoundResponse($message = 'Data not found')
+    public static function notFoundResponse($message = 'Gallery Kegiatan data not found')
     {
         return response()->json([
             'status' => false,

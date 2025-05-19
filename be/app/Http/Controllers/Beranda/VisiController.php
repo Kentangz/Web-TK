@@ -12,18 +12,18 @@ class VisiController extends Controller
 {
     public function index()
     {
-        $visis = Visi::all();
-        return VisiResource::collection($visis);
+        $data = Visi::all();
+        return VisiResource::collection($data);
     }
 
     public function show($id)
     {
-        $visi = Visi::find($id);
-        if (!$visi) {
-            return VisiResource::notFoundResponse('Visi data not found');
+        $data = Visi::find($id);
+        if (!$data) {
+            return VisiResource::notFoundResponse();
         }
 
-        return new VisiResource($visi);
+        return new VisiResource($data);
     }
 
     public function store(Request $request)
@@ -36,18 +36,18 @@ class VisiController extends Controller
             return VisiResource::validationErrorResponse($validator);
         }
 
-        $visi = Visi::create([
+        $data = Visi::create([
             'visi_description' => $request->visi_description,
         ]);
 
-        return new VisiResource($visi);
+        return new VisiResource($data);
     }
 
     public function update(Request $request, $id)
     {
-        $visi = Visi::find($id);
-        if (!$visi) {
-            return VisiResource::notFoundResponse('Visi data not found');
+        $data = Visi::find($id);
+        if (!$data) {
+            return VisiResource::notFoundResponse();
         }
 
         $validator = Validator::make($request->all(), [
@@ -57,18 +57,18 @@ class VisiController extends Controller
             return VisiResource::validationErrorResponse($validator);
         }
 
-        $visi->update($request->all());
+        $data->update($request->all());
 
-        return new VisiResource($visi);
+        return new VisiResource($data);
     }
 
     public function destroy($id)
     {
-        $visi = Visi::find($id);
-        if (!$visi) 
-            return VisiResource::notFoundResponse('Visi data not found');
+        $data = Visi::find($id);
+        if (!$data) 
+            return VisiResource::notFoundResponse();
         
-        $visi->delete();
+        $data->delete();
         
         return response()->json([
             'status' => true,

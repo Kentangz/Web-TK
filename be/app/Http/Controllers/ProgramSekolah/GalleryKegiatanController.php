@@ -14,21 +14,19 @@ class GalleryKegiatanController extends Controller
 
     public function index()
     {
-        $datas = GalleryKegiatan::all();
-        return GalleryKegiatanResource::collection($datas);
+        $data = GalleryKegiatan::all();
+        return GalleryKegiatanResource::collection($data);
     }
-
 
     public function show($id)
     {
         $data = GalleryKegiatan::find($id);
         if (!$data) {
-            return GalleryKegiatanResource::notFoundResponse('Data data not found');
+            return GalleryKegiatanResource::notFoundResponse();
         }
 
         return new GalleryKegiatanResource($data);
     }
-
 
     public function store(Request $request)
     {
@@ -51,12 +49,11 @@ class GalleryKegiatanController extends Controller
         return new GalleryKegiatanResource($datas);
     }
 
-
     public function update(Request $request, $id)
     {
         $datas = GalleryKegiatan::find($id);
         if (!$datas) {
-            return GalleryKegiatanResource::notFoundResponse('Data data not found');
+            return GalleryKegiatanResource::notFoundResponse();
         }
 
         $validator = Validator::make($request->all(), [
@@ -84,12 +81,11 @@ class GalleryKegiatanController extends Controller
         return new GalleryKegiatanResource($datas);
     }
 
-
     public function destroy($id)
     {
         $datas = GalleryKegiatan::find($id);
         if (!$datas) {
-            return GalleryKegiatanResource::notFoundResponse('Data data not found');
+            return GalleryKegiatanResource::notFoundResponse();
         }
 
         Storage::delete('/program-sekolah-images/gallery-kegiatan/' . basename ($datas->image));
@@ -97,7 +93,7 @@ class GalleryKegiatanController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Data deleted successfully',
+            'message' => 'Gallery Kegiatan data deleted successfully',
         ]);
     }
 }

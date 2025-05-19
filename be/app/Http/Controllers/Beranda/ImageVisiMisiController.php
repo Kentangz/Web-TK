@@ -13,19 +13,18 @@ class ImageVisiMisiController extends Controller
 {
     public function index()
     {
-        $images = ImageVisiMisi::all();
-        return ImageVisiMisiResource::collection($images);
+        $data = ImageVisiMisi::all();
+        return ImageVisiMisiResource::collection($data);
     }
-
 
     public function show($id)
     {
-        $image = ImageVisiMisi::find($id);
-        if (!$image) {
-            return ImageVisiMisiResource::notFoundResponse('Image data not found');
+        $data = ImageVisiMisi::find($id);
+        if (!$data) {
+            return ImageVisiMisiResource::notFoundResponse();
         }
 
-        return new ImageVisiMisiResource($image);
+        return new ImageVisiMisiResource($data);
     }
 
 
@@ -39,21 +38,21 @@ class ImageVisiMisiController extends Controller
             return ImageVisiMisiResource::validationErrorResponse($validator);
         }
 
-        $image = $request->file('image');
-        $image->storeAs('beranda-images/visi-misi/', $image->hashName());
+        $data = $request->file('image');
+        $data->storeAs('beranda-images/visi-misi/', $data->hashName());
 
-        $images = ImageVisiMisi::create([
-            'image' => $image->hashName(),
+        $data = ImageVisiMisi::create([
+            'image' => $data->hashName(),
         ]);
-        return new ImageVisiMisiResource($images);
+        return new ImageVisiMisiResource($data);
     }
 
 
     public function update(Request $request, $id)
     {
-        $images = ImageVisiMisi::find($id);
-        if (!$images) {
-            return ImageVisiMisiResource::notFoundResponse('Image data not found');
+        $data = ImageVisiMisi::find($id);
+        if (!$data) {
+            return ImageVisiMisiResource::notFoundResponse();
         }
 
         $validator = Validator::make($request->all(), [
@@ -65,24 +64,27 @@ class ImageVisiMisiController extends Controller
 
         $image = $request->file('image');
         $image->storeAs('beranda-images/visi-misi/', $image->hashName());
-        Storage::delete('beranda-images/visi-misi/' . basename($images->image));
+        Storage::delete('beranda-images/visi-misi/' . basename($data->image));
 
-        $images->update([
+        $data->update([
             'image' => $image->hashName(),
         ]);
-        return new ImageVisiMisiResource($images);
+        return new ImageVisiMisiResource($data);
     }
 
 
     public function destroy($id)
     {
-        $images = ImageVisiMisi::find($id);
-        if (!$images) {
-            return ImageVisiMisiResource::notFoundResponse('Image data not found');
+        $data = ImageVisiMisi::find($id);
+        if (!$data) {
+            return ImageVisiMisiResource::notFoundResponse();
         }
-        Storage::delete('beranda-images/visi-misi/' . basename($images->image));
-        $images->delete();
+        Storage::delete('beranda-images/visi-misi/' . basename($data->image));
+        $data->delete();
 
-        return response()->json(['message' => 'Image deleted successfully']);
+        return response()->json([
+            'status' => true,
+            'message' => 'Image data deleted successfully',
+        ]);
     }
 }

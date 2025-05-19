@@ -33,7 +33,7 @@ class VisiResource extends JsonResource
         ];
     }
 
-    public static function notFoundResponse($message = 'Data not found')
+    public static function notFoundResponse($message = 'Visi data not found')
     {
         return response()->json([
             'status' => false,

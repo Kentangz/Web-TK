@@ -12,15 +12,15 @@ class KegiatanPenunjangController extends Controller
 {
     public function index()
     {
-        $datas = KegiatanPenunjang::all();
-        return KegiatanPenunjangResource::collection($datas);
+        $data = KegiatanPenunjang::all();
+        return KegiatanPenunjangResource::collection($data);
     }
 
     public function show($id)
     {
         $data = KegiatanPenunjang::find($id);
         if (!$data) {
-            return KegiatanPenunjangResource::notFoundResponse('Data not found');
+            return KegiatanPenunjangResource::notFoundResponse();
         }
 
         return new KegiatanPenunjangResource($data);
@@ -47,7 +47,7 @@ class KegiatanPenunjangController extends Controller
     {
         $data = KegiatanPenunjang::find($id);
         if (!$data) {
-            return KegiatanPenunjangResource::notFoundResponse('Data not found');
+            return KegiatanPenunjangResource::notFoundResponse();
         }
 
         $validator = Validator::make($request->all(), [
@@ -65,13 +65,13 @@ class KegiatanPenunjangController extends Controller
     {
         $data = KegiatanPenunjang::find($id);
         if (!$data) {
-            return KegiatanPenunjangResource::notFoundResponse('Data not found');
+            return KegiatanPenunjangResource::notFoundResponse();
         }
 
         $data->delete();
         return response()->json([
             'status' => true,
-            'message' => 'Data deleted successfully',
+            'message' => 'Kegiatan Penunjang data deleted successfully',
         ]);
     }
 

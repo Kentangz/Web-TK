@@ -23,7 +23,7 @@ class OutputResource extends JsonResource
         if ($this instanceof ResourceCollection) {
             return [
                 'status' => true,
-                'message' => 'Data Output yang Dihasilkan retrieved successfully',
+                'message' => 'Output yang Dihasilkan  data retrieved successfully',
             ];
         }
 
@@ -33,7 +33,7 @@ class OutputResource extends JsonResource
         ];
     }
 
-    public static function notFoundResponse($message = 'Data Output yang Dihasilkan not found')
+    public static function notFoundResponse($message = 'Output yang Dihasilkan data not found')
     {
         return response()->json([
             'status' => false,
