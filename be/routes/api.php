@@ -14,6 +14,7 @@ use App\Http\Controllers\ProgramSekolah\KegiatanUnggulanController;
 use App\Http\Controllers\ProgramSekolah\GalleryKegiatanController;
 use App\Http\Controllers\ProgramSekolah\KegiatanPenunjangController;
 use App\Http\Controllers\ProgramSekolah\OutputController;
+use App\Http\Controllers\ProgramSekolah\KurikulumPlus\SuratPendekController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -30,3 +31,4 @@ Route::apiResource('/programsekolah/kegiatanunggulan', KegiatanUnggulanControlle
 Route::apiResource('/programsekolah/gallerykegiatan', GalleryKegiatanController::class);
 Route::apiResource('/programsekolah/kegiatanpenunjang', KegiatanPenunjangController::class);
 Route::apiResource('/programsekolah/output', OutputController::class);
+Route::apiResource('/programsekolah/kurikulumplus/suratpendek', SuratPendekController::class);

@@ -72,7 +72,7 @@ class OutputController extends Controller
         
         return response()->json([
             'status' => true,
-            'message' => 'Data Output yang Dihasilkan deleted successfully',
+            'message' => 'Output yang Dihasilkan data deleted successfully',
         ]);
     }
 }
