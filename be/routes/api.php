@@ -24,6 +24,11 @@ use App\Http\Controllers\FasilitasPrestasi\PrestasiGuruController;
 use App\Http\Controllers\FasilitasPrestasi\PrestasiSiswaController;
 use App\Http\Controllers\FasilitasPrestasi\GalleryController;
 
+use App\Http\Controllers\Jadwal\TK\WaktuKegiatanController;
+use App\Http\Controllers\Jadwal\TK\JadwalKelompokController;
+use App\Http\Controllers\Jadwal\KB\WaktuKegiatankbController;
+use App\Http\Controllers\Jadwal\KB\JadwalKegiatankbController;
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -49,4 +54,9 @@ Route::apiResources([
     '/fasilitasprestasi/prestasiguru'=>PrestasiGuruController::class,
     '/fasilitasprestasi/prestasisiswa'=>PrestasiSiswaController::class,
     '/fasilitasprestasi/gallery'=>GalleryController::class,
+
+    '/jadwal/waktukegiatantk'=>WaktuKegiatanController::class,
+    '/jadwal/jadwalkelompoktk'=>JadwalKelompokController::class,
+    '/jadwal/waktukegiatankb'=>WaktuKegiatankbController::class,
+    '/jadwal/jadwalkelompokkb'=>JadwalKegiatankbController::class,
 ]);

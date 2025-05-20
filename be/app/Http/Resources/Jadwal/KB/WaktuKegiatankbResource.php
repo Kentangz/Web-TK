@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Resources\ProgramSekolah;
+namespace App\Http\Resources\Jadwal\KB;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class KegiatanUnggulanResource extends JsonResource
-{  
+class WaktuKegiatankbResource extends JsonResource
+{
     public function toArray(Request $request)
     {
-        return[
-            'id'=>$this->id,
-            'icon'=>$this->icon,
-            'deskripsi_kegiatan'=>$this->deskripsi_kegiatan,
-            'created_at'=>$this->created_at,
-            'updated_at'=>$this->updated_at,
+        return [
+            'id' => $this->id,
+            'hari' => $this->hari,
+            'jam' => $this->jam,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 
@@ -24,7 +24,7 @@ class KegiatanUnggulanResource extends JsonResource
         if ($this instanceof ResourceCollection) {
             return [
                 'status' => true,
-                'message' => 'Kegiatan Unggulan data retrieved successfully',
+                'message' => 'Waktu Kegiatan KB data retrieved successfully',
             ];
         }
 
@@ -33,7 +33,8 @@ class KegiatanUnggulanResource extends JsonResource
             'message' => 'Success',
         ];
     }
-    public static function notFoundResponse($message = 'Kegiatan Unggulan data not found')
+
+    public static function notFoundResponse($message = 'Waktu Kegiatan KB data not found')
     {
         return response()->json([
             'status' => false,
@@ -49,4 +50,4 @@ class KegiatanUnggulanResource extends JsonResource
             'errors' => $validator->errors(),
         ], 422);
     }
-};
+}
