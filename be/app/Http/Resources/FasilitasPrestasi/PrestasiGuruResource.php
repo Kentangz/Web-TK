@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class FasilitasResource extends JsonResource
+class PrestasiGuruResource extends JsonResource
 {
     public function toArray(Request $request)
     {
         return [
             'id' => $this->id,
-            'fasilitas_name' => $this->fasilitas_name,
+            'prestasi_guru' => $this->prestasi_guru,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
@@ -23,7 +23,7 @@ class FasilitasResource extends JsonResource
         if ($this instanceof ResourceCollection) {
             return [
                 'status' => true,
-                'message' => 'Fasilitas data retrieved successfully',
+                'message' => 'Prestasi Guru data retrieved successfully',
             ];
         }
 
@@ -33,7 +33,7 @@ class FasilitasResource extends JsonResource
         ];
     }
 
-    public static function notFoundResponse($message = 'Fasilitas data not found')
+    public static function notFoundResponse($message = 'Prestasi Guru data not found')
     {
         return response()->json([
             'status' => false,

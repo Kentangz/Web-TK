@@ -20,6 +20,7 @@ use App\Http\Controllers\ProgramSekolah\KurikulumPlus\HaditsController;
 
 use App\Http\Controllers\FasilitasPrestasi\FasilitasController;
 use App\Http\Controllers\FasilitasPrestasi\GalleryFasilitasController;
+use App\Http\Controllers\FasilitasPrestasi\PrestasiGuruController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -43,4 +44,5 @@ Route::apiResources([
 
     '/fasilitasprestasi/fasilitas'=>FasilitasController::class,
     '/fasilitasprestasi/galleryfasilitas'=>GalleryFasilitasController::class,
+    '/fasilitasprestasi/prestasiguru'=>PrestasiGuruController::class,
 ]);
