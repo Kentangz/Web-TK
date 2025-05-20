@@ -8,7 +8,6 @@ use App\Http\Resources\Beranda\StrategiResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
 class StrategiController extends Controller
 {
     public function index()

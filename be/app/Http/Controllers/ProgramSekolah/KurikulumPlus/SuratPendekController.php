@@ -8,7 +8,6 @@ use App\Http\Resources\ProgramSekolah\KurikulumPlus\SuratPendekResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
 class SuratPendekController extends Controller
 {
     public function index()
