@@ -28,10 +28,10 @@ Route::get('/user', function (Request $request) {
 Route::apiResources([
     '/beranda/visi' => VisiController::class,
     '/beranda/misi' => MisiController::class,
-    '/beranda/galleryvisi' => ImageVisiMisiController::class,
+    '/beranda/imagevisi' => ImageVisiMisiController::class,
     '/beranda/tujuan' => TujuanController::class,
     '/beranda/strategi' => StrategiController::class,
-    '/beranda/gallerytujuan' => ImageTujuanStrategiController::class,
+    '/beranda/imagetujuan' => ImageTujuanStrategiController::class,
 
     '/programsekolah/kegiatanunggulan' => KegiatanUnggulanController::class,
     '/programsekolah/gallerykegiatan' => GalleryKegiatanController::class,
