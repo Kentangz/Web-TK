@@ -1,0 +1,303 @@
+.content-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card-desc {
+  font-size: 0.95rem;
+  color: #555;
+}
+.icon img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 1rem;
+}
+
+/* galeri */
+.gallery-section {
+  margin: 60px auto;
+  text-align: center;
+  width: 90%;
+}
+
+.gallery-scroll-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.gallery-scroll {
+  overflow-x: auto;
+  scrollbar-width: none; 
+  -ms-overflow-style: none;  
+  flex: 1;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+  display: none; 
+}
+
+.gallery-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, 220px); /* Tambah tinggi karena ada caption */
+  grid-auto-columns: 250px;
+  gap: 16px;
+  padding: 10px;
+  width: max-content;
+}
+
+.gallery-item {
+  width: 250px;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid black; /* Garis hitam di sekeliling gambar */
+  border-radius: 6px;       /* Opsional: bikin sudut agak bulat */
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255); /* transparan, bisa diganti */
+  color: black;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-bottom-left-radius: 4px;
+  border-top-right-radius: 4px;
+  max-width: 100%;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-btn {
+  background-color: #eee;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 0 10px;
+}
+
+/* kegiatan penunjang */
+.penunjang-wrapper {
+  margin-top: 60px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.penunjang-list {
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.6;
+  padding-left: 20px;
+}
+
+/* Bagian Output */
+.output-section {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.output-columns {
+  display: flex;
+  justify-content: center; 
+  gap: 40px; 
+  max-width: 900px; 
+  margin: 0 auto; 
+  text-align: left; 
+}
+
+.output-columns ul {
+  flex: 1;
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+
+/* Bagian Kurikulum */
+.kurikulum-section {
+  text-align: center;
+}
+
+.kurikulum-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: fixed;
+}
+
+.kurikulum-table th,
+.kurikulum-table td {
+  border: 1px solid #000;
+  padding: 10px;
+  vertical-align: top;
+  text-align: center;
+}
+
+.kurikulum-table th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.kurikulum-table td {
+  font-size: 14px;
+  line-height: 1;
+  white-space: pre-line;
+}
+
+@media (max-width: 992px) {
+  .content-container {
+    padding: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+    padding: 1rem;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .gallery-section {
+    width: 95%;
+  }
+
+  .gallery-grid {
+    grid-template-rows: repeat(2, 180px);
+    grid-auto-columns: 200px;
+    gap: 10px;
+  }
+
+  .gallery-item {
+    width: 200px;
+    height: 150px;
+  }
+
+  .gallery-caption {
+    font-size: 0.7rem;
+  }
+
+  .penunjang-wrapper {
+    width: 90%;
+  }
+
+  .output-columns {
+    flex-direction: column;       /* Tumpuk ke bawah */
+    align-items: center;          /* Kolom tetap di tengah layar */
+  }
+
+  .output-columns ul {
+    width: 100%;
+    max-width: 350px;             /* Biar ga terlalu lebar */
+    text-align: left;             /* Teks tetap rata kiri */
+    padding-left: 20px;           /* Indentasi bullet */
+  }
+
+  .kurikulum-table th,
+  .kurikulum-table td {
+    font-size: 13px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .section-title {
+    font-size: 1.4rem;
+  }
+
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+  }
+
+  .gallery-grid {
+    grid-template-rows: repeat(2, 160px);
+    grid-auto-columns: 180px;
+  }
+
+  .gallery-item {
+    width: 180px;
+    height: 140px;
+  }
+
+  .penunjang-list {
+    font-size: 15px;
+    padding-left: 16px;
+  }
+
+  .kurikulum-table {
+    font-size: 12px;
+    overflow-x: auto;
+    display: block;
+  }
+}
