@@ -25,6 +25,7 @@ use App\Http\Controllers\FasilitasPrestasi\PrestasiSiswaController;
 use App\Http\Controllers\FasilitasPrestasi\GalleryController;
 
 use App\Http\Controllers\Jadwal\TK\WaktuKegiatanController;
+use App\Http\Controllers\Jadwal\TK\JadwalKelompokController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -52,5 +53,6 @@ Route::apiResources([
     '/fasilitasprestasi/prestasisiswa'=>PrestasiSiswaController::class,
     '/fasilitasprestasi/gallery'=>GalleryController::class,
 
-    '/jadwal/tk/waktukegiatan'=>WaktuKegiatanController::class,
+    '/jadwal/waktukegiatantk'=>WaktuKegiatanController::class,
+    '/jadwal/jadwalkegiatantk'=>JadwalKelompokController::class,
 ]);
