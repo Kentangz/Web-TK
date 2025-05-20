@@ -24,7 +24,7 @@ class JadwalKelompokResource extends JsonResource
         if ($this instanceof ResourceCollection) {
             return [
                 'status' => true,
-                'message' => 'Jadwa data retrieved successfully',
+                'message' => 'Jadwal TK data retrieved successfully',
             ];
         }
 
@@ -33,7 +33,7 @@ class JadwalKelompokResource extends JsonResource
             'message' => 'Success',
         ];
     }
-    public static function notFoundResponse($message = 'Jadwal data not found')
+    public static function notFoundResponse($message = 'Jadwal TK data not found')
     {
         return response()->json([
             'status' => false,

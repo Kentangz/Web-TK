@@ -27,7 +27,6 @@ class JadwalKegiatankbController extends Controller
         return new JadwalKegiatankbResource($data);
     }
 
-
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

@@ -24,7 +24,7 @@ class WaktuKegiatankbResource extends JsonResource
         if ($this instanceof ResourceCollection) {
             return [
                 'status' => true,
-                'message' => 'Waktu Kegiatan data retrieved successfully',
+                'message' => 'Waktu Kegiatan KB data retrieved successfully',
             ];
         }
 
@@ -34,7 +34,7 @@ class WaktuKegiatankbResource extends JsonResource
         ];
     }
 
-    public static function notFoundResponse($message = 'Waktu kegiatan data not found')
+    public static function notFoundResponse($message = 'Waktu Kegiatan KB data not found')
     {
         return response()->json([
             'status' => false,

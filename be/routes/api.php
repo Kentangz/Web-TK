@@ -56,7 +56,7 @@ Route::apiResources([
     '/fasilitasprestasi/gallery'=>GalleryController::class,
 
     '/jadwal/waktukegiatantk'=>WaktuKegiatanController::class,
-    '/jadwal/jadwalkegiatantk'=>JadwalKelompokController::class,
+    '/jadwal/jadwalkelompoktk'=>JadwalKelompokController::class,
     '/jadwal/waktukegiatankb'=>WaktuKegiatankbController::class,
     '/jadwal/jadwalkelompokkb'=>JadwalKegiatankbController::class,
 ]);

@@ -75,7 +75,7 @@ class WaktuKegiatankbController extends Controller
         
         return response()->json([
             'status' => true,
-            'message' => 'Waktu Kegiatan data deleted successfully',
+            'message' => 'Waktu Kegiatan KB data deleted successfully',
         ]);
     }
 }

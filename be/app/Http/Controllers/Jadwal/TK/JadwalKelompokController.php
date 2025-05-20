@@ -27,7 +27,6 @@ class JadwalKelompokController extends Controller
         return new JadwalKelompokResource($data);
     }
 
-
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -77,8 +76,8 @@ class JadwalKelompokController extends Controller
             $data->update([
                 'deskripsi' => $request->deskripsi,
             ]);
-
         }
+
         return new JadwalKelompokResource($data);
     }
 
@@ -94,7 +93,7 @@ class JadwalKelompokController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Jadwal data deleted successfully',
+            'message' => 'Jadwal TK data deleted successfully',
         ]);
     }
 }
