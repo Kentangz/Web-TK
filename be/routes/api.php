@@ -26,6 +26,7 @@ use App\Http\Controllers\FasilitasPrestasi\GalleryController;
 
 use App\Http\Controllers\Jadwal\TK\WaktuKegiatanController;
 use App\Http\Controllers\Jadwal\TK\JadwalKelompokController;
+use App\Http\Controllers\Jadwal\KB\WaktuKegiatankbController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -55,4 +56,5 @@ Route::apiResources([
 
     '/jadwal/waktukegiatantk'=>WaktuKegiatanController::class,
     '/jadwal/jadwalkegiatantk'=>JadwalKelompokController::class,
+    '/jadwal/waktukegiatankb'=>WaktuKegiatankbController::class,
 ]);

@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Jadwal\TK;
+namespace App\Http\Controllers\Jadwal\KB;
 
 use App\Http\Controllers\Controller;
-use App\Models\Jadwal\TK\WaktuKegiatan;
-use App\Http\Resources\Jadwal\TK\WaktuKegiatanResource;
+use App\Models\Jadwal\KB\WaktuKegiatankb;
+use App\Http\Resources\Jadwal\KB\WaktuKegiatankbResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class WaktuKegiatanController extends Controller
+class WaktuKegiatankbController extends Controller
 {
     public function index()
     {
-        $data = WaktuKegiatan::all();
-        return WaktuKegiatanResource::collection($data);
+        $data = WaktuKegiatankb::all();
+        return WaktuKegiatankbResource::collection($data);
     }
 
     public function show($id)
     {
-        $data = WaktuKegiatan::find($id);
+        $data = WaktuKegiatankb::find($id);
         if (!$data) {
-            return WaktuKegiatanResource::notFoundResponse();
+            return WaktuKegiatankbResource::notFoundResponse();
         }
 
-        return new WaktuKegiatanResource($data);
+        return new WaktuKegiatankbResource($data);
     }
 
     public function store(Request $request)
@@ -34,22 +34,22 @@ class WaktuKegiatanController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return WaktuKegiatanResource::validationErrorResponse($validator);
+            return WaktuKegiatankbResource::validationErrorResponse($validator);
         }
 
-        $data = WaktuKegiatan::create([
+        $data = WaktuKegiatankb::create([
             'hari' => $request->hari,
             'jam' => $request->jam,
         ]);
 
-        return new WaktuKegiatanResource($data);
+        return new WaktuKegiatankbResource($data);
     }
 
     public function update(Request $request, $id)
     {
-        $data = WaktuKegiatan::find($id);
+        $data = WaktuKegiatankb::find($id);
         if (!$data) {
-            return WaktuKegiatanResource::notFoundResponse();
+            return WaktuKegiatankbResource::notFoundResponse();
         }
 
         $validator = Validator::make($request->all(), [
@@ -57,19 +57,19 @@ class WaktuKegiatanController extends Controller
             'jam' => 'sometimes|string',
         ]);
         if ($validator->fails()) {
-            return WaktuKegiatanResource::validationErrorResponse($validator);
+            return WaktuKegiatankbResource::validationErrorResponse($validator);
         }
 
         $data->update($request->all());
 
-        return new WaktuKegiatanResource($data);
+        return new WaktuKegiatankbResource($data);
     }
 
     public function destroy($id)
     {
-        $data = WaktuKegiatan::find($id);
+        $data = WaktuKegiatankb::find($id);
         if (!$data) 
-            return WaktuKegiatanResource::notFoundResponse();
+            return WaktuKegiatankbResource::notFoundResponse();
         
         $data->delete();
         
