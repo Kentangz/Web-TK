@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Resources\ProgramSekolah;
+namespace App\Http\Resources\FasilitasPrestasi;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class GalleryKegiatanResource extends JsonResource
+class PrestasiGuruResource extends JsonResource
 {
     public function toArray(Request $request)
     {
         return [
             'id' => $this->id,
-            'image' => $this->image,
-            'nama_kegiatan' => $this->nama_kegiatan,
+            'prestasi_guru' => $this->prestasi_guru,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
@@ -24,7 +23,7 @@ class GalleryKegiatanResource extends JsonResource
         if ($this instanceof ResourceCollection) {
             return [
                 'status' => true,
-                'message' => 'Gallery Kegiatan data retrieved successfully',
+                'message' => 'Prestasi Guru data retrieved successfully',
             ];
         }
 
@@ -34,7 +33,7 @@ class GalleryKegiatanResource extends JsonResource
         ];
     }
 
-    public static function notFoundResponse($message = 'Gallery Kegiatan data not found')
+    public static function notFoundResponse($message = 'Prestasi Guru data not found')
     {
         return response()->json([
             'status' => false,

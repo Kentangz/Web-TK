@@ -18,6 +18,11 @@ use App\Http\Controllers\ProgramSekolah\KurikulumPlus\SuratPendekController;
 use App\Http\Controllers\ProgramSekolah\KurikulumPlus\DoaController;
 use App\Http\Controllers\ProgramSekolah\KurikulumPlus\HaditsController;
 
+use App\Http\Controllers\FasilitasPrestasi\FasilitasController;
+use App\Http\Controllers\FasilitasPrestasi\GalleryFasilitasController;
+use App\Http\Controllers\FasilitasPrestasi\PrestasiGuruController;
+use App\Http\Controllers\FasilitasPrestasi\PrestasiSiswaController;
+use App\Http\Controllers\FasilitasPrestasi\GalleryController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -26,10 +31,10 @@ Route::get('/user', function (Request $request) {
 Route::apiResources([
     '/beranda/visi' => VisiController::class,
     '/beranda/misi' => MisiController::class,
-    '/beranda/galleryvisi' => ImageVisiMisiController::class,
+    '/beranda/imagevisi' => ImageVisiMisiController::class,
     '/beranda/tujuan' => TujuanController::class,
     '/beranda/strategi' => StrategiController::class,
-    '/beranda/gallerytujuan' => ImageTujuanStrategiController::class,
+    '/beranda/imagetujuan' => ImageTujuanStrategiController::class,
 
     '/programsekolah/kegiatanunggulan' => KegiatanUnggulanController::class,
     '/programsekolah/gallerykegiatan' => GalleryKegiatanController::class,
@@ -38,4 +43,10 @@ Route::apiResources([
     '/programsekolah/kurikulumplus/suratpendek' => SuratPendekController::class,
     '/programsekolah/kurikulumplus/doa' => DoaController::class,
     '/programsekolah/kurikulumplus/hadits' => HaditsController::class,
+
+    '/fasilitasprestasi/fasilitas'=>FasilitasController::class,
+    '/fasilitasprestasi/galleryfasilitas'=>GalleryFasilitasController::class,
+    '/fasilitasprestasi/prestasiguru'=>PrestasiGuruController::class,
+    '/fasilitasprestasi/prestasisiswa'=>PrestasiSiswaController::class,
+    '/fasilitasprestasi/gallery'=>GalleryController::class,
 ]);
