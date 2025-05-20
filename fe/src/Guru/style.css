@@ -1,0 +1,184 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/images/gurubg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Agar tidak ikut scroll jika ingin efek tetap */
+}
+
+.judul {
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 1rem;
+}
+
+.judul-guru {
+  text-align: center;
+  font-size: 2rem;
+  margin: 2rem 0;
+}
+
+.judul-sub {
+  margin-top: 2rem;
+  margin-left: 1rem;
+  font-size: 1.5rem;
+}
+
+.guru-top {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.guru-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem;
+  scroll-snap-type: x mandatory;
+}
+
+.guru-card {
+  display: flex; 
+  align-items: center;
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  min-width: 350px; 
+  flex-shrink: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  scroll-snap-align: start;
+  text-align: left; 
+  gap: 1rem; 
+}
+
+.guru-img {
+  width: 120px; 
+  height: 120px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 3px solid black;
+  flex-shrink: 0;
+}
+
+.guru-info {
+  margin-top: 0; 
+  font-size: 0.9rem;
+}
+.guru-scroll {
+  overflow-x: auto;
+  padding: 1rem;
+  scroll-snap-type: x mandatory;
+}
+
+.guru-scroll-container {
+  display: flex;
+  gap: 5rem;
+}
+
+.guru-scroll-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0 1rem;
+}
+
+.scroll-btn {
+  background-color: #f0f0f0;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#scrollContainer {
+  overflow-x: auto;
+  flex: 1;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+#scrollContainer::-webkit-scrollbar {
+  display: none;              /* Chrome/Safari */
+}
+
+.guru-scroll-container {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Responsive untuk tablet dan ke bawah */
+@media (max-width: 768px) {
+  .judul {
+    font-size: 1.5rem;
+  }
+
+  .judul-guru {
+    font-size: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .judul-sub {
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+  }
+
+  .guru-card {
+    flex-direction: column; /* Gambar di atas, teks di bawah */
+    align-items: center;
+    text-align: center;
+    min-width: 250px;
+  }
+
+  .guru-img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .guru-info {
+    font-size: 0.85rem;
+  }
+
+  .scroll-btn {
+    font-size: 1.2rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .guru-scroll-container {
+    gap: 1rem;
+  }
+}
+
+/* Responsive untuk hp kecil */
+@media (max-width: 480px) {
+  .guru-card {
+    min-width: 220px;
+  }
+
+  .guru-img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .guru-info {
+    font-size: 0.8rem;
+  }
+
+  .scroll-btn {
+    font-size: 1rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
