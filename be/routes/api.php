@@ -24,6 +24,8 @@ use App\Http\Controllers\FasilitasPrestasi\PrestasiGuruController;
 use App\Http\Controllers\FasilitasPrestasi\PrestasiSiswaController;
 use App\Http\Controllers\FasilitasPrestasi\GalleryController;
 
+use App\Http\Controllers\Jadwal\TK\WaktuKegiatanController;
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -49,4 +51,6 @@ Route::apiResources([
     '/fasilitasprestasi/prestasiguru'=>PrestasiGuruController::class,
     '/fasilitasprestasi/prestasisiswa'=>PrestasiSiswaController::class,
     '/fasilitasprestasi/gallery'=>GalleryController::class,
+
+    '/jadwal/tk/waktukegiatan'=>WaktuKegiatanController::class,
 ]);
