@@ -31,6 +31,7 @@ use App\Http\Controllers\Jadwal\KB\JadwalKegiatankbController;
 
 use App\Http\Controllers\Contact\ContactPersonController;
 use App\Http\Controllers\Contact\EmailController;
+use App\Http\Controllers\Contact\InstagramController;
 use App\Http\Controllers\Contact\AlamatController;
 
 Route::get('/user', function (Request $request) {
@@ -66,5 +67,6 @@ Route::apiResources([
 
     '/contact/contactperson' =>ContactPersonController::class,
     '/contact/email' =>EmailController::class,
+    '/contact/instagram' =>InstagramController::class,
     '/contact/alamat' =>AlamatController::class,
 ]);
