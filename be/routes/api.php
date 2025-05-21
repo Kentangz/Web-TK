@@ -29,6 +29,8 @@ use App\Http\Controllers\Jadwal\TK\JadwalKelompokController;
 use App\Http\Controllers\Jadwal\KB\WaktuKegiatankbController;
 use App\Http\Controllers\Jadwal\KB\JadwalKegiatankbController;
 
+use App\Http\Controllers\Contact\ContactPersonController;
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -59,4 +61,6 @@ Route::apiResources([
     '/jadwal/jadwalkelompoktk'=>JadwalKelompokController::class,
     '/jadwal/waktukegiatankb'=>WaktuKegiatankbController::class,
     '/jadwal/jadwalkelompokkb'=>JadwalKegiatankbController::class,
+
+    '/contact/contactperson' =>ContactPersonController::class,
 ]);
