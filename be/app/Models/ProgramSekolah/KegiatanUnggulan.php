@@ -11,6 +11,7 @@ class KegiatanUnggulan extends Model
     use HasFactory;
 
     protected $fillable = [
+        'nama_kegiatan',
         'icon',
         'deskripsi_kegiatan',
     ];

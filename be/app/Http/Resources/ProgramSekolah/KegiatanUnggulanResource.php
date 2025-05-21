@@ -12,6 +12,7 @@ class KegiatanUnggulanResource extends JsonResource
     {
         return[
             'id'=>$this->id,
+            'nama_kegiatan'=>$this->nama_kegiatan,
             'icon'=>$this->icon,
             'deskripsi_kegiatan'=>$this->deskripsi_kegiatan,
             'created_at'=>$this->created_at,

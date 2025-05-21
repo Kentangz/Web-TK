@@ -27,12 +27,12 @@ class KegiatanUnggulanController extends Controller
         return new KegiatanUnggulanResource($data);
     }
 
-    
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'nama_kegiatan' => 'required|string|max:255',
             'icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'deskripsi_kegiatan' => 'required|string|max:255',
+            'deskripsi_kegiatan' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -43,6 +43,7 @@ class KegiatanUnggulanController extends Controller
         $data->storeAs('/program-sekolah-images/kegiatan-unggulan/', $data->hashName());
 
         $datas = KegiatanUnggulan::create([
+            'nama_kegiatan' => $request->nama_kegiatan,
             'icon' => $data->hashName(),
             'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
         ]);
@@ -57,7 +58,8 @@ class KegiatanUnggulanController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'deskripsi_kegiatan' => 'required|string|max:255'
+            'nama_kegiatan' => 'required|string|max:255',
+            'deskripsi_kegiatan' => 'nullable|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -70,11 +72,13 @@ class KegiatanUnggulanController extends Controller
             Storage::delete('/program-sekolah-images/kegiatan-unggulan/' . basename($data->icon));
 
             $data->update([
+                'nama_kegiatan' => $request->nama_kegiatan,
                 'icon' => $icon->hashName(),
                 'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
             ]);
         }else{
             $data->update([
+                'nama_kegiatan' => $request->nama_kegiatan,
                 'deskripsi_kegiatan' => $request->deskripsi_kegiatan,
             ]);
 
