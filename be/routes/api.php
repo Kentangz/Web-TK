@@ -30,6 +30,7 @@ use App\Http\Controllers\Jadwal\KB\WaktuKegiatankbController;
 use App\Http\Controllers\Jadwal\KB\JadwalKegiatankbController;
 
 use App\Http\Controllers\Contact\ContactPersonController;
+use App\Http\Controllers\Contact\EmailController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -63,4 +64,5 @@ Route::apiResources([
     '/jadwal/jadwalkelompokkb'=>JadwalKegiatankbController::class,
 
     '/contact/contactperson' =>ContactPersonController::class,
+    '/contact/email' =>EmailController::class,
 ]);
