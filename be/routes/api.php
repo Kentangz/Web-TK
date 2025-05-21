@@ -10,6 +10,8 @@ use App\Http\Controllers\Beranda\TujuanController;
 use App\Http\Controllers\Beranda\StrategiController;
 use App\Http\Controllers\Beranda\ImageTujuanStrategiController;
 
+use App\Http\Controllers\Guru\DaftarGuruController;
+
 use App\Http\Controllers\ProgramSekolah\KegiatanUnggulanController;
 use App\Http\Controllers\ProgramSekolah\GalleryKegiatanController;
 use App\Http\Controllers\ProgramSekolah\KegiatanPenunjangController;
@@ -46,6 +48,8 @@ Route::apiResources([
     '/beranda/strategi' => StrategiController::class,
     '/beranda/imagetujuan' => ImageTujuanStrategiController::class,
 
+    '/guru' =>  DaftarGuruController::class,
+
     '/programsekolah/kegiatanunggulan' => KegiatanUnggulanController::class,
     '/programsekolah/gallerykegiatan' => GalleryKegiatanController::class,
     '/programsekolah/kegiatanpenunjang' => KegiatanPenunjangController::class,
@@ -54,19 +58,19 @@ Route::apiResources([
     '/programsekolah/kurikulumplus/doa' => DoaController::class,
     '/programsekolah/kurikulumplus/hadits' => HaditsController::class,
 
-    '/fasilitasprestasi/fasilitas'=>FasilitasController::class,
-    '/fasilitasprestasi/galleryfasilitas'=>GalleryFasilitasController::class,
-    '/fasilitasprestasi/prestasiguru'=>PrestasiGuruController::class,
-    '/fasilitasprestasi/prestasisiswa'=>PrestasiSiswaController::class,
-    '/fasilitasprestasi/gallery'=>GalleryController::class,
+    '/fasilitasprestasi/fasilitas' => FasilitasController::class,
+    '/fasilitasprestasi/galleryfasilitas' => GalleryFasilitasController::class,
+    '/fasilitasprestasi/prestasiguru' => PrestasiGuruController::class,
+    '/fasilitasprestasi/prestasisiswa' => PrestasiSiswaController::class,
+    '/fasilitasprestasi/gallery' => GalleryController::class,
 
-    '/jadwal/waktukegiatantk'=>WaktuKegiatanController::class,
-    '/jadwal/jadwalkelompoktk'=>JadwalKelompokController::class,
-    '/jadwal/waktukegiatankb'=>WaktuKegiatankbController::class,
-    '/jadwal/jadwalkelompokkb'=>JadwalKegiatankbController::class,
+    '/jadwal/waktukegiatantk' => WaktuKegiatanController::class,
+    '/jadwal/jadwalkelompoktk' => JadwalKelompokController::class,
+    '/jadwal/waktukegiatankb' => WaktuKegiatankbController::class,
+    '/jadwal/jadwalkelompokkb' => JadwalKegiatankbController::class,
 
-    '/contact/contactperson' =>ContactPersonController::class,
-    '/contact/email' =>EmailController::class,
-    '/contact/instagram' =>InstagramController::class,
-    '/contact/alamat' =>AlamatController::class,
+    '/contact/contactperson' => ContactPersonController::class,
+    '/contact/email' => EmailController::class,
+    '/contact/instagram' => InstagramController::class,
+    '/contact/alamat' => AlamatController::class,
 ]);
