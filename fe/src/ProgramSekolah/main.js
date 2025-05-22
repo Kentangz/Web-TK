@@ -185,5 +185,3 @@ document.getElementById('scrollRight').addEventListener('click', () => {
     behavior: 'smooth'
   })
 })
-
-initNavbarFunctionality();

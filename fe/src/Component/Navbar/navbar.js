@@ -13,6 +13,7 @@ export function createNavbarHTML(options = {}) {
                 <div class="logo-container">
                     <img class="logo" src="${logoSrc}" alt="School Logo">
                     <span class="school-name">${schoolName}</span>
+                    <button class="menu-toggle" aria-label="Toggle navigation"><img src="/navbar.svg" alt="Menu" class="menu-icon" /></button>
                 </div>
                 <ul class="nav-links">
                     ${createNavItem('beranda', 'Beranda', activePage)}
@@ -51,14 +52,23 @@ function createNavItem(id, text, activePage, className = 'nav-link') {
 export function initNavbarFunctionality() {
     const navLinks = document.querySelectorAll('.nav-link');
     const contactBtn = document.querySelector('.contact-btn');
-    
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navList = document.querySelector('.nav-links');
+
     const allNavItems = [...navLinks];
     if (contactBtn) allNavItems.push(contactBtn);
-    
+
     allNavItems.forEach(link => {
         link.addEventListener('click', handleNavClick.bind(null, allNavItems));
     });
+
+    if (menuToggle && navList) {
+        menuToggle.addEventListener('click', () => {
+            navList.classList.toggle('show'); 
+        });
+    }
 }
+
 
 //handle click
 function handleNavClick(allItems, event) {
