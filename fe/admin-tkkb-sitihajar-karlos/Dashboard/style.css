@@ -1,0 +1,184 @@
+body {
+  margin: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  height: 100vh;
+  overflow: auto;
+}
+
+.main-content {
+  position: relative;
+  margin-left: 320px; 
+  padding: 20px 40px;
+  width: calc(100vw - 320px); 
+  box-sizing: border-box;
+}
+
+.topbar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0 0px;
+  margin-bottom: 20px;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.topbar .admin-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.topbar .admin-info img {
+  width: 32px;
+  height: 32px;
+}
+
+.admin-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.admin-role {
+  font-weight: normal;  
+  font-size: 12px;
+  color: #555;
+}
+
+.admin-name {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.welcome-text {
+  position: relative;
+  border-radius: 10px;
+  padding: 100px 20px;
+  margin-top: 50px;;
+  margin-bottom: 30px;
+  color: white;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.welcome-text .welcome-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6) blur(5px); 
+  z-index: 0;
+  border-radius: 10px;
+}
+
+.welcome-text::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(54, 131, 165, 0.4);
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.welcome-text h2,
+.welcome-text p,
+.welcome-text button {
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-text h2 {
+  font-size: 28px;
+  margin: 0 0 10px;
+  color: white;
+}
+
+.welcome-text p {
+  font-size: 16px;
+  margin: 0 0 15px;
+  color: #f0f0f0;
+}
+
+.welcome-text button {
+  background-color: #3C8BA9;
+  border: none;
+  color: white;
+  padding: 10px 50px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: "Acme", sans-serif;
+}
+
+.welcome-text button:hover {
+  background-color: #2b6b88;
+}
+
+.dashboard-box {
+  background-color: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 50px; 
+}
+
+
+.dashboard-title {
+  background-color: #3C8BA9;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.dashboard-cards {
+  display: flex;
+  gap: 50px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background-color: #25596D;
+  color: white;
+  padding: 50px 20px;
+  flex: 1 1 300px;
+  max-width: 500px;
+  min-height: 100px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 18px;
+  display: flex;
+  align-items: center;   
+  justify-content: center;
+  text-align: center;
+}
+
+
+.card:hover {
+  background-color: #1a4756;
+}
+
+.dashboard-title {
+  background-color: #3C8BA9;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 22px;
+  border-radius: 10px;
+  margin: 0 auto 50px auto;
+  width: 100%;
+  box-sizing: border-box;
+}
