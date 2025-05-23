@@ -1,0 +1,197 @@
+body {
+  margin: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  height: 100vh;
+  overflow: auto;
+}
+
+.main-content {
+  position: relative;
+  margin-left: 320px; 
+  padding: 20px 40px;
+  width: calc(100vw - 320px); 
+  box-sizing: border-box;
+}
+
+.topbar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0 0px;
+  margin-bottom: 10px;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.topbar .admin-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.topbar .admin-info img {
+  width: 32px;
+  height: 32px;
+}
+
+.admin-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.admin-role {
+  font-weight: normal;
+  font-size: 12px;
+  color: #555;
+}
+
+.admin-name {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.achievement-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-top: 50px;
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: #3C8BA9;
+  color: white;
+  padding: 10px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-table {
+  width: 90%;
+  margin: 0 auto;
+  border-collapse: collapse;     
+}
+
+.card-table th,
+.card-table td {
+  padding: 15px;
+  border-bottom: 3px solid #000000;
+  text-align: center;
+  color: #000000;
+  word-wrap: break-word;
+  vertical-align: middle;
+}
+
+.card-table th:nth-child(1),
+.card-table td:nth-child(1) {
+  width: 80%;
+}
+.card-table th:nth-child(2),
+.card-table td:nth-child(2) {
+  width: 25%;
+}
+
+.btn-edit, .btn-hapus, .btn-simpan, .btn-batal {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: 0.2s ease-in-out;
+  font-family: "Acme", sans-serif;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+thead th {
+  text-align: center;
+}
+
+table td {
+  text-align: center;
+}
+
+.btn-edit {
+  background-color: #F2F2F2;
+  color: #000000;
+}
+
+.btn-edit:hover {
+  background-color: #D9D9D9;
+}
+
+.btn-hapus {
+  background-color: #FF6B6B;
+  color: #ffffff;
+}
+
+.btn-hapus:hover {
+  background-color: #ff4a4a;
+}
+
+.btn-simpan {
+  background-color: #F2F2F2; 
+  color: rgb(0, 0, 0);
+  font-family: "Acme", sans-serif;
+}
+
+.btn-simpan:hover {
+  background-color: #D9D9D9;
+}
+
+.btn-batal {
+  background-color: #FF6B6B;
+  color: white;
+  font-family: "Acme", sans-serif;
+}
+
+.btn-batal:hover {
+  background-color: #ff4a4a;
+}
+
+#btnTambahGuru {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 20px;
+  font-family: "Acme", sans-serif;
+}
+
+#btnTambahGuru:hover {
+  background-color: #D9D9D9;
+}
+
+#btnTambahSiswa {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 20px;
+  font-family: "Acme", sans-serif;
+}
+
+#btnTambahSiswa:hover {
+  background-color: #D9D9D9;
+}
