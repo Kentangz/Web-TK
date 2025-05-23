@@ -6,7 +6,10 @@ import iconEmail from '/email.svg'
 import iconInstagram from '/instagram.svg'
 import iconLocation from '/maps.svg'
 import { createNavbarHTML,initNavbarFunctionality} from '../Component/Navbar/navbar.js'
-
+import { fetchContactPerson } from './contactperson.js'
+import { fetchEmail } from './email.js'
+import { fetchInstagram } from './instagram.js'
+import { fetchAlamat } from './alamat.js'
 
 document.querySelector('#contact').innerHTML = `
   ${createNavbarHTML({
@@ -23,7 +26,7 @@ document.querySelector('#contact').innerHTML = `
           <img src="${iconPhone}" alt="Phone Icon" />
           <div class="contact-text">
             <strong>Contact Person :</strong>
-            <span>+628813325407 (Bunda Niniek)</span>
+            <span id="contact-person">Memuat...</span>
           </div>
         </div>
 
@@ -31,7 +34,7 @@ document.querySelector('#contact').innerHTML = `
           <img src="${iconEmail}" alt="Email Icon" />
           <div class="contact-text">
             <strong>Email :</strong>
-            <span>sitihajarkarlos@gmail.com</span>
+            <span id="contact-email">Memuat...</span>
           </div>
         </div>
 
@@ -39,7 +42,7 @@ document.querySelector('#contact').innerHTML = `
           <img src="${iconInstagram}" alt="Instagram Icon" />
           <div class="contact-text">
             <strong>Instagram :</strong>
-            <span>bundasitihajarkarangploso</span>
+            <span id="contact-instagram">Memuat...</span>
           </div>
         </div>
 
@@ -47,7 +50,7 @@ document.querySelector('#contact').innerHTML = `
           <img src="${iconLocation}" alt="Location Icon" />
           <div class="contact-text">
             <strong>Alamat :</strong>
-            <span>Jl. Ampel Pratama V Blok E 2 No. 9, Perum Pesanggrahan Pratama, Karangploso, Kab. Malang</span>
+            <span id="contact-address">Memuat...</span>
           </div>
         </div>
 
@@ -66,6 +69,26 @@ document.querySelector('#contact').innerHTML = `
     </div>
   </section>
 `;
+
+Promise.all([
+  fetchContactPerson(),
+  fetchEmail(),
+  fetchInstagram(),
+  fetchAlamat()
+])
+.then(([contactPerson, email, instagram, alamat]) => {
+  document.getElementById('contact-person').textContent = contactPerson;
+  document.getElementById('contact-email').textContent = email;
+  document.getElementById('contact-instagram').textContent = instagram;
+  document.getElementById('contact-address').textContent = alamat;
+})
+.catch(error => {
+  console.error("Gagal memuat data kontak:", error);
+  document.getElementById('contact-person').textContent = 'Gagal memuat';
+  document.getElementById('contact-email').textContent = 'Gagal memuat';
+  document.getElementById('contact-instagram').textContent = 'Gagal memuat';
+  document.getElementById('contact-address').textContent = 'Gagal memuat';
+});
 
 initNavbarFunctionality();
 
