@@ -65,13 +65,23 @@ body {
 
 @media (max-width: 600px) {
   .jadwal-section {
-    padding: 1rem;
+    padding: 2rem;
   }
 
   .jadwal-kelompok-ab,
   .jadwal-kelompok-kb {
     min-height: auto;
     padding: 1rem 0;
+  }
+
+  .jadwal-kelompok-ab h1,
+  .jadwal-kelompok-kb h1 {
+    margin-bottom: 0.5rem; 
+  }
+
+  .jadwal-kelompok-ab p,
+  .jadwal-kelompok-kb p {
+    margin-top: 0.5rem; 
   }
 
   .jadwal-list li {
