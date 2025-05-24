@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\Beranda\VisiController;
 use App\Http\Controllers\Beranda\MisiController;
-use App\Http\Controllers\Beranda\ImageVisiMisiController;   
+use App\Http\Controllers\Beranda\ImageVisiMisiController;
 use App\Http\Controllers\Beranda\TujuanController;
 use App\Http\Controllers\Beranda\StrategiController;
 use App\Http\Controllers\Beranda\ImageTujuanStrategiController;
@@ -36,11 +37,12 @@ use App\Http\Controllers\Contact\EmailController;
 use App\Http\Controllers\Contact\InstagramController;
 use App\Http\Controllers\Contact\AlamatController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+});
 
-Route::apiResources([
+
+$protectedResources = [
     '/beranda/visi' => VisiController::class,
     '/beranda/misi' => MisiController::class,
     '/beranda/imagevisi' => ImageVisiMisiController::class,
@@ -48,7 +50,7 @@ Route::apiResources([
     '/beranda/strategi' => StrategiController::class,
     '/beranda/imagetujuan' => ImageTujuanStrategiController::class,
 
-    '/guru' =>  DaftarGuruController::class,
+    '/guru' => DaftarGuruController::class,
 
     '/programsekolah/kegiatanunggulan' => KegiatanUnggulanController::class,
     '/programsekolah/gallerykegiatan' => GalleryKegiatanController::class,
@@ -73,4 +75,15 @@ Route::apiResources([
     '/contact/email' => EmailController::class,
     '/contact/instagram' => InstagramController::class,
     '/contact/alamat' => AlamatController::class,
-]);
+];
+
+
+foreach ($protectedResources as $uri => $controller) {
+    Route::apiResource($uri, $controller)->only(['index', 'show']);
+}
+
+Route::middleware('auth:sanctum')->group(function () use ($protectedResources) {
+    foreach ($protectedResources as $uri => $controller) {
+        Route::apiResource($uri, $controller)->only(['store', 'update', 'destroy']);
+    }
+});
