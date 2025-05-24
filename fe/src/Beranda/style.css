@@ -29,11 +29,11 @@
   flex-direction: row; 
   justify-content: center; 
   align-items: center;
-  max-width: 1100px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0 100px;
   padding: 40px 20px;
   flex-wrap: wrap;
-  gap: 50px;
+  gap: 300px;
   min-height: 90vh; 
   position: relative;
   text-align: left;
@@ -41,8 +41,8 @@
 }
 
 .text-content {
-  max-width: 500px;
-   margin-right: 40px;
+  max-width: 450px;
+  margin-right: 40px;
 }
 
 .text-content h1 {
@@ -64,29 +64,58 @@
   margin-top: 50px;
   display: flex;
   gap: 30px;
+  flex-wrap: wrap; /* Supaya responsif di layar kecil */
+}
+
+.btn-outline,
+.btn-filled {
+  display: inline-flex;            
+  align-items: center;              
+  justify-content: center;
+  font-weight: bold;
+  border-radius: 50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 16px;
+  gap: 10px;                        
 }
 
 .btn-outline {
-  padding: 20px 60px;
+  padding: 18px 50px; /* Sedikit lebih panjang dari btn-filled */
   border: 2px solid black;
   background-color: white;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 50px;
+  color: black;
 }
 
 .btn-filled {
-  padding: 20px 50px;
+  padding: 18px 28px;
   background-color: pink;
   color: black;
-  font-weight: bold;
   border: none;
-  border-radius: 50px;
-  cursor: pointer;
+}
+
+/* Tambahkan efek hover */
+.btn-outline:hover,
+.btn-filled:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* Khusus ikon arah panah */
+.arrow {
+  margin-left: 4px;
 }
 
 .logo-content {
-  flex: 0 0 auto;
+  max-width: 300px;
+  flex: 1;
   text-align: center;
 }
 
@@ -120,14 +149,14 @@
   gap: 40px;
   max-width: 1000px;
   align-items: center;
-  min-height: 70vh;
+  min-height: 90vh;
 }
 
 .image-section img {
   max-width: 100%;
-  max-height: 400px;
+  max-height: 500px;
   width: 500px;
-  height: 400px;
+  height: 450px;
   border: 3px solid #000;
   object-fit: cover;
   border-radius: 8px;
@@ -138,13 +167,13 @@
 }
 
 .text-section h2 {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 700;
   margin-bottom: 10px;
 }
 
 .text-section p {
-  font-size: 16px;
+  font-size: 20px;
   line-height: 1.6;
   margin-bottom: 20px;
 }
@@ -155,7 +184,7 @@
 }
 
 .text-section li {
-  font-size: 16px;
+  font-size: 20px;
   margin-bottom: 12px;
   line-height: 1.6;
 }
@@ -177,7 +206,7 @@
   gap: 40px;
   max-width: 1000px;
   align-items: center;
-  min-height: 70vh;
+  min-height: 90vh;
 }
 
 .tujuan-strategi .text-section {
@@ -192,22 +221,22 @@
 
 .tujuan-strategi .image-section img {
   max-width: 100%;
-  max-height: 400px;
+  max-height: 500px;
   width: 500px;
-  height: 400px;
+  height: 450px;
   border: 3px solid #000;
   object-fit: cover;
   border-radius: 8px;
 }
 
 .tujuan-strategi .text-section h2 {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 700;
   margin-bottom: 10px;
 }
 
 .tujuan-strategi .text-section p {
-  font-size: 16px;
+  font-size: 20px;
   line-height: 1.6;
   margin-bottom: 20px;
 }
@@ -218,7 +247,7 @@
 }
 
 .tujuan-strategi .text-section li {
-  font-size: 16px;
+  font-size: 20px;
   margin-bottom: 12px;
   line-height: 1.6;
 }
@@ -270,6 +299,7 @@
 
 .preview-next {
   background-color: pink;
+  justify-content: center;
   color: black;
   font-size: 24px;
   border: 2px solid black;
@@ -280,8 +310,17 @@
   top: 50%;
   right: 40px;
   cursor: pointer;
+  text-decoration: none;
+  display: flex; /* baru */
+  justify-content: center; /* baru */
+  align-items: center; /* baru */
 }
 
+.preview-next .arrow-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
 
 @media (max-width: 1024px) {
   .hero-content {

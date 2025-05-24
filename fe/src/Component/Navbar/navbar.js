@@ -39,7 +39,8 @@ function createNavItem(id, text, activePage, className = 'nav-link') {
         'fasilitas-prestasi': 'fasilitas-prestasi',
         'jadwal': 'jadwal',
         'pendaftaran': 'pendaftaran',
-        'contact': 'contact'
+        'contact': 'contact',
+        'guru': 'guru.html'
     };
 
     const href = pageMap[id] || '#beranda'; //fallback

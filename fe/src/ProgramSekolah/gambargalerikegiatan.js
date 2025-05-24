@@ -1,10 +1,10 @@
-export async function fetchGambarGaleriKegiatan() {
+export async function fetchGambarGaleriKegiatan(limit = 3) {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/gallerykegiatan`);
     if (!response.ok) throw new Error(`Error! Status: ${response.status}`);
 
     const result = await response.json();
-    const gambarList = result.data.slice(0, 3); // ambil hanya 3 gambar terbaru
+    const gambarList = limit ? result.data.slice(0, limit) : result.data;
 
     return gambarList.map(gambar => `
       <div class="preview-image">
