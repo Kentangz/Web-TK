@@ -30,8 +30,15 @@ document.querySelector('#beranda').innerHTML = `
             dicapai dengan keceriaan dan belajar yang penuh semangat.
           </p>
           <div class="hero-buttons">
-            <button class="btn-outline">Tentang Kami <span>&#9660;</span></button>
-            <button class="btn-filled">Guru 👩‍🏫</button>
+            <a href="#tentang-kami" class="btn-outline">
+              Tentang Kami
+              <img src="/arrowdown.svg" alt="Arrow Down" class="icon" />
+            </a>
+            <a href="/guru" class="btn-filled">
+              Guru
+              <img src="/people.svg" alt="Guru Icon" class="icon" />
+              <img src="/arrowguru.svg" alt="Arrow Right" class="icon arrow" />
+            </a>
           </div>
         </div>
         <div class="logo-content">
@@ -41,7 +48,7 @@ document.querySelector('#beranda').innerHTML = `
       </div>
   </section>
 
-  <section class="visi-misi">
+  <section class="visi-misi" id="tentang-kami">
     <div class="container">
       <div class="image-section" id="gambar-visi-misi">
         <!-- Gambar akan dimuat di sini -->
@@ -71,7 +78,9 @@ document.querySelector('#beranda').innerHTML = `
       <div class="preview-gallery" id="gallery-kegiatan">
         <!-- Gambar dari API /programsekolah/gallerykegiatan akan dimuat di sini -->
       </div>
-      <button class="preview-next">→</button>
+      <a href="/program-sekolah" class="preview-next">
+      <img src="/arrow.svg" alt="Next" class="arrow-icon" />
+      </a>
     </div>
 
     <div class="preview-category">
@@ -79,7 +88,9 @@ document.querySelector('#beranda').innerHTML = `
       <div class="preview-gallery" id="gallery-fasilitas">
         <!-- Gambar dari API /fasilitasprestasi/galleryfasilitas akan dimuat di sini -->
       </div>
-      <button class="preview-next">→</button>
+      <a href="/fasilitas-prestasi" class="preview-next">
+        <img src="/arrow.svg" alt="Next" class="arrow-icon" />
+      </a>
     </div>
   </section>
 `
@@ -91,8 +102,8 @@ Promise.all([
   fetchTujuan(),
   fetchStrategi(),
   fetchGambarTujuan(),
-  fetchGambarFasilitas(),
-  fetchGambarGaleriKegiatan()
+  fetchGambarFasilitas(3),
+  fetchGambarGaleriKegiatan(3)
 ])
 .then(([visiberanda, misiberanda, gambarvisimisi, tujuanberanda, strategiberanda, gambartujuanstrategi, gambarFasilitas, gambarGaleriKegiatan]) => {
   // Isi ke DOM
