@@ -24,6 +24,7 @@ class AuthController extends Controller
             ]);
         }
 
+        $user->tokens()->delete();
         $token = $user->createToken('admin-token')->plainTextToken;
 
         return response()->json([
