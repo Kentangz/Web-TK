@@ -9,10 +9,211 @@ document.querySelector('#visi-misi').innerHTML = `
     schoolName: 'TK & KB SITI HAJAR'
   })}
   <div class="main-content">
-    <h1>Visi dan Misi</h1>
-    <p>Welcome to the Visi dan Misi page!</p>
-  </div>
+    <div class="topbar">
+      <div class="admin-info">
+        <img src="/user.png" alt="Admin Profile">
+        <div class="admin-text">
+          <div class="admin-role">Admin</div>
+          <div class="admin-name">Linna Indriyanti, S. Psi</div>
+        </div>
+      </div>
+    </div>
+
+     <div class="visi_misi-card">
+        <div class="card-header">
+          <div class="card-title">Visi</div>
+      </div>
+      <div class="card-body">
+        <ul id="visi" class="visi"></ul>
+      </div>
+    </div>
+    <div class="button-group">
+        <button class="btn-tambah" data-type="visi">Tambah</button>
+        <button class="btn-edit" data-type="visi">Edit</button>
+        <button class="btn-hapus" data-type="visi">Hapus</button>
+    </div>
+
+    <div class="visi_misi-card">
+      <div class="card-header">
+        <div class="card-title">Misi</div>
+      </div>
+      <div class="card-body">
+        <ul id="misi" class="misi"></ul>
+      </div>
+    </div>
+    <div class="button-group">
+        <button class="btn-tambah" data-type="misi">Tambah</button>
+        <button class="btn-edit" data-type="misi">Edit</button>
+        <button class="btn-hapus" data-type="misi">Hapus</button>
+    </div>
 `;
 
-initSidebarFunctionality();
+const Visi = [
+  "Terciptanya anak usia dini yang cerdas, mandiri, kreatif, dan berakhlak mulia dengan berlandaskan pancasila."
+];
 
+const Misi = [
+  "Menanamkan pendidikan nilai-nilai agama dan moral melalui pembiasaan dan keteladanan.",
+  "Menanamkan kemandirian melalui pendidikan Life Skill.",
+  "Melaksanakan pembelajaran yang aktif, kreatif dan menyenangkan sesuai dengan capaian belajar.",
+  "Menciptakan lingkukan belajar yang aman nyaman dan ramah anak."
+];
+
+function renderListData(listElement, data) {
+  listElement.innerHTML = '';
+  data.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    li.style.listStyle = 'disc';
+    listElement.appendChild(li);
+  });
+}
+
+const visiList = document.getElementById('visi');
+const misiList = document.getElementById('misi');
+
+
+let editing = false;
+function setupCardActions(cardType, listElement) {
+  const tambahBtn = document.querySelector(`.btn-tambah[data-type="${cardType}"]`);
+  const editBtn = document.querySelector(`.btn-edit[data-type="${cardType}"]`);
+  const hapusBtn = document.querySelector(`.btn-hapus[data-type="${cardType}"]`);
+
+  function tambahMode() {
+    if (editing) return;
+
+    const li = document.createElement('li');
+    li.style.listStyle = 'none';
+    li.innerHTML = `<input type="text" placeholder="Masukkan ${cardType}" style="width: 100%;" />`;
+    li.style.listStyle = 'disc';
+    listElement.appendChild(li);
+    li.querySelector('input').focus();
+
+    enterEditingMode();
+
+    function simpan() {
+      const input = li.querySelector('input');
+      const val = input.value.trim();
+      if (!val) {
+        alert("Data tidak boleh kosong.");
+        return;
+      }
+      li.textContent = val;
+      exitEditingMode();
+    }
+    function batal() {
+      li.remove();
+      exitEditingMode();
+    }
+
+    setSaveCancelListeners(simpan, batal);
+  }
+
+  function editMode() {
+    if (editing) return;
+
+    const items = listElement.querySelectorAll('li');
+    if (items.length === 0) {
+      alert(`Belum ada data untuk diedit.`);
+      return;
+    }
+
+    enterEditingMode();
+
+    items.forEach(li => {
+      const original = li.textContent;
+      li.setAttribute('data-original', original);
+      li.innerHTML = `<input type="text" value="${original}" style="width: 100%;" />`;
+
+    });
+
+    function simpan() {
+      let valid = true;
+      items.forEach(li => {
+        const val = li.querySelector('input').value.trim();
+        if (!val) valid = false;
+      });
+
+      if (!valid) {
+        alert("Data tidak boleh kosong.");
+        return;
+      }
+
+      items.forEach(li => {
+        const val = li.querySelector('input').value.trim();
+        li.textContent = val;
+      });
+
+      exitEditingMode();
+    }
+
+    function batal() {
+      items.forEach(li => {
+        li.textContent = li.getAttribute('data-original');
+      });
+      exitEditingMode();
+    }
+
+    setSaveCancelListeners(simpan, batal);
+  }
+
+  function hapusMode() {
+    if (editing) return;
+
+    if (listElement.children.length === 0) {
+      alert("Tidak ada data yang bisa dihapus.");
+      return;
+    }
+
+    if (confirm(`Yakin ingin menghapus?`)) {
+      listElement.innerHTML = '';
+    }
+  }
+
+  tambahBtn.addEventListener('click', tambahMode);
+  editBtn.addEventListener('click', editMode);
+  hapusBtn.addEventListener('click', hapusMode);
+
+  function enterEditingMode() {
+    editing = true;
+    editBtn.textContent = 'Simpan';
+    hapusBtn.textContent = 'Batal';
+
+    editBtn.removeEventListener('click', editMode);
+    hapusBtn.removeEventListener('click', hapusMode);
+  }
+
+  function exitEditingMode() {
+    editing = false;
+    editBtn.textContent = 'Edit';
+    hapusBtn.textContent = 'Hapus';
+
+    removeSaveCancelListeners();
+
+    editBtn.addEventListener('click', editMode);
+    hapusBtn.addEventListener('click', hapusMode);
+  }
+
+  let saveListener, cancelListener;
+
+  function setSaveCancelListeners(onSave, onCancel) {
+    saveListener = onSave;
+    cancelListener = onCancel;
+    editBtn.addEventListener('click', saveListener);
+    hapusBtn.addEventListener('click', cancelListener);
+  }
+
+  function removeSaveCancelListeners() {
+    if (saveListener) editBtn.removeEventListener('click', saveListener);
+    if (cancelListener) hapusBtn.removeEventListener('click', cancelListener);
+    saveListener = null;
+    cancelListener = null;
+  }
+}
+
+renderListData(visiList, Visi);
+renderListData(misiList, Misi);
+
+setupCardActions('visi', visiList);
+setupCardActions('misi', misiList);
+initSidebarFunctionality();
