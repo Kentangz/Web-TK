@@ -1,0 +1,77 @@
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #101010;
+  color: white;
+  padding: 20px 40px;
+  font-family: Arial, sans-serif;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-section.center {
+  text-align: center;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-section.right a {
+  margin-left: 10px;
+}
+
+.footer-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.footer-logo {
+  width: 60px;
+  height: auto;
+}
+
+.footer-label {
+  letter-spacing: 5px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.footer-school-name {
+  color: #f5b7c3; 
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.social-icon {
+  font-size: 30px;
+  opacity: 0.6;
+  transition: opacity 0.3s ease, color 0.3s ease;
+  margin-left: 10px;
+  color: #ffffff; 
+}
+
+.social-icon.instagram {
+  color: #f5b7c3; 
+  opacity: 1;
+}
+
+.social-icon.active {
+  opacity: 1;
+  background-color: #f5b7c3;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.social-icon:hover {
+  opacity: 0.6;
+}

@@ -10,6 +10,7 @@ import { fetchContactPerson } from './contactperson.js'
 import { fetchEmail } from './email.js'
 import { fetchInstagram } from './instagram.js'
 import { fetchAlamat } from './alamat.js'
+import { createFooterHTML } from '../Component/Footer/footer.js';
 
 document.querySelector('#contact').innerHTML = `
   ${createNavbarHTML({
@@ -69,6 +70,7 @@ document.querySelector('#contact').innerHTML = `
     </div>
   </section>
 `;
+document.querySelector('#contact').innerHTML += createFooterHTML();
 
 Promise.all([
   fetchContactPerson(),

@@ -2,7 +2,8 @@ import '../global.css';
 import './style.css';
 import logoImage from '/logo.svg';
 import { createNavbarHTML, initNavbarFunctionality } from '../Component/Navbar/navbar.js';
-import { fetchGuru } from './guru.js'; // ambil data dari API
+import { fetchGuru } from './guru.js';
+import { createFooterHTML } from '../Component/Footer/footer.js';
 
 fetchGuru()
   .then(guruData => {
@@ -53,6 +54,7 @@ fetchGuru()
       </main>
     `;
 
+    document.querySelector('#guru').innerHTML += createFooterHTML();
     // Scroll tombol
     document.getElementById('scrollLeft').addEventListener('click', () => {
       document.getElementById('scrollContainer').scrollBy({ left: -300, behavior: 'smooth' });
