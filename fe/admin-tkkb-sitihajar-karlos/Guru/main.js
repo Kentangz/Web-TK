@@ -26,7 +26,6 @@ document.querySelector('#guru').innerHTML = `
         <table class="card-table" id="guruTable">
           <thead>
             <tr>
-              <th>No.</th>
               <th>Foto</th>
               <th>Jabatan</th>
               <th>Nama</th>
@@ -43,43 +42,12 @@ document.querySelector('#guru').innerHTML = `
       <button class="btn-tambah" id="btnTambah">Tambah</button>
   </div>
 `;
-
 const guruData = [
-  {
-    foto: "/user.png",
-    jabatan: "Kepala Sekolah",
-    nama: "Puji Rahayu, S. Pd",
-    ttl: "Malang, 1 Januari 1980",
-    telepon: "081234567890"
-  },
-  {
-    foto: "/user.png",
-    jabatan: "Guru Kelas A",
-    nama: "Rina Kusuma, S. Pd",
-    ttl: "Malang, 12 Februari 1985",
-    telepon: "081234567891"
-  },
-  {
-    foto: "/user.png",
-    jabatan: "Guru Kelas B",
-    nama: "Andi Setiawan, M. Pd",
-    ttl: "Malang, 20 Maret 1983",
-    telepon: "081234567892"
-  },
-  {
-    foto: "/user.png",
-    jabatan: "Guru Kelas A",
-    nama: "Sari Dewi, M. Pd",
-    ttl: "Malang, 15 April 1987",
-    telepon: "081234567893"
-  },
-  {
-    foto: "/user.png",
-    jabatan: "Guru Kelas B",
-    nama: "Budi Santoso, S. Pd",
-    ttl: "Malang, 5 Mei 1982",
-    telepon: "081234567894"
-  }
+  { foto: "/user.png", jabatan: "Kepala Sekolah", nama: "Puji Rahayu, S. Pd", ttl: "Malang, 1 Januari 1980", telepon: "081234567890" },
+  { foto: "/user.png", jabatan: "Guru Kelas A", nama: "Rina Kusuma, S. Pd", ttl: "Malang, 12 Februari 1985", telepon: "081234567891" },
+  { foto: "/user.png", jabatan: "Guru Kelas B", nama: "Andi Setiawan, M. Pd", ttl: "Malang, 20 Maret 1983", telepon: "081234567892" },
+  { foto: "/user.png", jabatan: "Guru Kelas A", nama: "Sari Dewi, M. Pd", ttl: "Malang, 15 April 1987", telepon: "081234567893" },
+  { foto: "/user.png", jabatan: "Guru Kelas B", nama: "Budi Santoso, S. Pd", ttl: "Malang, 5 Mei 1982", telepon: "081234567894" }
 ];
 
 let editingIndex = null;
@@ -90,9 +58,7 @@ function renderTable() {
 
   guruData.forEach((guru, index) => {
     const tr = document.createElement("tr");
-
     tr.innerHTML = `
-      <td style="text-align: center;">${index + 1}</td>
       <td style="text-align: center;"><img src="${guru.foto}" alt="Foto" width="100" height="100" style="object-fit: cover;"></td>
       <td class="jabatan">${guru.jabatan}</td>
       <td class="nama">${guru.nama}</td>
@@ -103,92 +69,81 @@ function renderTable() {
         <button class="btn-hapus" data-index="${index}">Hapus</button>
       </td>
     `;
-
     tbody.appendChild(tr);
   });
 
-document.querySelectorAll(".btn-edit").forEach(btn =>
-  btn.addEventListener("click", (e) => {
-    const index = e.target.dataset.index;
-    const tr = e.target.closest("tr");
+  document.querySelectorAll(".btn-edit").forEach(btn =>
+    btn.addEventListener("click", (e) => {
+      const index = e.target.dataset.index;
+      const tr = e.target.closest("tr");
 
-    if (editingIndex !== null) {
-      alert("Selesaikan edit yang sedang berlangsung terlebih dahulu.");
-      return;
-    }
+      if (editingIndex !== null) {
+        alert("Selesaikan edit yang sedang berlangsung terlebih dahulu.");
+        return;
+      }
 
-    editingIndex = parseInt(index);
-    disableAllButtonsExcept(tr);
+      editingIndex = parseInt(index);
+      disableAllButtonsExcept(tr);
 
-    const dataLama = { ...guruData[index] };
-    let uploadedFoto = guruData[index].foto;
+      const dataLama = { ...guruData[index] };
+      let uploadedFoto = guruData[index].foto;
 
-    tr.querySelector(".jabatan").innerHTML = `<input type="text" value="${dataLama.jabatan}" style="width: 100%;">`;
-    tr.querySelector(".nama").innerHTML = `<input type="text" value="${dataLama.nama}" style="width: 100%;">`;
-    tr.querySelector(".ttl").innerHTML = `<input type="text" value="${dataLama.ttl}" style="width: 100%;">`;
-    tr.querySelector(".telepon").innerHTML = `<input type="text" value="${dataLama.telepon}" style="width: 100%;">`;
+      tr.querySelector(".jabatan").innerHTML = `<input type="text" value="${dataLama.jabatan}" style="width: 100%;">`;
+      tr.querySelector(".nama").innerHTML = `<input type="text" value="${dataLama.nama}" style="width: 100%;">`;
+      tr.querySelector(".ttl").innerHTML = `<input type="text" value="${dataLama.ttl}" style="width: 100%;">`;
+      tr.querySelector(".telepon").innerHTML = `<input type="text" value="${dataLama.telepon}" style="width: 100%;">`;
 
-    const tdFoto = tr.querySelector("td:nth-child(2)");
-    tdFoto.innerHTML = `<img src="${uploadedFoto}" alt="Foto" width="100" height="100" style="object-fit: cover;">`;
+      const tdFoto = tr.querySelector("td:nth-child(1)");
+      tdFoto.innerHTML = `<img src="${uploadedFoto}" alt="Foto" width="100" height="100" style="object-fit: cover;">`;
 
-    const opsiTd = tr.querySelector("td:last-child");
-    opsiTd.innerHTML = `
-      <button class="btn-upload" data-index="${index}">Upload Foto</button>
-      <button class="btn-simpan btn-edit" data-index="${index}">Simpan</button>
-      <button class="btn-batal btn-hapus" data-index="${index}">Batal</button>
-    `;
+      const opsiTd = tr.querySelector("td:last-child");
+      opsiTd.innerHTML = `
+        <button class="btn-upload" data-index="${index}">Upload Foto</button>
+        <button class="btn-simpan btn-edit" data-index="${index}">Simpan</button>
+        <button class="btn-batal btn-hapus" data-index="${index}">Batal</button>
+      `;
 
-    opsiTd.querySelector(".btn-simpan").addEventListener("click", () => {
-      const jabatan = tr.querySelector(".jabatan input").value.trim();
-      const nama = tr.querySelector(".nama input").value.trim();
-      const ttl = tr.querySelector(".ttl input").value.trim();
-      const telepon = tr.querySelector(".telepon input").value.trim();
+      opsiTd.querySelector(".btn-simpan").addEventListener("click", () => {
+        const jabatan = tr.querySelector(".jabatan input").value.trim();
+        const nama = tr.querySelector(".nama input").value.trim();
+        const ttl = tr.querySelector(".ttl input").value.trim();
+        const telepon = tr.querySelector(".telepon input").value.trim();
 
-      if (jabatan && nama && ttl && telepon) {
-        guruData[index] = {
-          foto: uploadedFoto,
-          jabatan,
-          nama,
-          ttl,
-          telepon
-        };
+        if (jabatan && nama && ttl && telepon) {
+          guruData[index] = { foto: uploadedFoto, jabatan, nama, ttl, telepon };
+          editingIndex = null;
+          renderTable();
+          enableAllButtons();
+        } else {
+          alert("Data tidak boleh kosong!");
+        }
+      });
+
+      opsiTd.querySelector(".btn-upload").addEventListener("click", () => {
+        const inputFile = document.createElement("input");
+        inputFile.type = "file";
+        inputFile.accept = "image/*";
+        inputFile.addEventListener("change", (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              uploadedFoto = e.target.result;
+              tdFoto.innerHTML = `<img src="${uploadedFoto}" alt="Foto" width="100" height="100" style="object-fit: cover;">`;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+        inputFile.click();
+      });
+
+      opsiTd.querySelector(".btn-batal").addEventListener("click", () => {
         editingIndex = null;
         renderTable();
         enableAllButtons();
-      } else {
-        alert("Data tidak boleh kosong!");
-      }
-    });
-
-    opsiTd.querySelector(".btn-upload").addEventListener("click", () => {
-      const inputFile = document.createElement("input");
-      inputFile.type = "file";
-      inputFile.accept = "image/*";
-
-      inputFile.addEventListener("change", (event) => {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            uploadedFoto = e.target.result;
-            tdFoto.innerHTML = `
-              <img src="${uploadedFoto}" alt="Foto" width="100" height="100" style="object-fit: cover;">
-            `;
-          };
-          reader.readAsDataURL(file);
-        }
       });
-      inputFile.click();
-    });
-
-    opsiTd.querySelector(".btn-batal").addEventListener("click", () => {
-      editingIndex = null;
-      renderTable();
-      enableAllButtons();
-    });
-  })
-);
-
+    })
+  );
 
   document.querySelectorAll(".btn-hapus").forEach(btn =>
     btn.addEventListener("click", (e) => {
@@ -217,11 +172,9 @@ document.getElementById("btnTambah").addEventListener("click", () => {
 
   const tr = document.createElement("tr");
   tr.classList.add("input-new");
-
   disableAllButtonsExcept(tr);
 
   tr.innerHTML = `
-    <td style="text-align: center;">${guruData.length + 1}</td>
     <td style="text-align: center;">
       <img src="/user.png" alt="Foto" width="100" height="100" style="object-fit: cover; display:block; margin:auto; margin-bottom:5px;">
     </td>
@@ -235,7 +188,6 @@ document.getElementById("btnTambah").addEventListener("click", () => {
       <button class="btn-batal btn-hapus">Batal</button>
     </td>
   `;
-
   tbody.appendChild(tr);
 
   let uploadedFoto = null;
@@ -244,41 +196,36 @@ document.getElementById("btnTambah").addEventListener("click", () => {
     const inputFile = document.createElement("input");
     inputFile.type = "file";
     inputFile.accept = "image/*";
-
     inputFile.addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = function() {
           uploadedFoto = reader.result;
-          const imgElement = tr.querySelector("td:nth-child(2) img");
+          const imgElement = tr.querySelector("td:nth-child(1) img");
           if (imgElement) {
             imgElement.src = uploadedFoto;
-          } else {
-            console.error("Elemen img tidak ditemukan!");
           }
         };
         reader.readAsDataURL(file);
       }
     });
-
     inputFile.click();
   });
 
   tr.querySelector(".btn-simpan").addEventListener("click", () => {
-  const inputs = tr.querySelectorAll("input");
-  const [jabatan, nama, ttl, telepon] = [...inputs].map(input => input.value.trim());
+    const inputs = tr.querySelectorAll("input");
+    const [jabatan, nama, ttl, telepon] = [...inputs].map(input => input.value.trim());
 
-  if (uploadedFoto && jabatan && nama && ttl && telepon) {
-    guruData.push({ foto: uploadedFoto, jabatan, nama, ttl, telepon });
-    editingIndex = null;
-    renderTable();
-    enableAllButtons();
-  } else {
-    alert("Data tidak boleh kosong!");
-  }
-});
-
+    if (uploadedFoto && jabatan && nama && ttl && telepon) {
+      guruData.push({ foto: uploadedFoto, jabatan, nama, ttl, telepon });
+      editingIndex = null;
+      renderTable();
+      enableAllButtons();
+    } else {
+      alert("Data tidak boleh kosong!");
+    }
+  });
 
   tr.querySelector(".btn-batal").addEventListener("click", () => {
     tr.remove();
@@ -288,16 +235,12 @@ document.getElementById("btnTambah").addEventListener("click", () => {
 
 function disableAllButtonsExcept(row) {
   document.querySelectorAll("button").forEach(btn => {
-    if (!row.contains(btn)) {
-      btn.disabled = true;
-    }
+    if (!row.contains(btn)) btn.disabled = true;
   });
 }
 
 function enableAllButtons() {
-  document.querySelectorAll("button").forEach(btn => {
-    btn.disabled = false;
-  });
+  document.querySelectorAll("button").forEach(btn => btn.disabled = false);
 }
 
 renderTable();

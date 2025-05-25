@@ -96,11 +96,11 @@ body {
 
 .card-table th:nth-child(1),
 .card-table td:nth-child(1) {
-  width: 80%;
+  width: 50%;
 }
 .card-table th:nth-child(2),
 .card-table td:nth-child(2) {
-  width: 25%;
+  width: 30%;
 }
 
 .btn-edit, .btn-hapus, .btn-simpan, .btn-batal {

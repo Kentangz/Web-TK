@@ -21,13 +21,12 @@ document.querySelector('#galeri-kegiatan').innerHTML = `
 
     <div class="gallery-card">
       <div class="card-header">
-        <div class="card-title">Data Gambar Visi & Misi</div>
+        <div class="card-title">Data Gambar Kegiatan</div>
       </div>
       <div class="card-body">
         <table class="card-table">
           <thead>
             <tr>
-              <th>No.</th>
               <th>Gambar</th>
               <th>Nama Kegiatan</th>
               <th>Opsi</th>
@@ -70,10 +69,8 @@ function enableAllButtons() {
 function tambahBaris(imageSrc, namaKegiatan = '') {
   const tbody = document.querySelector('.card-table tbody');
   const newRow = document.createElement('tr');
-  const rowNumber = tbody.rows.length + 1;
 
   newRow.innerHTML = `
-    <td>${rowNumber}</td>
     <td><img src="${imageSrc}" style="width:100px;"></td>
     <td class="nama-kegiatan">${namaKegiatan}</td>
     <td>
@@ -92,11 +89,9 @@ document.querySelector('.btn-tambah').addEventListener('click', () => {
 
   const tbody = document.querySelector('.card-table tbody');
   const tr = document.createElement('tr');
-  const rowNumber = tbody.rows.length + 1;
   let newImage = '';
 
   tr.innerHTML = `
-    <td>${rowNumber}</td>
     <td class="gambar"><img src="/user.png" width="100" /></td>
     <td class="nama-kegiatan"><input type="text" placeholder="Masukkan nama kegiatan" style="width: 100%;"></td>
     <td>
@@ -135,7 +130,6 @@ document.querySelector('.btn-tambah').addEventListener('click', () => {
     }
 
     tr.innerHTML = `
-      <td>${rowNumber}</td>
       <td><img src="${newImage}" width="100" /></td>
       <td class="nama-kegiatan">${nama}</td>
       <td>
@@ -154,9 +148,9 @@ document.querySelector('.btn-tambah').addEventListener('click', () => {
 });
 
 function attachButtonHandlers(row) {
-  const tdImage = row.children[1];
-  const tdNama = row.children[2];
-  const tdOptions = row.children[3];
+  const tdImage = row.children[0];
+  const tdNama = row.children[1];
+  const tdOptions = row.children[2];
   let originalSrc = tdImage.querySelector('img').src;
   let originalNama = tdNama.textContent;
 
