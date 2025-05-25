@@ -27,7 +27,6 @@ document.querySelector('#gallery-beranda').innerHTML = `
         <table class="card-table">
           <thead>
             <tr>
-              <th>No.</th>
               <th>Gambar</th>
               <th>Opsi</th>
             </tr>
@@ -48,7 +47,6 @@ document.querySelector('#gallery-beranda').innerHTML = `
         <table class="card-table">
           <thead>
             <tr>
-              <th>No.</th>
               <th>Gambar</th>
               <th>Opsi</th>
             </tr>
@@ -65,7 +63,6 @@ document.querySelector('#gallery-beranda').innerHTML = `
 
 const gambarData = [
   { gambar: '/user.png' },
-  { gambar: '/user.png' }
 ];
 
 const fileInput = document.createElement('input');
@@ -73,6 +70,14 @@ fileInput.type = 'file';
 fileInput.accept = 'image/*';
 fileInput.style.display = 'none';
 document.body.appendChild(fileInput);
+
+function updateButtonVisibility() {
+  document.querySelectorAll('.card-table').forEach((table, index) => {
+    const rowCount = table.querySelectorAll('tbody tr').length;
+    const tambahBtn = document.querySelectorAll('.btn-tambah')[index];
+    tambahBtn.style.display = rowCount > 0 ? 'none' : 'inline-block';
+  });
+}
 
 function disableAllButtons(exceptRow) {
   document.querySelectorAll('.card-table tr').forEach(row => {
@@ -87,13 +92,10 @@ function enableAllButtons() {
   document.querySelectorAll('button').forEach(btn => btn.disabled = false);
 }
 
-function tambahBaris(tableIndex, imageSrc = gambar) {
+function tambahBaris(tableIndex, imageSrc) {
   const tbody = document.querySelectorAll('.card-table')[tableIndex].querySelector('tbody');
   const newRow = document.createElement('tr');
-  const rowNumber = tbody.rows.length + 1;
-
   newRow.innerHTML = `
-    <td>${rowNumber}</td>
     <td><img src="${imageSrc}" style="width:100px;"></td>
     <td>
       <button class="btn-edit">Edit</button>
@@ -102,49 +104,50 @@ function tambahBaris(tableIndex, imageSrc = gambar) {
   `;
   tbody.appendChild(newRow);
   attachButtonHandlers(newRow);
+  updateButtonVisibility();
 }
 
 gambarData.forEach(data => {
   tambahBaris(0, data.gambar);
   tambahBaris(1, data.gambar);
 });
+updateButtonVisibility();
 
+// Tombol tambah foto
 document.querySelectorAll('.btn-tambah').forEach((btn, index) => {
-btn.addEventListener('click', () => {
-  disableAllButtons(null);
-  fileInput.value = '';
-  fileInput.click();
+  btn.addEventListener('click', () => {
+    disableAllButtons(null);
+    fileInput.value = '';
+    fileInput.click();
 
-  let reenabled = false;
+    let reenabled = false;
 
-  setTimeout(() => {
-    if (!reenabled) {
-      enableAllButtons();
-    }
-  }, 1000);
+    setTimeout(() => {
+      if (!reenabled) enableAllButtons();
+    }, 1000);
 
-  fileInput.onchange = () => {
-    const file = fileInput.files[0];
-    if (!file) {
-      enableAllButtons();
-      reenabled = true;
-      return;
-    }
+    fileInput.onchange = () => {
+      const file = fileInput.files[0];
+      if (!file) {
+        enableAllButtons();
+        reenabled = true;
+        return;
+      }
 
-    const reader = new FileReader();
-    reader.onload = e => {
-      tambahBaris(index, e.target.result);
-      enableAllButtons();
-      reenabled = true;
+      const reader = new FileReader();
+      reader.onload = e => {
+        tambahBaris(index, e.target.result);
+        enableAllButtons();
+        reenabled = true;
+      };
+      reader.readAsDataURL(file);
     };
-    reader.readAsDataURL(file);
-  };
-});
+  });
 });
 
 function attachButtonHandlers(row) {
-  const tdImage = row.children[1];
-  const tdOptions = row.children[2];
+  const tdImage = row.children[0];
+  const tdOptions = row.children[1];
   let originalSrc = tdImage.querySelector('img').src;
 
   const btnEdit = row.querySelector('.btn-edit');
@@ -154,12 +157,12 @@ function attachButtonHandlers(row) {
     const konfirmasi = confirm('Yakin ingin menghapus data ini?');
     if (konfirmasi) {
       row.remove();
+      updateButtonVisibility();
     }
   });
 
   btnEdit.addEventListener('click', () => {
     disableAllButtons(row);
-
     const img = tdImage.querySelector('img');
     let newSrc = originalSrc;
 
@@ -178,7 +181,6 @@ function attachButtonHandlers(row) {
       fileInput.onchange = () => {
         const file = fileInput.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = e => {
           newSrc = e.target.result;

@@ -96,15 +96,15 @@ body {
 
 .card-table th:nth-child(1),
 .card-table td:nth-child(1) {
-  width: 10%;
+  width: 20%;
 }
 .card-table th:nth-child(2),
 .card-table td:nth-child(2) {
-  width: 60%;
+  width: 30%;
 }
 .card-table th:nth-child(3),
 .card-table td:nth-child(3) {
-  width: 25%;
+  width: 30%;
 }
 
 

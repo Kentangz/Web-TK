@@ -27,7 +27,6 @@ document.querySelector('#galeri-prestasi').innerHTML = `
         <table class="card-table">
           <thead>
             <tr>
-              <th>No.</th>
               <th>Gambar</th>
               <th>Opsi</th>
             </tr>
@@ -68,10 +67,8 @@ function enableAllButtons() {
 function tambahBaris(imageSrc) {
   const tbody = document.querySelector('.card-table tbody');
   const newRow = document.createElement('tr');
-  const rowNumber = tbody.rows.length + 1;
 
   newRow.innerHTML = `
-    <td>${rowNumber}</td>
     <td><img src="${imageSrc}" style="width:100px;"></td>
     <td>
       <button class="btn-edit">Edit</button>
@@ -118,8 +115,8 @@ document.querySelector('.btn-tambah').addEventListener('click', () => {
 });
 
 function attachButtonHandlers(row) {
-  const tdImage = row.children[1];
-  const tdOptions = row.children[2];
+  const tdImage = row.children[0];
+  const tdOptions = row.children[1];
   let originalSrc = tdImage.querySelector('img').src;
 
   const btnEdit = row.querySelector('.btn-edit');
