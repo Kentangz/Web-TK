@@ -4,7 +4,10 @@ import logoImage from '/logo.svg';
 import { createNavbarHTML, initNavbarFunctionality } from '../Component/Navbar/navbar.js';
 import { fetchGuru } from './guru.js';
 import { createFooterHTML } from '../Component/Footer/footer.js';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9e30904 (feat&fix: mengubah kontent menggunakan api dan memperbaiki konten lain)
 
 fetchGuru()
   .then(guruData => {
