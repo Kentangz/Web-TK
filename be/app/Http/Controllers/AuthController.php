@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -24,11 +25,19 @@ class AuthController extends Controller
             ]);
         }
 
+        
         $user->tokens()->delete();
-        $token = $user->createToken('admin-token')->plainTextToken;
+        // $token = $user->createToken('admin-token')->plainTextToken;
+
+        // $accessToken = $user->tokens()->latest()->first();
+        // $accessToken -> expires_at = Carbon::now()->addMinute(1);
+        // $accessToken -> save();
+        $expiresAt = now()->addMinutes(1);
+        $token = $user -> createToken('access_token',['access-api'],$expiresAt)->plainTextToken;
 
         return response()->json([
-            'token' => $token
+            'token' => $token,
+            'expired_at' => $expiresAt->toDateTimeString(),
         ]);
     }
 
@@ -39,14 +48,18 @@ class AuthController extends Controller
         return response()->json(['message'=>'logout successfully']);
     }
 
-    public function checkuser(Request $request){
-        $userData = $request->user();
+    public function checkuser(Request $request)
+    {
+        $user = $request->user();
 
-        return response()->json(
-            [
-                'status' => true,
-                'data' => $userData,
-            ]
-            );
+        $accessToken = $user->tokens()->latest()->first();
+        $lastUsedAt = $accessToken->last_used_at;
+
+        return response()->json([
+            'status' => true,
+            'data' => $user,
+            'last_activity' => $lastUsedAt ->toDateTimeString()
+        ]);
     }
+
 }
