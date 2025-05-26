@@ -30,7 +30,7 @@ class AuthController extends Controller
         // $expiresAt = now()->addMinutes(1);
 
         $expiresAt = now()->addDays(2);
-        $token = $user -> createToken('adminToken',$expiresAt)->plainTextToken;
+        $token = $user -> createToken('adminToken', ['*'],$expiresAt)->plainTextToken;
 
         return response()->json([
             'token' => $token,
