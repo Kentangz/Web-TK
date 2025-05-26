@@ -24,14 +24,12 @@ class AuthController extends Controller
             ]);
         }
 
-        
         $user->tokens()->delete();
-        // $token = $user->createToken('admin-token')->plainTextToken;
 
-        // $accessToken = $user->tokens()->latest()->first();
-        // $accessToken -> expires_at = Carbon::now()->addMinute(1);
-        // $accessToken -> save();
-        $expiresAt = now()->addMinutes(1);
+        //testing
+        // $expiresAt = now()->addMinutes(1);
+
+        $expiresAt = now()->addDays(2);
         $token = $user -> createToken('adminToken',$expiresAt)->plainTextToken;
 
         return response()->json([
