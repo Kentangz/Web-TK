@@ -42,7 +42,7 @@ use App\Http\Controllers\Contact\AlamatController;
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-    Route::get('/cek', [AuthController::class, 'checkuser'])->middleware('auth:sanctum', 'ability:access-api');
+    Route::get('/cek', [AuthController::class, 'checkuser'])->middleware('auth:sanctum');
 });
 
 // endpoint
@@ -87,7 +87,7 @@ foreach ($resources as $uri => $controller) {
 }
 
 // protected
-Route::middleware('auth:sanctum','ability:access-api')->group(function () use ($resources) {
+Route::middleware('auth:sanctum')->group(function () use ($resources) {
     foreach ($resources as $uri => $controller) {
         Route::apiResource($uri, $controller)->only(['store', 'update', 'destroy']);
     }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -33,7 +32,7 @@ class AuthController extends Controller
         // $accessToken -> expires_at = Carbon::now()->addMinute(1);
         // $accessToken -> save();
         $expiresAt = now()->addMinutes(1);
-        $token = $user -> createToken('access_token',['access-api'],$expiresAt)->plainTextToken;
+        $token = $user -> createToken('adminToken',$expiresAt)->plainTextToken;
 
         return response()->json([
             'token' => $token,
