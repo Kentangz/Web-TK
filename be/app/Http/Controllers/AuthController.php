@@ -38,4 +38,15 @@ class AuthController extends Controller
 
         return response()->json(['message'=>'logout successfully']);
     }
+
+    public function checkuser(Request $request){
+        $userData = $request->user();
+
+        return response()->json(
+            [
+                'status' => true,
+                'data' => $userData,
+            ]
+            );
+    }
 }
