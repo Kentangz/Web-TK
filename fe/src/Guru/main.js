@@ -5,6 +5,7 @@ import { createNavbarHTML, initNavbarFunctionality } from '../Component/Navbar/n
 import { fetchGuru } from './guru.js';
 import { createFooterHTML } from '../Component/Footer/footer.js';
 
+
 fetchGuru()
   .then(guruData => {
     const topGuru = guruData.slice(0, 2).map(guru => `
