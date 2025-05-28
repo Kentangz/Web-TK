@@ -9,7 +9,8 @@ import { fetchTujuan } from './tujuan.js'
 import { fetchStrategi } from './strategi.js'
 import { fetchGambarTujuan } from './gambarTujuanStrategi.js'
 import { fetchGambarGaleriKegiatan } from '../ProgramSekolah/gambargalerikegiatan.js';
-import { fetchGambarFasilitas } from '../FasilitasPrestasi/gambarfasilitas.js';
+import { fetchGambarFasilitas } from '../FasilitasPrestasi/galerifasilitas.js';
+import { createFooterHTML } from '../Component/Footer/footer.js';
 
 
 document.querySelector('#beranda').innerHTML = `
@@ -94,6 +95,7 @@ document.querySelector('#beranda').innerHTML = `
     </div>
   </section>
 `
+document.querySelector('#beranda').innerHTML += createFooterHTML();
 // Isi konten dari API
 Promise.all([
   fetchvisi(),

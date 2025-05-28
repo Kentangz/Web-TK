@@ -1,7 +1,13 @@
-import '../global.css'
-import './style.css'
-import logoImage from '/logo.svg'
-import { createNavbarHTML,initNavbarFunctionality} from '../Component/Navbar/navbar.js'
+import '../global.css';
+import './style.css';
+import logoImage from '/logo.svg';
+import { createNavbarHTML, initNavbarFunctionality } from '../Component/Navbar/navbar.js';
+import { createFooterHTML } from '../Component/Footer/footer.js';
+import { fetchGambarFasilitas } from './galerifasilitas.js';
+import { fetchFasilitas } from './fasilitas.js';
+import { fetchPrestasiGuru } from './prestasiguru.js';
+import { fetchPrestasiSiswa } from './prestasisiswa.js';
+import { fetchGaleri } from './galeri.js'; 
 
 
 document.querySelector('#fasilitas-prestasi').innerHTML = `
@@ -10,35 +16,16 @@ document.querySelector('#fasilitas-prestasi').innerHTML = `
     schoolName: 'TK & KB SITI HAJAR',
     activePage: 'fasilitas-prestasi'
   })}
-  
+
   <section class="fasilitas-section">
     <h1 class="judul">FASILITAS KAMI</h1>
     <div class="fasilitas-container">
-      <div class="fasilitas-list">
-        <h3>Fasilitas Lainnya :</h3>
-        <ul>
-          <li>Kelas KB</li>
-          <li>Kelas TK A1 dan TK A2</li>
-          <li>Kelas TK B1 dan TK B2</li>
-          <li>Playground</li>
-          <li>Alat-alat Ekstrakurikuler</li>
-          <li>Gudang Sekolah</li>
-          <li>Tempat Wudhu</li>
-          <li>Kamar Mandi / WC</li>
-          <li>Lapangan</li>
-          <li>Ruang Guru</li>
-        </ul>
+      <div class="fasilitas-list" id="fasilitas-list">
+        <!-- Konten dari API -->
       </div>
       <div class="fasilitas-gallery">
-        <div class="gallery-box">
-          <div class="gallery-item"><img src="/images/fasilitas1.png" alt="Fasilitas 1" /></div>
-          <div class="gallery-item"><img src="/images/fasilitas2.png" alt="Fasilitas 2" /></div>
-          <div class="gallery-item"><img src="/images/fasilitas3.png" alt="Fasilitas 3" /></div>
-          <div class="gallery-item"><img src="/images/fasilitas4.png" alt="Fasilitas 4" /></div>
-          <div class="gallery-item"><img src="/images/fasilitas5.png" alt="Fasilitas 5" /></div>
-          <div class="gallery-item"><img src="/images/fasilitas6.png" alt="Fasilitas 6" /></div>
-          <div class="gallery-item"><img src="/images/fasilitas7.png" alt="Fasilitas 7" /></div>
-          <div class="gallery-item"><img src="/images/fasilitas8.png" alt="Fasilitas 8" /></div>
+        <div class="gallery-box" id="gallery-fasilitas">
+          <!-- Gambar dari API -->
         </div>
       </div>
     </div>
@@ -49,40 +36,50 @@ document.querySelector('#fasilitas-prestasi').innerHTML = `
     <div class="prestasi-container">
       <div class="prestasi-box">
         <h2>Prestasi Guru</h2>
-        <ul>
-          <li>Lomba Inovasi Guru Kab. Malang Juara 3</li>
-          <li>Porseni Jawa Timur Pembelajar</li>
+        <ul id="prestasi-guru">
+          <!-- Data prestasi guru akan dimuat di sini -->
         </ul>
       </div>
       <div class="prestasi-box">
         <h2>Prestasi Siswa</h2>
-        <ul>
-          <li>Lomba Hari Anak Nasional Juara Harapan 3 Menyanyi Tunggal</li>
-          <li>Lomba Hari Anak Nasional Juara 1</li>
-          <li>Festival Kolase Eco Green Park Juara 1</li>
-          <li>Festival Kolase Eco Green Park Juara 3</li>
-          <li>Lomba Hari Anak Nasional Juara 1</li>
-          <li>3M (Melipat, Menggunting, Menempel)</li>
+        <ul id="prestasi-siswa">
+          <!-- Data prestasi siswa akan dimuat di sini -->
         </ul>
       </div>
     </div>
   </section>
 
+
   <section class="galeri-section">
     <h1 class="judul">GALERI</h1>
-    <div class="galeri-grid">
-      <div class="galeri-item"><img src="/images/foto 1.jpg" alt="Galeri 1"></div>
-      <div class="galeri-item"><img src="/images/foto 2.jpg" alt="Galeri 2"></div>
-      <div class="galeri-item"><img src="/images/foto 3.jpg" alt="Galeri 3"></div>
-      <div class="galeri-item"><img src="/images/foto 4.jpg" alt="Galeri 4"></div>
-      <div class="galeri-item"><img src="/images/foto 5.jpg" alt="Galeri 5"></div>
-      <div class="galeri-item"><img src="/images/foto 6.jpg" alt="Galeri 6"></div>
-      <div class="galeri-item"><img src="/images/foto 7.jpg" alt="Galeri 7"></div>
-      <div class="galeri-item"><img src="/images/foto 8.jpg" alt="Galeri "></div>
-    </div>
+    <div class="galeri-grid" id="galeri-grid"></div>
   </section>
-
 `
+
+document.querySelector('#fasilitas-prestasi').innerHTML += createFooterHTML();
+
+Promise.all([
+  fetchFasilitas(),
+  fetchGambarFasilitas(),
+  fetchPrestasiGuru(),
+  fetchPrestasiSiswa(),
+  fetchGaleri()
+])
+.then(([htmlFasilitas, htmlGalleryFasilitas, htmlPrestasiGuru, htmlPrestasiSiswa, htmlGaleri]) => {
+  document.getElementById('fasilitas-list').innerHTML = htmlFasilitas;
+  document.getElementById('gallery-fasilitas').innerHTML = htmlGalleryFasilitas;
+  document.getElementById('prestasi-guru').innerHTML = htmlPrestasiGuru;
+  document.getElementById('prestasi-siswa').innerHTML = htmlPrestasiSiswa;
+  document.getElementById('galeri-grid').innerHTML = htmlGaleri;
+})
+.catch(err => {
+  console.error("Gagal memuat salah satu atau lebih data:", err);
+  document.getElementById('fasilitas-list').innerHTML = `<p style="color:red;">Gagal memuat fasilitas</p>`;
+  document.getElementById('gallery-fasilitas').innerHTML = `<p style="color:red;">Gagal memuat galeri fasilitas</p>`;
+  document.getElementById('prestasi-guru').innerHTML = `<p style="color:red;">Gagal memuat prestasi guru</p>`;
+  document.getElementById('prestasi-siswa').innerHTML = `<p style="color:red;">Gagal memuat prestasi siswa</p>`;
+  document.getElementById('galeri-grid').innerHTML = `<p style="color:red;">Gagal memuat galeri</p>`;
+});
 
 initNavbarFunctionality();
 

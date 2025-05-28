@@ -2,6 +2,7 @@ import '../global.css'
 import './style.css'
 import logoImage from '/logo.svg'
 import { createNavbarHTML,initNavbarFunctionality } from '../Component/Navbar/navbar'
+import { createFooterHTML } from '../Component/Footer/footer.js';
 
 function createActivityCard(iconPath, title, description) {
   return `
@@ -170,6 +171,9 @@ document.querySelector('#program-sekolah').innerHTML = `
     ${createKurikulumPlusSection()}
   </div>
 `
+
+document.querySelector('#program-sekolah').innerHTML += createFooterHTML();
+
 initNavbarFunctionality()
 
 document.getElementById('scrollLeft').addEventListener('click', () => {

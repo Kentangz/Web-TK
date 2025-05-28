@@ -10,6 +10,8 @@ import { fetchContactPerson } from './contactperson.js'
 import { fetchEmail } from './email.js'
 import { fetchInstagram } from './instagram.js'
 import { fetchAlamat } from './alamat.js'
+import { createFooterHTML } from '../Component/Footer/footer.js';
+
 
 document.querySelector('#contact').innerHTML = `
   ${createNavbarHTML({
@@ -69,6 +71,27 @@ document.querySelector('#contact').innerHTML = `
     </div>
   </section>
 `;
+document.querySelector('#contact').innerHTML += createFooterHTML();
+
+Promise.all([
+  fetchContactPerson(),
+  fetchEmail(),
+  fetchInstagram(),
+  fetchAlamat()
+])
+.then(([contactPerson, email, instagram, alamat]) => {
+  document.getElementById('contact-person').textContent = contactPerson;
+  document.getElementById('contact-email').textContent = email;
+  document.getElementById('contact-instagram').textContent = instagram;
+  document.getElementById('contact-address').textContent = alamat;
+})
+.catch(error => {
+  console.error("Gagal memuat data kontak:", error);
+  document.getElementById('contact-person').textContent = 'Gagal memuat';
+  document.getElementById('contact-email').textContent = 'Gagal memuat';
+  document.getElementById('contact-instagram').textContent = 'Gagal memuat';
+  document.getElementById('contact-address').textContent = 'Gagal memuat';
+});
 
 Promise.all([
   fetchContactPerson(),

@@ -6,6 +6,7 @@ import { fetchWaktuAB } from './waktutk.js'
 import { fetchJadwalAB } from './jadwaltk.js'
 import { fetchWaktuKB } from './waktukb.js';
 import { fetchJadwalKB } from './jadwalkb.js';
+import { createFooterHTML } from '../Component/Footer/footer.js';
 
 document.querySelector('#jadwal').innerHTML = `
   ${createNavbarHTML({
@@ -36,6 +37,7 @@ document.querySelector('#jadwal').innerHTML = `
     </section>
   </div>
 `
+document.querySelector('#jadwal').innerHTML += createFooterHTML();
 
 Promise.all([
   fetchWaktuAB(),
