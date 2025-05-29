@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
+use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\Beranda\VisiController;
 use App\Http\Controllers\Beranda\MisiController;
-use App\Http\Controllers\Beranda\ImageVisiMisiController;   
+use App\Http\Controllers\Beranda\ImageVisiMisiController;
 use App\Http\Controllers\Beranda\TujuanController;
 use App\Http\Controllers\Beranda\StrategiController;
 use App\Http\Controllers\Beranda\ImageTujuanStrategiController;
@@ -36,41 +38,61 @@ use App\Http\Controllers\Contact\EmailController;
 use App\Http\Controllers\Contact\InstagramController;
 use App\Http\Controllers\Contact\AlamatController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// auth
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/cek', [AuthController::class, 'checkuser']);
+    });
+});
 
-Route::apiResources([
-    '/beranda/visi' => VisiController::class,
-    '/beranda/misi' => MisiController::class,
-    '/beranda/imagevisi' => ImageVisiMisiController::class,
-    '/beranda/tujuan' => TujuanController::class,
-    '/beranda/strategi' => StrategiController::class,
-    '/beranda/imagetujuan' => ImageTujuanStrategiController::class,
+// endpoint
+$resources = [
+    'beranda/visi' => VisiController::class,
+    'beranda/misi' => MisiController::class,
+    'beranda/imagevisi' => ImageVisiMisiController::class,
+    'beranda/tujuan' => TujuanController::class,
+    'beranda/strategi' => StrategiController::class,
+    'beranda/imagetujuan' => ImageTujuanStrategiController::class,
 
-    '/guru' =>  DaftarGuruController::class,
+    'guru' => DaftarGuruController::class,
 
-    '/programsekolah/kegiatanunggulan' => KegiatanUnggulanController::class,
-    '/programsekolah/gallerykegiatan' => GalleryKegiatanController::class,
-    '/programsekolah/kegiatanpenunjang' => KegiatanPenunjangController::class,
-    '/programsekolah/output' => OutputController::class,
-    '/programsekolah/kurikulumplus/suratpendek' => SuratPendekController::class,
-    '/programsekolah/kurikulumplus/doa' => DoaController::class,
-    '/programsekolah/kurikulumplus/hadits' => HaditsController::class,
+    'programsekolah/kegiatanunggulan' => KegiatanUnggulanController::class,
+    'programsekolah/gallerykegiatan' => GalleryKegiatanController::class,
+    'programsekolah/kegiatanpenunjang' => KegiatanPenunjangController::class,
+    'programsekolah/output' => OutputController::class,
+    'programsekolah/kurikulumplus/suratpendek' => SuratPendekController::class,
+    'programsekolah/kurikulumplus/doa' => DoaController::class,
+    'programsekolah/kurikulumplus/hadits' => HaditsController::class,
 
-    '/fasilitasprestasi/fasilitas' => FasilitasController::class,
-    '/fasilitasprestasi/galleryfasilitas' => GalleryFasilitasController::class,
-    '/fasilitasprestasi/prestasiguru' => PrestasiGuruController::class,
-    '/fasilitasprestasi/prestasisiswa' => PrestasiSiswaController::class,
-    '/fasilitasprestasi/gallery' => GalleryController::class,
+    'fasilitasprestasi/fasilitas' => FasilitasController::class,
+    'fasilitasprestasi/galleryfasilitas' => GalleryFasilitasController::class,
+    'fasilitasprestasi/prestasiguru' => PrestasiGuruController::class,
+    'fasilitasprestasi/prestasisiswa' => PrestasiSiswaController::class,
+    'fasilitasprestasi/gallery' => GalleryController::class,
 
-    '/jadwal/waktukegiatantk' => WaktuKegiatanController::class,
-    '/jadwal/jadwalkelompoktk' => JadwalKelompokController::class,
-    '/jadwal/waktukegiatankb' => WaktuKegiatankbController::class,
-    '/jadwal/jadwalkelompokkb' => JadwalKegiatankbController::class,
+    'jadwal/waktukegiatantk' => WaktuKegiatanController::class,
+    'jadwal/jadwalkelompoktk' => JadwalKelompokController::class,
+    'jadwal/waktukegiatankb' => WaktuKegiatankbController::class,
+    'jadwal/jadwalkelompokkb' => JadwalKegiatankbController::class,
 
-    '/contact/contactperson' => ContactPersonController::class,
-    '/contact/email' => EmailController::class,
-    '/contact/instagram' => InstagramController::class,
-    '/contact/alamat' => AlamatController::class,
-]);
+    'contact/contactperson' => ContactPersonController::class,
+    'contact/email' => EmailController::class,
+    'contact/instagram' => InstagramController::class,
+    'contact/alamat' => AlamatController::class,
+];
+
+// public
+foreach ($resources as $uri => $controller) {
+    Route::apiResource($uri, $controller)->only(['index', 'show']);
+}
+
+// protected
+Route::middleware('auth:sanctum')->group(function () use ($resources) {
+    foreach ($resources as $uri => $controller) {
+        Route::apiResource($uri, $controller)->only(['store', 'update', 'destroy']);
+    }
+});
+
