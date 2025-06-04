@@ -2,6 +2,8 @@ import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
 
+import { getAllPrestasiGuru, postPrestasiGuru, updatePrestasiGuruById, deletePrestasiGuruById, getAllPrestasiSiswa, postPrestasiSiswa, updatePrestasiSiswaById, deletePrestasiSiswaById } from './fetch.js';
+
 document.querySelector('#prestasi').innerHTML = `
   ${createSidebarHTML({
     activePage: 'prestasi',
@@ -76,91 +78,125 @@ document.querySelector('#prestasi').innerHTML = `
   </div>
 `;
 
-const guruData = ['Lomba Inovasi guru Kab.Malang Juara 3','Porseni jawa timur Pembelah'];
-const siswaData = ['Lomba hari anak nasional Juara harapan 3 menyanyi tunggal','Lomba hari anak nasional Juara 1','Festival kolase Eco Green Park Juara 1',' Festival kolase Eco Green Park Juara 3', 'Lomba hari anak nasional Juara 1', '3M (melipat, menggunting, menempel'];
-
 const guruTable = document.getElementById('guruTable');
 const siswaTable = document.getElementById('siswaTable');
 const btnTambahGuru = document.getElementById('btnTambahGuru');
 const btnTambahSiswa = document.getElementById('btnTambahSiswa');
 
-renderTable(guruTable, guruData);
-renderTable(siswaTable, siswaData);
+function renderPrestasiGuru() {
+  guruTable.innerHTML = `<tr><td colspan="2">Loading data prestasi guru...</td></tr>`;
+  getAllPrestasiGuru().then(data => {
+    guruTable.innerHTML = '';
+    if (Array.isArray(data) && data.length) {
+      data.forEach(item => guruTable.appendChild(createRow(item.id, item.teacher, 'guru')));
+    }
+  });
+}
+
+function renderPrestasiSiswa() {
+  siswaTable.innerHTML = `<tr><td colspan="2">Loading data prestasi siswa...</td></tr>`;
+  getAllPrestasiSiswa().then(data => {
+    siswaTable.innerHTML = '';
+    if (Array.isArray(data) && data.length) {
+      data.forEach(item => siswaTable.appendChild(createRow(item.id, item.student, 'siswa')));
+    }
+  });
+}
 
 btnTambahGuru.addEventListener('click', () => {
-  if (guruTable.querySelector('.input-edit')) return;
-  guruTable.appendChild(createRow('', true, guruTable, guruData));
+  if (document.querySelector('#guruTable .input-edit')) return;
+  guruTable.appendChild(createRow(null, '', 'guru', true));
   setButtonsDisabled(true);
 });
 
 btnTambahSiswa.addEventListener('click', () => {
-  if (siswaTable.querySelector('.input-edit')) return;
-  siswaTable.appendChild(createRow('', true, siswaTable, siswaData));
+  if (document.querySelector('#siswaTable .input-edit')) return;
+  siswaTable.appendChild(createRow(null, '', 'siswa', true));
   setButtonsDisabled(true);
 });
 
-function renderTable(tableElement, dataArray) {
-  tableElement.innerHTML = '';
-  dataArray.forEach(item => {
-    tableElement.appendChild(createRow(item, false, tableElement, dataArray));
+function setButtonsDisabled(disabled) {
+  document.querySelectorAll('.btn-edit, .btn-hapus').forEach(btn => {
+    btn.disabled = disabled;
   });
+  btnTambahGuru.disabled = disabled;
+  btnTambahSiswa.disabled = disabled;
 }
 
-function createRow(text, isEdit, tableElement, dataArray) {
+function createRow(id, text, type, isEdit = false) {
   const tr = document.createElement('tr');
-  const tdDesc = document.createElement('td');
+  const tdDeskripsi = document.createElement('td');
   const tdOpsi = document.createElement('td');
 
   if (isEdit) {
     const input = document.createElement('input');
     input.type = 'text';
-    input.value = text;
-    input.placeholder = 'masukkan prestasi';
+    input.placeholder = 'Masukkan deskripsi';
+    input.value = text || '';
     input.classList.add('input-edit');
     input.style.width = '100%';
-    tdDesc.appendChild(input);
+    tdDeskripsi.appendChild(input);
 
     const btnSimpan = createButton('Simpan', 'btn-simpan', () => {
-      saveRow(tr, input.value.trim(), text, tableElement, dataArray);
+      const value = input.value.trim();
+      if (!value) {
+        showToast('Data prestasi tidak boleh kosong.', 'error');
+        return;
+      }
+      if (id) {
+        if (type === 'guru') {
+          updatePrestasiGuruById(id, { prestasi_guru: value }).then(renderPrestasiGuru);
+        } else {
+          updatePrestasiSiswaById(id, { prestasi_siswa: value }).then(renderPrestasiSiswa);
+        }
+        showToast('Data prestasi berhasil disimpan.', 'success');
+      } else {
+        if (type === 'guru') {
+          postPrestasiGuru({ prestasi_guru: value }).then(renderPrestasiGuru);
+        } else {
+          postPrestasiSiswa({ prestasi_siswa: value }).then(renderPrestasiSiswa);
+        }
+        showToast('Data prestasi berhasil ditambahkan.', 'success');
+      }
       setButtonsDisabled(false);
     });
 
     const btnBatal = createButton('Batal', 'btn-batal', () => {
-      if (text === '') tr.remove();
-      else tr.replaceWith(createRow(text, false, tableElement, dataArray));
+      if (id) {
+        tr.replaceWith(createRow(id, text, type));
+      } else {
+        tr.remove();
+      }
       setButtonsDisabled(false);
     });
 
     tdOpsi.append(btnSimpan, btnBatal);
   } else {
-    const ul = document.createElement('ul');
-    ul.style.margin = '0';
-    ul.style.paddingLeft = '1em';
-
-    const li = document.createElement('li');
-    li.textContent = text;
-
-    ul.appendChild(li);
-    tdDesc.style.paddingRight = '2em'; // optional untuk spasi kanan
-    tdDesc.appendChild(ul);
+    tdDeskripsi.textContent = text || '-';
 
     const btnEdit = createButton('Edit', 'btn-edit', () => {
-      tr.replaceWith(createRow(text, true, tableElement, dataArray));
+      tr.replaceWith(createRow(id, text, type, true));
       setButtonsDisabled(true);
     });
 
     const btnHapus = createButton('Hapus', 'btn-hapus', () => {
-      if (confirm('Yakin ingin menghapus data ini?')) {
-        const index = dataArray.indexOf(text);
-        if (index !== -1) dataArray.splice(index, 1);
-        tr.remove();
-      }
+        if (type === 'guru') {
+          deletePrestasiGuruById(id).then(() => {
+            tr.remove();
+            showToast('Data prestasi berhasil dihapus.', 'error');
+          });
+        } else {
+          deletePrestasiSiswaById(id).then(() => {
+            tr.remove();
+            showToast('Data prestasi berhasil dihapus.', 'error');
+          });
+        }
     });
 
     tdOpsi.append(btnEdit, btnHapus);
   }
 
-  tr.append(tdDesc, tdOpsi);
+  tr.append(tdDeskripsi, tdOpsi);
   return tr;
 }
 
@@ -172,23 +208,26 @@ function createButton(text, className, onClick) {
   return btn;
 }
 
-function saveRow(tr, newText, oldText, tableElement, dataArray) {
-  if (!newText) return alert('Data tidak boleh kosong');
-  if (!oldText) {
-    dataArray.push(newText);
-  } else {
-    const index = dataArray.indexOf(oldText);
-    if (index !== -1) dataArray[index] = newText;
-  }
-  tr.replaceWith(createRow(newText, false, tableElement, dataArray));
+
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
 }
 
-function setButtonsDisabled(disabled) {
-  document.querySelectorAll('.btn-edit, .btn-hapus').forEach(btn => {
-    btn.disabled = disabled;
-  });
-  btnTambahGuru.disabled = disabled;
-  btnTambahSiswa.disabled = disabled;
-}
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
 
+renderPrestasiGuru();
+renderPrestasiSiswa();
 initSidebarFunctionality();

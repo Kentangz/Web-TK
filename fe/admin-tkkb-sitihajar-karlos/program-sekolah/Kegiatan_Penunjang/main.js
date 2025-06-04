@@ -2,6 +2,8 @@ import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
 
+import { getAllKegiatanPenunjang, postKegiatanPenunjang, updateKegiatanPenunjangById, deleteKegiatanPenunjangById } from './fetch.js';
+
 document.querySelector('#kegiatan-penunjang').innerHTML = `
   ${createSidebarHTML({
     activePage: 'kegiatan-penunjang',
@@ -51,16 +53,19 @@ document.querySelector('#kegiatan-penunjang').innerHTML = `
 const kegiatanPenunjangTable = document.getElementById('kegiatanPenunjangTable');
 const btnTambah = document.getElementById('btnTambah');
 
-const kegiatanPenunjangDefault = ['Mengikuti berbagai lomba ditingkat kabupaten maupun kotamadya.', 'Kunjungan ke instansi, tempat umum, maupun kantor pemerintah (misalnya kantor polisi, Puskesmas, kantor pos, pasar, PMK (Penanggulangan, pencegahan Kebakaran).', 'Mengadakan kegiatan-kegiatan dalam rangka memperingati hari besar Nasional.', 'Mengisi acara anak-anak dalam berbagai media.'];
-
 function renderKegiatanPenunjang() {
-  kegiatanPenunjangTable.innerHTML = '';
-  kegiatanPenunjangDefault.forEach(item => kegiatanPenunjangTable.appendChild(createRow(item)));
+  kegiatanPenunjangTable.innerHTML = `<tr><td colspan="2">Loading data kegiatan penunjang...</td></tr>`;
+  getAllKegiatanPenunjang().then(data => {
+    kegiatanPenunjangTable.innerHTML = '';
+    if (data && Array.isArray(data) && data.length) {
+      data.forEach(item => kegiatanPenunjangTable.appendChild(createRow(item.id, item.activity)));
+    }
+  });
 }
 
 btnTambah.addEventListener('click', () => {
   if (document.querySelector('.input-edit')) return;
-  kegiatanPenunjangTable.appendChild(createRow('', true));
+  kegiatanPenunjangTable.appendChild(createRow(null, '', true));
   setButtonsDisabled(true);
 });
 
@@ -71,7 +76,7 @@ function setButtonsDisabled(disabled) {
   btnTambah.disabled = disabled;
 }
 
-function createRow(text, isEdit = false) {
+function createRow(id, text, isEdit = false) {
   const tr = document.createElement('tr');
   const tdKegiatanPenunjang = document.createElement('td');
   const tdOpsi = document.createElement('td');
@@ -86,13 +91,27 @@ function createRow(text, isEdit = false) {
     tdKegiatanPenunjang.appendChild(input);
 
     const btnSimpan = createButton('Simpan', 'btn-simpan', () => {
-      saveRow(tr, input.value.trim(), text);
+      const value = input.value.trim();
+      if (!value) {
+        showToast('Data kegiatan penunjang tidak boleh kosong.', "error");
+        return;
+      }
+      if (id) {
+        updateKegiatanPenunjangById(id, { kegiatan_penunjang: value }).then(() => renderKegiatanPenunjang());
+        showToast("Data kegiatan penunjang berhasil disimpan.", "success");
+      } else {
+        postKegiatanPenunjang({ kegiatan_penunjang: value }).then(() => renderKegiatanPenunjang());
+        showToast("Data kegiatan penunjang berhasil ditambahkan.", "success")
+      }
       setButtonsDisabled(false);
     });
 
     const btnBatal = createButton('Batal', 'btn-batal', () => {
-      if (text === '') tr.remove();
-      else tr.replaceWith(createRow(text));
+      if (id) {
+        tr.replaceWith(createRow(id, text));
+      } else {
+        tr.remove();
+      }
       setButtonsDisabled(false);
     });
 
@@ -109,13 +128,17 @@ function createRow(text, isEdit = false) {
     tdKegiatanPenunjang.style.paddingRight = '2em';
     tdKegiatanPenunjang.appendChild(ul);
 
-
     const btnEdit = createButton('Edit', 'btn-edit', () => {
-      tr.replaceWith(createRow(text, true));
+      tr.replaceWith(createRow(id, text, true));
       setButtonsDisabled(true);
     });
 
-    const btnHapus = createButton('Hapus', 'btn-hapus', () => deleteRow(tr, text));
+    const btnHapus = createButton('Hapus', 'btn-hapus', () => {
+      showToast("Data kegiatan penunjang berhasil dihapus.","error");
+        deleteKegiatanPenunjangById(id).then(() => {
+          tr.remove();
+        });
+    });
 
     tdOpsi.append(btnEdit, btnHapus);
   }
@@ -132,26 +155,24 @@ function createButton(text, className, onClick) {
   return btn;
 }
 
-function saveRow(tr, newText, oldText) {
-  if (!newText) return alert('Data tidak boleh kosong');
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
 
-  if (!oldText) {
-    kegiatanPenunjangDefault.push(newText);
-  } else {
-    const index = kegiatanPenunjangDefault.indexOf(oldText);
-    if (index > -1) kegiatanPenunjangDefault[index] = newText;
-  }
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
 
-  tr.replaceWith(createRow(newText));
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
 }
 
-function deleteRow(tr, text) {
-  if (confirm('Yakin ingin menghapus data ini?')) {
-    const index = kegiatanPenunjangDefault.indexOf(text);
-    if (index > -1) kegiatanPenunjangDefault.splice(index, 1);
-    tr.remove();
-  }
-}
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
 
 renderKegiatanPenunjang();
 initSidebarFunctionality();

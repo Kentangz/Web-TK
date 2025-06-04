@@ -2,6 +2,8 @@ import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
 
+import { getAllSurat, postSurat, updateSuratById, deleteSuratById, getAllDoa, postDoa, updateDoaById, deleteDoaById, getAllHadits, postHadits, updateHaditsById, deleteHaditsById  } from './fetch.js';
+
 document.querySelector('#kurikulum-plus').innerHTML = `
   ${createSidebarHTML({
     activePage: 'kurikulum-plus',
@@ -102,10 +104,6 @@ document.querySelector('#kurikulum-plus').innerHTML = `
   </div>
 `;
 
-const suratData = ['An-nas', 'Al-Falaq','Al-Ikhlas','Al-Lahab','Al-Kautsar','Al-Nasr','Al-Fil','Al-Maun','Ayat Kursi'];
-const doaData = ['Doa sebelum & Bangun Tidur', 'Doa Sebelum & Sesudah Belajar','Doa Keluar & Masuk Kamar Mandi','Doa Ketika Hujan Turun','Doa Masuk & keluar Masjid','Doa Naik Kendaraan Darat','Doa Naik Kendaraan Laut','Doa Kedua Orang Tua','Doa Keselamatan dunia akhirat','Doa Panjang Umur'];
-const haditsData = ['Hadist Senyum', 'Hadist kebersihan','Hadist Jangan Marah','Hadist Cinta Tanah Air','Hadist Sholat','Asmaul Husna 1-50'];
-
 const suratTable = document.getElementById('suratTable');
 const doaTable = document.getElementById('doaTable');
 const haditsTable = document.getElementById('haditsTable');
@@ -114,81 +112,162 @@ const btnTambahSurat = document.getElementById('btnTambahSurat');
 const btnTambahDoa = document.getElementById('btnTambahDoa');
 const btnTambahHadits = document.getElementById('btnTambahHadits');
 
-renderTable(suratTable, suratData);
-renderTable(doaTable, doaData);
-renderTable(haditsTable, haditsData);
+function renderSurat() {
+  suratTable.innerHTML = `<tr><td colspan="2">Loading data surat...</td></tr>`;
+  getAllSurat().then(data => {
+    suratTable.innerHTML = '';
+    if (Array.isArray(data) && data.length) {
+      data.forEach(item => suratTable.appendChild(createRow(item.id, item.surat, 'surat')));
+    }
+  });
+}
+
+function renderDoa() {
+  doaTable.innerHTML = `<tr><td colspan="2">Loading data doa...</td></tr>`;
+  getAllDoa().then(data => {
+    doaTable.innerHTML = '';
+    if (Array.isArray(data) && data.length) {
+      data.forEach(item => doaTable.appendChild(createRow(item.id, item.doa, 'doa')));
+    }
+  });
+}
+
+function renderHadits() {
+  haditsTable.innerHTML = `<tr><td colspan="2">Loading data hadits...</td></tr>`;
+  getAllHadits().then(data => {
+    haditsTable.innerHTML = '';
+    if (Array.isArray(data) && data.length) {
+      data.forEach(item => haditsTable.appendChild(createRow(item.id, item.hadits, 'hadits')));
+    }
+  });
+}
 
 btnTambahSurat.addEventListener('click', () => {
-  if (suratTable.querySelector('.input-edit')) return;
-  suratTable.appendChild(createRow('', true, suratTable, suratData));
+  if (document.querySelector('#suratTable .input-edit')) return;
+  suratTable.appendChild(createRow(null, '', 'surat', true));
   setButtonsDisabled(true);
 });
 
 btnTambahDoa.addEventListener('click', () => {
-  if (doaTable.querySelector('.input-edit')) return;
-  doaTable.appendChild(createRow('', true, doaTable, doaData));
+  if (document.querySelector('#doaTable .input-edit')) return;
+  doaTable.appendChild(createRow(null, '', 'doa', true));
   setButtonsDisabled(true);
 });
 
 btnTambahHadits.addEventListener('click', () => {
-  if (haditsTable.querySelector('.input-edit')) return;
-  haditsTable.appendChild(createRow('', true, haditsTable, haditsData));
+  if (document.querySelector('#haditsTable .input-edit')) return;
+  haditsTable.appendChild(createRow(null, '', 'hadits', true));
   setButtonsDisabled(true);
 });
 
-function renderTable(tableElement, dataArray) {
-  tableElement.innerHTML = '';
-  dataArray.forEach(item => {
-    tableElement.appendChild(createRow(item, false, tableElement, dataArray));
+function setButtonsDisabled(disabled) {
+  document.querySelectorAll('.btn-edit, .btn-hapus').forEach(btn => {
+    btn.disabled = disabled;
   });
+  btnTambahSurat.disabled = disabled;
+  btnTambahDoa.disabled = disabled;
+  btnTambahHadits.disabled = disabled;
 }
 
-function createRow(text, isEdit, tableElement, dataArray) {
+function createRow(id, text, type, isEdit = false) {
   const tr = document.createElement('tr');
-  const tdDesc = document.createElement('td');
+  const tdDeskripsi = document.createElement('td');
   const tdOpsi = document.createElement('td');
 
   if (isEdit) {
     const input = document.createElement('input');
     input.type = 'text';
-    input.value = text;
     input.placeholder = 'Masukkan deskripsi';
+    input.value = text || '';
     input.classList.add('input-edit');
     input.style.width = '100%';
-    tdDesc.appendChild(input);
+    tdDeskripsi.appendChild(input);
 
     const btnSimpan = createButton('Simpan', 'btn-simpan', () => {
-      saveRow(tr, input.value.trim(), text, tableElement, dataArray);
+      const value = input.value.trim();
+      if (!value) {
+        showToast('Data kurikulum plus tidak boleh kosong.', 'error');
+        return;
+      }
+      if (id) {
+        if (type === 'surat') {
+          updateSuratById(id, { surat_name: value }).then(() => {
+            renderSurat();
+            showToast('Data surat berhasil disimpan.', 'success');
+          });
+        } else if (type === 'doa') {
+          updateDoaById(id, { doa_name: value }).then(() => {
+            renderDoa();
+            showToast('Data doa berhasil disimpan.', 'success');
+          });
+        } else if (type === 'hadits') {
+          updateHaditsById(id, { hadits_name: value }).then(() => {
+            renderHadits();
+            showToast('Data hadits berhasil disimpan.', 'success');
+          });
+        }
+      } else {
+        if (type === 'surat') {
+          postSurat({ surat_name: value }).then(() => {
+            renderSurat();
+            showToast('Data surat berhasil ditambahkan.', 'success');
+          });
+        } else if (type === 'doa') {
+          postDoa({ doa_name: value }).then(() => {
+            renderDoa();
+            showToast('Data doa berhasil ditambahkan.', 'success');
+          });
+        } else if (type === 'hadits') {
+          postHadits({ hadits_name: value }).then(() => {
+            renderHadits();
+            showToast('Data hadits berhasil ditambahkan.', 'success');
+          });
+        }
+      }
       setButtonsDisabled(false);
     });
 
     const btnBatal = createButton('Batal', 'btn-batal', () => {
-      if (text === '') tr.remove();
-      else tr.replaceWith(createRow(text, false, tableElement, dataArray));
+      if (id) {
+        tr.replaceWith(createRow(id, text, type));
+      } else {
+        tr.remove();
+      }
       setButtonsDisabled(false);
     });
 
     tdOpsi.append(btnSimpan, btnBatal);
   } else {
-    tdDesc.textContent = text;
-    
+    tdDeskripsi.textContent = text || '-';
+
     const btnEdit = createButton('Edit', 'btn-edit', () => {
-      tr.replaceWith(createRow(text, true, tableElement, dataArray));
+      tr.replaceWith(createRow(id, text, type, true));
       setButtonsDisabled(true);
     });
 
     const btnHapus = createButton('Hapus', 'btn-hapus', () => {
-      if (confirm('Yakin ingin menghapus data ini?')) {
-        const index = dataArray.indexOf(text);
-        if (index !== -1) dataArray.splice(index, 1);
-        tr.remove();
+      if (type === 'surat') {
+        deleteSuratById(id).then(() => {
+          tr.remove();
+          showToast('Data surat berhasil dihapus.', 'error');
+        });
+      } else if (type === 'doa') {
+        deleteDoaById(id).then(() => {
+          tr.remove();
+          showToast('Data doa berhasil dihapus.', 'error');
+        });
+      } else if (type === 'hadits') {
+        deleteHaditsById(id).then(() => {
+          tr.remove();
+          showToast('Data hadits berhasil dihapus.', 'error');
+        });
       }
     });
 
     tdOpsi.append(btnEdit, btnHapus);
   }
 
-  tr.append(tdDesc, tdOpsi);
+  tr.append(tdDeskripsi, tdOpsi);
   return tr;
 }
 
@@ -200,25 +279,27 @@ function createButton(text, className, onClick) {
   return btn;
 }
 
-function saveRow(tr, newText, oldText, tableElement, dataArray) {
-  if (!newText) return alert('Data tidak boleh kosong');
-  if (!oldText) {
-    dataArray.push(newText);
-  } else {
-    const index = dataArray.indexOf(oldText);
-    if (index !== -1) dataArray[index] = newText;
-  }
-  tr.replaceWith(createRow(newText, false, tableElement, dataArray));
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
 }
 
-function setButtonsDisabled(disabled) {
-  document.querySelectorAll('.btn-edit, .btn-hapus').forEach(btn => {
-    btn.disabled = disabled;
-  });
-  btnTambahSurat.disabled = disabled;
-  btnTambahDoa.disabled = disabled;
-  btnTambahHadits.disabled = disabled;
-}
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
+
+renderSurat();
+renderDoa();
+renderHadits();
 
 initSidebarFunctionality();
-

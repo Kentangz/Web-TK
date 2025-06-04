@@ -2,6 +2,8 @@ import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
 
+import { getAllVisi, postVisi, updateVisiById, deleteVisiById, getAllMisi, postMisi, updateMisiById, deleteMisiById } from './fetch.js';
+
 document.querySelector('#visi-misi').innerHTML = `
   ${createSidebarHTML({
     activePage: 'visi-misi',
@@ -48,32 +50,40 @@ document.querySelector('#visi-misi').innerHTML = `
     </div>
 `;
 
-const Visi = [
-  "Terciptanya anak usia dini yang cerdas, mandiri, kreatif, dan berakhlak mulia dengan berlandaskan pancasila."
-];
+const visiList = document.getElementById('visi');
+const misiList = document.getElementById('misi');
 
-const Misi = [
-  "Menanamkan pendidikan nilai-nilai agama dan moral melalui pembiasaan dan keteladanan.",
-  "Menanamkan kemandirian melalui pendidikan Life Skill.",
-  "Melaksanakan pembelajaran yang aktif, kreatif dan menyenangkan sesuai dengan capaian belajar.",
-  "Menciptakan lingkukan belajar yang aman nyaman dan ramah anak."
-];
+let editing = false;
 
-function renderListData(listElement, data) {
+function renderListData(listElement, data, type) {
   listElement.innerHTML = '';
   data.forEach(item => {
     const li = document.createElement('li');
-    li.textContent = item;
+    li.textContent = type === 'visi' ? item.vision : item.mission;
+    li.dataset.id = item.id;
     li.style.listStyle = 'disc';
     listElement.appendChild(li);
   });
 }
 
-const visiList = document.getElementById('visi');
-const misiList = document.getElementById('misi');
+function loadData(type) {
+  if (type === 'visi') {
+    getAllVisi()
+      .then(data => renderListData(visiList, data, 'visi'))
+      .catch(err => {
+        showToast('Gagal memuat data visi', "error");
+        console.error(err);
+      });
+  } else {
+    getAllMisi()
+      .then(data => renderListData(misiList, data, 'misi'))
+      .catch(err => {
+        showToast('Gagal memuat data misi', "error");
+        console.error(err);
+      });
+  }
+}
 
-
-let editing = false;
 function setupCardActions(cardType, listElement) {
   const tambahBtn = document.querySelector(`.btn-tambah[data-type="${cardType}"]`);
   const editBtn = document.querySelector(`.btn-edit[data-type="${cardType}"]`);
@@ -95,12 +105,37 @@ function setupCardActions(cardType, listElement) {
       const input = li.querySelector('input');
       const val = input.value.trim();
       if (!val) {
-        alert("Data tidak boleh kosong.");
+        showToast("Data tidak boleh kosong.", "error");
         return;
       }
-      li.textContent = val;
-      exitEditingMode();
+      else {
+        showToast("Data berhasil ditambahkan.", "success"); 
+      }
+
+      const postFn = cardType === 'visi' ? postVisi : postMisi;
+      if (cardType === 'visi') {
+        postFn({ visi_description: val })
+          .then(() => {
+            loadData(cardType);
+            exitEditingMode();
+          })
+          .catch(err => {
+            showToast("Gagal menyimpan data visi.", "error");
+            console.error(err);
+          });
+      } else {
+        postFn({ misi_description: val })
+          .then(() => {
+            loadData(cardType);
+            exitEditingMode();
+          })
+          .catch(err => {
+            showToast("Gagal menyimpan data misi.", "error");
+            console.error(err);
+          });
+      }
     }
+
     function batal() {
       li.remove();
       exitEditingMode();
@@ -114,7 +149,7 @@ function setupCardActions(cardType, listElement) {
 
     const items = listElement.querySelectorAll('li');
     if (items.length === 0) {
-      alert(`Belum ada data untuk diedit.`);
+      showToast(`Belum ada data untuk diedit.`, "error");
       return;
     }
 
@@ -124,7 +159,6 @@ function setupCardActions(cardType, listElement) {
       const original = li.textContent;
       li.setAttribute('data-original', original);
       li.innerHTML = `<input type="text" value="${original}" style="width: 100%;" />`;
-
     });
 
     function simpan() {
@@ -135,16 +169,34 @@ function setupCardActions(cardType, listElement) {
       });
 
       if (!valid) {
-        alert("Data tidak boleh kosong.");
+        showToast("Data tidak boleh kosong.", "error");
         return;
+      } else {
+        showToast("Data berhasil disimpan.", "success");
       }
 
+      const updateFn = cardType === 'visi' ? updateVisiById : updateMisiById;
+
+      const updatePromises = [];
       items.forEach(li => {
+        const id = li.dataset.id;
         const val = li.querySelector('input').value.trim();
-        li.textContent = val;
+        if (cardType === 'visi') {
+          updatePromises.push(updateFn(id, { visi_description: val }));
+        } else {
+          updatePromises.push(updateFn(id, { misi_description: val }));
+        }
       });
 
-      exitEditingMode();
+      Promise.all(updatePromises)
+        .then(() => {
+          loadData(cardType);
+          exitEditingMode();
+        })
+        .catch(err => {
+          showToast("Gagal memperbarui data.", "error");
+          console.error(err);
+        });
     }
 
     function batal() {
@@ -161,12 +213,28 @@ function setupCardActions(cardType, listElement) {
     if (editing) return;
 
     if (listElement.children.length === 0) {
-      alert("Tidak ada data yang bisa dihapus.");
+      showToast("Tidak ada data yang bisa dihapus.", "error");
       return;
     }
 
-    if (confirm(`Yakin ingin menghapus?`)) {
-      listElement.innerHTML = '';
+    else {
+      showToast("Data berhasil dihapus.", "error");
+      const deleteFn = cardType === 'visi' ? deleteVisiById : deleteMisiById;
+
+      const deletePromises = [];
+      [...listElement.children].forEach(li => {
+        const id = li.dataset.id;
+        deletePromises.push(deleteFn(id));
+      });
+
+      Promise.all(deletePromises)
+        .then(() => {
+          loadData(cardType);
+        })
+        .catch(err => {
+          showToast("Gagal menghapus data.", "error");
+          console.error(err);
+        });
     }
   }
 
@@ -211,9 +279,29 @@ function setupCardActions(cardType, listElement) {
   }
 }
 
-renderListData(visiList, Visi);
-renderListData(misiList, Misi);
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
+}
+
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
+
+loadData('visi');
+loadData('misi');
 
 setupCardActions('visi', visiList);
 setupCardActions('misi', misiList);
+
 initSidebarFunctionality();

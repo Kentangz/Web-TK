@@ -2,6 +2,8 @@ import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
 
+import { getAllFasilitas, postFasilitas, updateFasilitasById, deleteFasilitasById } from './fetch.js';
+
 document.querySelector('#fasilitas').innerHTML = `
   ${createSidebarHTML({
     activePage: 'fasilitas',
@@ -51,16 +53,19 @@ document.querySelector('#fasilitas').innerHTML = `
 const fasilitasTable = document.getElementById('fasilitasTable');
 const btnTambah = document.getElementById('btnTambah');
 
-const fasilitasDefault = ['Kelas KB', 'Kelas TK A1 dan TK A2', 'Kelas TK B1 dan TK B2', 'Playground', 'Alat-alat Ekstrakurikuler','Gudang Sekolah','Tempat Wudhu','Kamar Mandi / WC','Lapangan','Ruang Guru'];
-
 function renderFasilitas() {
-  fasilitasTable.innerHTML = '';
-  fasilitasDefault.forEach(item => fasilitasTable.appendChild(createRow(item)));
+  fasilitasTable.innerHTML = `<tr><td colspan="2">Loading data fasilitas...</td></tr>`;
+  getAllFasilitas().then(data => {
+    fasilitasTable.innerHTML = '';
+    if (data && Array.isArray(data) && data.length) {
+      data.forEach(item => fasilitasTable.appendChild(createRow(item.id, item.facility)));
+    }
+  });
 }
 
 btnTambah.addEventListener('click', () => {
   if (document.querySelector('.input-edit')) return;
-  fasilitasTable.appendChild(createRow('', true));
+  fasilitasTable.appendChild(createRow(null, '', true));
   setButtonsDisabled(true);
 });
 
@@ -71,7 +76,7 @@ function setButtonsDisabled(disabled) {
   btnTambah.disabled = disabled;
 }
 
-function createRow(text, isEdit = false) {
+function createRow(id, text, isEdit = false) {
   const tr = document.createElement('tr');
   const tdFasilitas = document.createElement('td');
   const tdOpsi = document.createElement('td');
@@ -86,13 +91,27 @@ function createRow(text, isEdit = false) {
     tdFasilitas.appendChild(input);
 
     const btnSimpan = createButton('Simpan', 'btn-simpan', () => {
-      saveRow(tr, input.value.trim(), text);
+      const value = input.value.trim();
+      if (!value) {
+        showToast('Data fasilitas tidak boleh kosong.', "error");
+        return;
+      }
+      if (id) {
+        updateFasilitasById(id, { fasilitas_name: value }).then(() => renderFasilitas());
+        showToast("Data fasilitas berhasil disimpan.", "success");
+      } else {
+        postFasilitas({ fasilitas_name: value }).then(() => renderFasilitas());
+        showToast("Data fasilitas berhasil ditambahkan.", "success")
+      }
       setButtonsDisabled(false);
     });
 
     const btnBatal = createButton('Batal', 'btn-batal', () => {
-      if (text === '') tr.remove();
-      else tr.replaceWith(createRow(text));
+      if (id) {
+        tr.replaceWith(createRow(id, text));
+      } else {
+        tr.remove();
+      }
       setButtonsDisabled(false);
     });
 
@@ -109,13 +128,17 @@ function createRow(text, isEdit = false) {
     tdFasilitas.style.paddingRight = '2em';
     tdFasilitas.appendChild(ul);
 
-
     const btnEdit = createButton('Edit', 'btn-edit', () => {
-      tr.replaceWith(createRow(text, true));
+      tr.replaceWith(createRow(id, text, true));
       setButtonsDisabled(true);
     });
 
-    const btnHapus = createButton('Hapus', 'btn-hapus', () => deleteRow(tr, text));
+    const btnHapus = createButton('Hapus', 'btn-hapus', () => {
+      showToast("Data fasilitas berhasil dihapus.","error");
+        deleteFasilitasById(id).then(() => {
+          tr.remove();
+        });
+    });
 
     tdOpsi.append(btnEdit, btnHapus);
   }
@@ -132,26 +155,24 @@ function createButton(text, className, onClick) {
   return btn;
 }
 
-function saveRow(tr, newText, oldText) {
-  if (!newText) return alert('Data tidak boleh kosong');
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
 
-  if (!oldText) {
-    fasilitasDefault.push(newText);
-  } else {
-    const index = fasilitasDefault.indexOf(oldText);
-    if (index > -1) fasilitasDefault[index] = newText;
-  }
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
 
-  tr.replaceWith(createRow(newText));
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
 }
 
-function deleteRow(tr, text) {
-  if (confirm('Yakin ingin menghapus data ini?')) {
-    const index = fasilitasDefault.indexOf(text);
-    if (index > -1) fasilitasDefault.splice(index, 1);
-    tr.remove();
-  }
-}
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
 
 renderFasilitas();
 initSidebarFunctionality();
