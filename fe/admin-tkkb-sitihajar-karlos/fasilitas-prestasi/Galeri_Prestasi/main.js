@@ -2,6 +2,8 @@ import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
 
+import { getAllGambarPrestasi, postGambarPrestasi, updateGambarPrestasiById, deleteGambarPrestasiById } from './fetch.js';
+
 document.querySelector('#galeri-prestasi').innerHTML = `
   ${createSidebarHTML({
     activePage: 'galeri-prestasi',
@@ -40,11 +42,6 @@ document.querySelector('#galeri-prestasi').innerHTML = `
       </div>
 `;
 
-const gambarData = [
-  { gambar: '/user.png' },
-  { gambar: '/user.png' }
-];
-
 const fileInput = document.createElement('input');
 fileInput.type = 'file';
 fileInput.accept = 'image/*';
@@ -64,12 +61,13 @@ function enableAllButtons() {
   document.querySelectorAll('button').forEach(btn => btn.disabled = false);
 }
 
-function tambahBaris(imageSrc) {
+function tambahBaris({ id, img }) {
   const tbody = document.querySelector('.card-table tbody');
   const newRow = document.createElement('tr');
+  newRow.setAttribute('data-id', id);
 
   newRow.innerHTML = `
-    <td><img src="${imageSrc}" style="width:100px;"></td>
+    <td><img src="${img}" style="width:100px;"></td>
     <td>
       <button class="btn-edit">Edit</button>
       <button class="btn-hapus">Hapus</button>
@@ -79,9 +77,108 @@ function tambahBaris(imageSrc) {
   attachButtonHandlers(newRow);
 }
 
-gambarData.forEach(data => {
-  tambahBaris(data.gambar);
-});
+function attachButtonHandlers(row) {
+  const tdImage = row.children[0];
+  const tdOptions = row.children[1];
+  let originalSrc = tdImage.querySelector('img').src;
+  const id = row.getAttribute('data-id');
+
+  const btnEdit = row.querySelector('.btn-edit');
+  const btnHapus = row.querySelector('.btn-hapus');
+
+  btnHapus.addEventListener('click', () => {
+    deleteGambarPrestasiById(id)
+      .then(() => {
+        row.remove();
+        showToast("Data gambar prestasi berhasil dihapus.", "error");
+      })
+      .catch(() => {
+        showToast("Gagal menghapus data gambar prestasi.", "error");
+      });
+  });
+
+  btnEdit.addEventListener('click', () => {
+    disableAllButtons(row);
+
+    const img = tdImage.querySelector('img');
+    let newSrc = originalSrc;
+    let selectedFile = null;
+
+    tdOptions.innerHTML = `
+      <button class="btn-upload">Upload Foto</button>
+      <button class="btn-simpan">Simpan</button>
+      <button class="btn-batal">Batal</button>
+    `;
+
+    const btnUpload = tdOptions.querySelector('.btn-upload');
+    const btnSimpan = tdOptions.querySelector('.btn-simpan');
+    const btnBatal = tdOptions.querySelector('.btn-batal');
+
+    btnUpload.addEventListener('click', () => {
+      fileInput.value = "";
+      fileInput.click();
+      fileInput.onchange = () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+
+       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+       const maxSize = 2 * 1024 * 1024;
+
+      if (!allowedTypes.includes(file.type)) {
+        showToast('Format file tidak didukung.', "error");
+        fileInput.value = '';
+        return;
+      }
+
+      if (file.size > maxSize) {
+        showToast('Ukuran gambar maksimal 2MB.', "error");
+        fileInput.value = '';
+        return;
+      }
+
+        selectedFile = file;
+        const reader = new FileReader();
+        reader.onload = e => {
+          newSrc = e.target.result;
+          img.src = newSrc;
+          showToast("Foto prestasi berhasil di upload.", "success");
+        };
+        reader.readAsDataURL(file);
+      };
+    });
+
+    btnSimpan.addEventListener('click', () => {
+      updateGambarPrestasiById(id, { imageFile: selectedFile })
+        .then(updated => {
+          if (updated) {
+            originalSrc = updated.img;
+            img.src = updated.img;
+            showToast("Data gambar prestasi berhasil disimpan.", "success");
+          }
+          tdOptions.innerHTML = `
+            <button class="btn-edit">Edit</button>
+            <button class="btn-hapus">Hapus</button>
+          `;
+          attachButtonHandlers(row);
+          enableAllButtons();
+          })
+          .catch(() => {
+            showToast("Gagal menyimpan data gambar prestasi.", "error");
+          });
+      });
+
+    btnBatal.addEventListener('click', () => {
+      fileInput.value = "";
+      img.src = originalSrc;
+      tdOptions.innerHTML = `
+        <button class="btn-edit">Edit</button>
+        <button class="btn-hapus">Hapus</button>
+      `;
+      attachButtonHandlers(row);
+      enableAllButtons();
+    });
+  });
+}
 
 document.querySelector('.btn-tambah').addEventListener('click', () => {
   disableAllButtons(null);
@@ -104,82 +201,76 @@ document.querySelector('.btn-tambah').addEventListener('click', () => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = e => {
-      tambahBaris(e.target.result);
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+    const maxSize = 2 * 1024 * 1024;
+
+    if (!allowedTypes.includes(file.type)) {
+      showToast('Format file tidak didukung.', "error");
+      fileInput.value = '';
       enableAllButtons();
       reenabled = true;
-    };
-    reader.readAsDataURL(file);
+      return;
+    }
+
+     if (file.size > maxSize) {
+      showToast('Ukuran gambar maksimal 2MB.', "error");
+      fileInput.value = '';
+      enableAllButtons();
+      reenabled = true;
+      return;
+    }
+
+    postGambarPrestasi({ imageFile: file })
+      .then(result => {
+        if (result) {
+          tambahBaris(result);
+           showToast("Foto prestasi berhasil ditambahkan.", "success");
+        }
+        enableAllButtons();
+        reenabled = true;
+      })
+        .catch(() => {
+    showToast("Gagal menambahkan foto prestasi.", "error");
+    enableAllButtons();
+    reenabled = true;
+  });
   };
 });
 
-function attachButtonHandlers(row) {
-  const tdImage = row.children[0];
-  const tdOptions = row.children[1];
-  let originalSrc = tdImage.querySelector('img').src;
+const tbody = document.querySelector("table tbody");
+tbody.innerHTML = `<tr><td colspan="2">Loading data gambar prestasi...</td></tr>`;
 
-  const btnEdit = row.querySelector('.btn-edit');
-  const btnHapus = row.querySelector('.btn-hapus');
-
-  btnHapus.addEventListener('click', () => {
-    const konfirmasi = confirm('Yakin ingin menghapus data ini?');
-    if (konfirmasi) {
-      row.remove();
+getAllGambarPrestasi()
+  .then(data => {
+    if (data) {
+      tbody.innerHTML = '';
+      data.forEach(item => {
+        tambahBaris(item);
+      });
     }
+  })
+    .catch(() => {
+    showToast("Gagal memuat data gambar prestasi.", "error");
   });
 
-  btnEdit.addEventListener('click', () => {
-    disableAllButtons(row);
+  
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
 
-    const img = tdImage.querySelector('img');
-    let newSrc = originalSrc;
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
 
-    tdOptions.innerHTML = `
-      <button class="btn-upload">Upload Foto</button>
-      <button class="btn-simpan">Simpan</button>
-      <button class="btn-batal">Batal</button>
-    `;
+  container.appendChild(toast);
 
-    const btnUpload = tdOptions.querySelector('.btn-upload');
-    const btnSimpan = tdOptions.querySelector('.btn-simpan');
-    const btnBatal = tdOptions.querySelector('.btn-batal');
-
-    btnUpload.addEventListener('click', () => {
-      fileInput.click();
-      fileInput.onchange = () => {
-        const file = fileInput.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = e => {
-          newSrc = e.target.result;
-          img.src = newSrc;
-        };
-        reader.readAsDataURL(file);
-      };
-    });
-
-    btnSimpan.addEventListener('click', () => {
-      originalSrc = newSrc;
-      tdOptions.innerHTML = `
-        <button class="btn-edit">Edit</button>
-        <button class="btn-hapus">Hapus</button>
-      `;
-      attachButtonHandlers(row);
-      enableAllButtons();
-    });
-
-    btnBatal.addEventListener('click', () => {
-      img.src = originalSrc;
-      tdOptions.innerHTML = `
-        <button class="btn-edit">Edit</button>
-        <button class="btn-hapus">Hapus</button>
-      `;
-      attachButtonHandlers(row);
-      enableAllButtons();
-    });
-  });
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
 }
+
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
 
 initSidebarFunctionality();

@@ -2,6 +2,8 @@ import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
 
+import { getAllTujuan, postTujuan, updateTujuanById, deleteTujuanById, getAllStrategi, postStrategi, updateStrategiById, deleteStrategiById } from './fetch.js';
+
 document.querySelector('#tujuan-strategi').innerHTML = `
   ${createSidebarHTML({
     activePage: 'tujuan-strategi',
@@ -48,34 +50,41 @@ document.querySelector('#tujuan-strategi').innerHTML = `
     </div>
 `;
 
-const Tujuan = [
-  "Mengembangkan kemampuan dasar peserta didik untuk melanjutkan pendidikan kejenjang berikutnya"
-];
 
-const Strategi = [
-  "Melaksanakan kegiatan belajar mengajar secara tertib.",
-  "Melengkapi kebutuhan sarana dan prasarana.",
-  "Melaksananakan tata tertib secara konsisten.",
-  "Meningkatkan Profesionalisme guru.",
-  "Menciptakan suasana kerja yang saling asah, asih, dan asuh",
-  "Menciptakan suasana belajar dan bermain yang menyenangkan, aman, bersih, dan indah.",
-];
+const tujuanList = document.getElementById('tujuan');
+const strategiList = document.getElementById('strategi');
 
-function renderListData(listElement, data) {
+let editing = false;
+
+function renderListData(listElement, data, type) {
   listElement.innerHTML = '';
   data.forEach(item => {
     const li = document.createElement('li');
-    li.textContent = item;
+    li.textContent = type === 'tujuan' ? item.objective : item.strategy;
+    li.dataset.id = item.id;
     li.style.listStyle = 'disc';
     listElement.appendChild(li);
   });
 }
 
-const tujuanList = document.getElementById('tujuan');
-const strategiList = document.getElementById('strategi');
+function loadData(type) {
+  if (type === 'tujuan') {
+    getAllTujuan()
+      .then(data => renderListData(tujuanList, data, 'tujuan'))
+      .catch(err => {
+        showToast('Gagal memuat data tujuan', "error");
+        console.error(err);
+      });
+  } else {
+    getAllStrategi()
+      .then(data => renderListData(strategiList, data, 'strategi'))
+      .catch(err => {
+        showToast('Gagal memuat data strategi', "error");
+        console.error(err);
+      });
+  }
+}
 
-
-let editing = false;
 function setupCardActions(cardType, listElement) {
   const tambahBtn = document.querySelector(`.btn-tambah[data-type="${cardType}"]`);
   const editBtn = document.querySelector(`.btn-edit[data-type="${cardType}"]`);
@@ -97,12 +106,38 @@ function setupCardActions(cardType, listElement) {
       const input = li.querySelector('input');
       const val = input.value.trim();
       if (!val) {
-        alert("Data tidak boleh kosong.");
+        showToast("Data tidak boleh kosong.", "error");
         return;
       }
-      li.textContent = val;
-      exitEditingMode();
+      else {
+        showToast("Data berhasil ditambahkan.", "success"); 
+      }
+
+      const postFn = cardType === 'tujuan' ? postTujuan : postStrategi;
+      // Kirim objek dengan key yang sesuai ke API
+      if (cardType === 'tujuan') {
+        postFn({ tujuan_description: val })
+          .then(() => {
+            loadData(cardType);
+            exitEditingMode();
+          })
+          .catch(err => {
+            showToast("Gagal menyimpan data strategi.", "error");
+            console.error(err);
+          });
+      } else {
+        postFn({ strategi_description: val })
+          .then(() => {
+            loadData(cardType);
+            exitEditingMode();
+          })
+          .catch(err => {
+            showToast("Gagal menyimpan data strategi.", "error");
+            console.error(err);
+          });
+      }
     }
+
     function batal() {
       li.remove();
       exitEditingMode();
@@ -116,7 +151,7 @@ function setupCardActions(cardType, listElement) {
 
     const items = listElement.querySelectorAll('li');
     if (items.length === 0) {
-      alert(`Belum ada data untuk diedit.`);
+      showToast(`Belum ada data untuk diedit.`, "error");
       return;
     }
 
@@ -126,7 +161,6 @@ function setupCardActions(cardType, listElement) {
       const original = li.textContent;
       li.setAttribute('data-original', original);
       li.innerHTML = `<input type="text" value="${original}" style="width: 100%;" />`;
-
     });
 
     function simpan() {
@@ -137,16 +171,34 @@ function setupCardActions(cardType, listElement) {
       });
 
       if (!valid) {
-        alert("Data tidak boleh kosong.");
+        showToast("Data tidak boleh kosong.", "error");
         return;
+      } else {
+        showToast("Data berhasil disimpan.", "success");
       }
 
+      const updateFn = cardType === 'tujuan' ? updateTujuanById : updateStrategiById;
+
+      const updatePromises = [];
       items.forEach(li => {
+        const id = li.dataset.id;
         const val = li.querySelector('input').value.trim();
-        li.textContent = val;
+        if (cardType === 'tujuan') {
+          updatePromises.push(updateFn(id, { tujuan_description: val }));
+        } else {
+          updatePromises.push(updateFn(id, { strategi_description: val }));
+        }
       });
 
-      exitEditingMode();
+      Promise.all(updatePromises)
+        .then(() => {
+          loadData(cardType);
+          exitEditingMode();
+        })
+        .catch(err => {
+          showToast("Gagal memperbarui data.", "error");
+          console.error(err);
+        });
     }
 
     function batal() {
@@ -163,12 +215,28 @@ function setupCardActions(cardType, listElement) {
     if (editing) return;
 
     if (listElement.children.length === 0) {
-      alert("Tidak ada data yang bisa dihapus.");
+      showToast("Tidak ada data yang bisa dihapus.", "error");
       return;
     }
 
-    if (confirm(`Yakin ingin menghapus?`)) {
-      listElement.innerHTML = '';
+    else {
+      showToast("Data berhasil dihapus.", "error");
+      const deleteFn = cardType === 'tujuan' ? deleteTujuanById : deleteStrategiById;
+
+      const deletePromises = [];
+      [...listElement.children].forEach(li => {
+        const id = li.dataset.id;
+        deletePromises.push(deleteFn(id));
+      });
+
+      Promise.all(deletePromises)
+        .then(() => {
+          loadData(cardType);
+        })
+        .catch(err => {
+          showToast("Gagal menghapus data.", "error");
+          console.error(err);
+        });
     }
   }
 
@@ -213,10 +281,30 @@ function setupCardActions(cardType, listElement) {
   }
 }
 
-renderListData(tujuanList, Tujuan);
-renderListData(strategiList, Strategi);
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
+}
+
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
+
+// Load data awal
+loadData('tujuan');
+loadData('strategi');
 
 setupCardActions('tujuan', tujuanList);
 setupCardActions('strategi', strategiList);
-initSidebarFunctionality();
 
+initSidebarFunctionality();

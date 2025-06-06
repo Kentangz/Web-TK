@@ -2,6 +2,8 @@ import '../global.css';
 import './style.css';
 import { createSidebarHTML, initSidebarFunctionality } from '../Component/Sidebar/sidebar';
 
+import { getAllContactPerson, postContactPerson, updateContactPersonById, deleteContactPersonById, getAllEmail, postEmail, updateEmailById, deleteEmailById, getAllInstagram, postInstagram, updateInstagramById, deleteInstagramById, getAllAlamat, postAlamat, updateAlamatById, deleteAlamatById  } from './fetch.js';
+
 document.querySelector('#contact').innerHTML = `
   ${createSidebarHTML({
     activePage: 'contact',
@@ -77,7 +79,7 @@ document.querySelector('#contact').innerHTML = `
         <div class="card-title">Data Instagram</div>
       </div>
       <div class="card-body">
-        <table id="igTable" class="card-table">
+        <table id="instagramTable" class="card-table">
           <thead>
             <tr>
               <th>Instagram</th>
@@ -95,7 +97,7 @@ document.querySelector('#contact').innerHTML = `
       </div>
     </div>
     <div class="button-group">
-     <button id="btnTambahIG" class="btn-tambah">Tambah</button>
+     <button id="btnTambahInstagram" class="btn-tambah">Tambah</button>
     </div/>
 
     <div class="contact-card">
@@ -125,25 +127,12 @@ document.querySelector('#contact').innerHTML = `
   </div>
 `;
 
-const telpData = [
-  { noTelp: '+628813325407', nama: 'Bunda Niniek' }
-];
-const emailData = [
-  { email: 'sitihajarkarlos@gmail.com' }
-];
-const igData = [
-  { instagram: '@bundasitihajarkarangploso' }
-];
-const alamatData = [
-  { alamat: 'Jl. Ampel Pratama V Blok E 2 No. 9, Perum Pesanggrahan Pratama Karangploso, Kab. Malang' }
-];
-
 function createTableRows(dataArray, columns) {
   return dataArray.map(item => {
     const cells = columns.map(col => {
       return `<td class="${col.class || ''}">${col.key ? (item[col.key] || '') : ''}</td>`;
     }).join('');
-    return `<tr>${cells}
+    return `<tr data-id="${item.id || ''}">${cells}
       <td class="actions">
         <button class="btn-edit">Edit</button>
         <button class="btn-hapus">Hapus</button>
@@ -152,76 +141,69 @@ function createTableRows(dataArray, columns) {
   }).join('');
 }
 
-const telpColumns = [
-  { key: 'noTelp', class: 'data-cell' },
-  { key: 'nama' }
-];
-const emailColumns = [
-  { key: 'email', class: 'data-cell' },
-  { key: '', class: 'empty-col' }
-];
-const igColumns = [
-  { key: 'instagram', class: 'data-cell' },
-  { key: '', class: 'empty-col' }
-];
-const alamatColumns = [
-  { key: 'alamat', class: 'data-cell' },
-  { key: '', class: 'empty-col' }
-];
+function disableAllButtonsExcept(rowExcept, tableId) {
+  document.querySelectorAll('button').forEach(btn => {
+    btn.disabled = true;
+  });
 
-document.querySelector('#telpTable tbody').innerHTML = createTableRows(telpData, telpColumns);
-document.querySelector('#emailTable tbody').innerHTML = createTableRows(emailData, emailColumns);
-document.querySelector('#igTable tbody').innerHTML = createTableRows(igData, igColumns);
-document.querySelector('#alamatTable tbody').innerHTML = createTableRows(alamatData, alamatColumns);
-
-let editing = false;
-
-function enableAllButtons() {
-  document.querySelectorAll("button").forEach(btn => btn.disabled = false);
-}
-
-function disableAllButtonsExcept(row) {
-  document.querySelectorAll("button").forEach(btn => {
-    if (!row.contains(btn)) btn.disabled = true;
+  rowExcept.querySelectorAll('button').forEach(btn => {
+    btn.disabled = false;
   });
 }
 
-function resetActions(row) {
-  const actions = row.querySelector(".actions");
-  actions.innerHTML = `
-    <button class="btn-edit">Edit</button>
-    <button class="btn-hapus">Hapus</button>
-  `;
-  setActionEvents(row);
+function enableAllButtons() {
+  document.querySelectorAll('button').forEach(btn => btn.disabled = false);
 }
 
-function setActionEvents(row) {
+let editingTelp = false;
+let editingEmail = false;
+let editingInstagram = false;
+let editingAlamat = false;
+
+function loadContactPersons() {
+  const tbody = document.querySelector("#telpTable tbody");
+  tbody.innerHTML =`<tr><td colspan="3">Loading data contact person...</td></tr>`;
+
+  getAllContactPerson()
+    .then(contactPersons => {
+      const tbody = document.querySelector('#telpTable tbody');
+      tbody.innerHTML = contactPersons.map(item => `
+        <tr data-id="${item.id}">
+          <td>${item.name}</td>
+          <td>${item.phone}</td>
+          <td class="actions">
+            <button class="btn-edit">Edit</button>
+            <button class="btn-hapus">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+
+      tbody.querySelectorAll('tr').forEach(row => setContactPersonActionEvents(row));
+    })
+    .catch(error => {
+      console.error("Gagal load data contact person:", error);
+      showToast("Gagal mengambil data contact person dari server.", "error");
+    });
+}
+
+function setContactPersonActionEvents(row) {
   const editBtn = row.querySelector(".btn-edit");
   const hapusBtn = row.querySelector(".btn-hapus");
 
   if (editBtn) {
     editBtn.addEventListener("click", () => {
-      if (editing) {
-        alert("Selesaikan edit yang sedang berlangsung terlebih dahulu.");
+      if (editingTelp) {
         return;
       }
-
-      const table = row.closest("table");
-      const isTelpTable = table.id === "telpTable";
 
       const cells = row.querySelectorAll("td");
       const actionCellIndex = cells.length - 1;
 
-      let firstInputValue = cells[0].textContent.trim();
-      let secondInputValue = isTelpTable ? cells[1].textContent.trim() : '';
+      const originalName = cells[0].textContent.trim();
+      const originalPhone = cells[1].textContent.trim();
 
-      cells[0].innerHTML = `<input type="text" value="${firstInputValue}" placeholder="Masukkan ${
-        isTelpTable ? 'Nomor Telepon' : table.id === 'emailTable' ? 'Email' : table.id === 'igTable' ? 'Instagram' : 'Alamat'
-      }" style="width:100%">`;
-
-      if (isTelpTable) {
-        cells[1].innerHTML = `<input type="text" value="${secondInputValue}" placeholder="Masukkan Nama Contact Person" style="width:100%">`;
-      }
+      cells[0].innerHTML = `<input type="text" value="${originalName}" placeholder="Masukkan Nama Contact Person" style="width:100%">`;
+      cells[1].innerHTML = `<input type="text" value="${originalPhone}" placeholder="Masukkan Nomor Telepon" style="width:100%">`;
 
       const actions = cells[actionCellIndex];
       actions.innerHTML = `
@@ -229,37 +211,42 @@ function setActionEvents(row) {
         <button class="btn-batal">Batal</button>
       `;
 
-      editing = true;
-      disableAllButtonsExcept(row);
+      editingTelp = true;
+      disableAllButtonsExcept(row, 'telpTable');
 
       actions.querySelector(".btn-simpan").addEventListener("click", () => {
         const inputs = row.querySelectorAll("input");
-        const firstInput = inputs[0].value.trim();
-        const secondInput = inputs.length > 1 ? inputs[1].value.trim() : null;
+        const nomor = inputs[0].value.trim();
+        const nama = inputs[1].value.trim();
 
-        if (!firstInput || (inputs.length > 1 && !secondInput)) {
-          alert("Data tidak boleh kosong!");
+        if (!nomor || !nama) {
+          showToast("Data contact person tidak boleh kosong.", "error");
           return;
         }
 
-        row.cells[0].textContent = firstInput;
-        if (inputs.length > 1) {
-          row.cells[1].textContent = secondInput;
-        } else if (row.cells.length > 2) {
-          row.cells[1].textContent = '';
-        }
+        const id = row.getAttribute('data-id');
 
-        resetActions(row);
-        editing = false;
-        enableAllButtons();
+        updateContactPersonById(id, { nomor, nama })
+          .then(() => {
+            row.cells[0].textContent = nomor;
+            row.cells[1].textContent = nama;
+            showToast("Data contact person berhasil disimpan.", "success");
+            resetActions(row);
+            editingTelp = false;
+            enableAllButtons();
+          })
+          .catch(error => {
+            showToast("Gagal memperbarui data contact person.", "error");
+            console.error(error);
+          });
       });
 
       actions.querySelector(".btn-batal").addEventListener("click", () => {
-        cells[0].textContent = firstInputValue;
-        if (isTelpTable) cells[1].textContent = secondInputValue;
+        cells[0].textContent = originalName;
+        cells[1].textContent = originalPhone;
 
         resetActions(row);
-        editing = false;
+        editingTelp = false;
         enableAllButtons();
       });
     });
@@ -267,112 +254,621 @@ function setActionEvents(row) {
 
   if (hapusBtn) {
     hapusBtn.addEventListener("click", () => {
-      if (editing) {
-        alert("Selesaikan edit terlebih dahulu sebelum menghapus.");
+      if (editingTelp) {
         return;
       }
-      if (confirm("Yakin ingin menghapus data ini?")) {
-        row.remove();
+
+      const id = row.getAttribute('data-id');
+      if (!id) {
+        showToast("Data tidak valid, tidak dapat dihapus.", "error");
+        return;
+      }
+
+      else {
+        showToast("Data contact person berhasil dihapus.", "error");
+        deleteContactPersonById(id)
+          .then(() => {
+            row.remove();
+          })
+          .catch(error => {
+            showToast("Gagal menghapus data contact person.", "error");
+            console.error(error);
+          });
       }
     });
   }
 }
 
-document.querySelectorAll("tbody tr").forEach(setActionEvents);
+document.querySelector("#btnTambahTelp").addEventListener("click", () => {
+  if (editingTelp) {
+    return;
+  }
 
-document.querySelectorAll(".btn-tambah").forEach(button => {
-  button.addEventListener("click", () => {
-    if (editing) {
-      alert("Selesaikan edit terlebih dahulu sebelum menambah data baru.");
+  const tbody = document.querySelector("#telpTable tbody");
+  const newRow = document.createElement("tr");
+
+  newRow.innerHTML = `
+    <td><input type="text" placeholder="Masukkan Nama Contact Person" style="width:100%"></td>
+    <td><input type="text" placeholder="Masukkan Nomor Telepon" style="width:100%"></td>
+    <td class="actions">
+      <button class="btn-simpan">Simpan</button>
+      <button class="btn-batal">Batal</button>
+    </td>
+  `;
+
+  tbody.appendChild(newRow);
+  editingTelp = true;
+  disableAllButtonsExcept(newRow, 'telpTable');
+
+  newRow.querySelector(".btn-simpan").addEventListener("click", () => {
+    const inputs = newRow.querySelectorAll("input");
+    const nomor = inputs[0].value.trim();
+    const nama = inputs[1].value.trim();
+
+    if (!nomor || !nama) {
+      showToast("Data contact person tidak boleh kosong.", "error");
       return;
     }
 
-    const tbody = {
-      btnTambahTelp: document.querySelector("#telpTable tbody"),
-      btnTambahEmail: document.querySelector("#emailTable tbody"),
-      btnTambahIG: document.querySelector("#igTable tbody"),
-      btnTambahAlamat: document.querySelector("#alamatTable tbody")
-    }[button.id];
+    postContactPerson({ nomor, nama })
+      .then(newData => {
+        if (!newData || !newData.id) throw new Error("Response data tidak valid");
 
-    let newRow = document.createElement("tr");
+        newRow.setAttribute("data-id", newData.id);
+        newRow.cells[0].textContent = newData.phone;
+        newRow.cells[1].textContent = newData.name;
+        showToast("Data contact person berhasil ditambahkan.", "success");
+        resetActions(newRow);
+        editingTelp = false;
+        enableAllButtons();
+      })
+      .catch(error => {
+        showToast("Gagal menambahkan data contact person.", "error");
+        console.error(error);
+      });
+  });
 
-    switch (button.id) {
-      case "btnTambahTelp":
-        newRow.innerHTML = `
-          <td><input type="text" placeholder="Masukkan nomor telepon" style="width:100%"></td>
-          <td><input type="text" placeholder="Masukkan nama contact person" style="width:100%"></td>
-          <td class="actions">
-            <button class="btn-simpan">Simpan</button>
-            <button class="btn-batal">Batal</button>
-          </td>
-        `;
-        break;
-      case "btnTambahEmail":
-        newRow.innerHTML = `
-          <td><input type="text" placeholder="Masukkan email" style="width:100%"></td>
-          <td class="empty-col"></td>
-          <td class="actions">
-            <button class="btn-simpan">Simpan</button>
-            <button class="btn-batal">Batal</button>
-          </td>
-        `;
-        break;
-      case "btnTambahIG":
-        newRow.innerHTML = `
-          <td><input type="text" placeholder="Masukkan username instagram" style="width:100%"></td>
-          <td class="empty-col"></td>
-          <td class="actions">
-            <button class="btn-simpan">Simpan</button>
-            <button class="btn-batal">Batal</button>
-          </td>
-        `;
-        break;
-      case "btnTambahAlamat":
-        newRow.innerHTML = `
-          <td><input type="text" placeholder="Masukkan alamat" style="width:100%"></td>
-          <td class="empty-col"></td>
-          <td class="actions">
-            <button class="btn-simpan">Simpan</button>
-            <button class="btn-batal">Batal</button>
-          </td>
-        `;
-        break;
-      default:
-        return;
-    }
-
-    tbody.appendChild(newRow);
-    editing = true;
-    disableAllButtonsExcept(newRow);
-
-    newRow.querySelector(".btn-simpan").addEventListener("click", () => {
-      const inputs = newRow.querySelectorAll("input");
-      const firstInput = inputs[0].value.trim();
-      const secondInput = inputs.length > 1 ? inputs[1].value.trim() : null;
-
-      if (!firstInput || (inputs.length > 1 && !secondInput)) {
-        alert("Data tidak boleh kosong!");
-        return;
-      }
-
-      newRow.cells[0].textContent = firstInput;
-      if (inputs.length > 1) {
-        newRow.cells[1].textContent = secondInput;
-      } else if (newRow.cells.length > 2) {
-        newRow.cells[1].textContent = '';
-      }
-
-      resetActions(newRow);
-      editing = false;
-      enableAllButtons();
-    });
-
-    newRow.querySelector(".btn-batal").addEventListener("click", () => {
-      newRow.remove();
-      editing = false;
-      enableAllButtons();
-    });
+  newRow.querySelector(".btn-batal").addEventListener("click", () => {
+    newRow.remove();
+    editingTelp = false;
+    enableAllButtons();
   });
 });
+
+function resetActions(row) {
+  const actions = row.querySelector('.actions');
+  if (actions) {
+    actions.innerHTML = `
+      <button class="btn-edit">Edit</button>
+      <button class="btn-hapus">Hapus</button>
+    `;
+    setContactPersonActionEvents(row);
+  }
+}
+
+function loadEmails() {
+  const tbody = document.querySelector("#emailTable tbody");
+  tbody.innerHTML =`<tr><td colspan="3">Loading data email...</td></tr>`;
+
+  getAllEmail()
+    .then(emails => {
+      const tbody = document.querySelector('#emailTable tbody');
+      tbody.innerHTML = emails.map(email => `
+        <tr data-id="${email.id}">
+          <td>${email.email}</td>
+          <td class="empty-col"></td>
+          <td class="actions">
+            <button class="btn-edit">Edit</button>
+            <button class="btn-hapus">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+
+      tbody.querySelectorAll('tr').forEach(row => setEmailActionEvents(row));
+    })
+    .catch(error => {
+      console.error("Gagal load data email:", error);
+      showToast("Gagal mengambil data email dari server.", "error");
+    });
+}
+
+function setEmailActionEvents(row) {
+  const editBtn = row.querySelector(".btn-edit");
+  const hapusBtn = row.querySelector(".btn-hapus");
+
+  if (editBtn) {
+    editBtn.addEventListener("click", () => {
+      if (editingEmail) {
+        return;
+      }
+
+      const cells = row.querySelectorAll("td");
+      const actionCell = cells[cells.length - 1];
+      const originalEmail = cells[0].textContent.trim();
+
+      cells[0].innerHTML = `<input type="text" value="${originalEmail}" placeholder="Masukkan Email" style="width:100%">`;
+      actionCell.innerHTML = `
+        <button class="btn-simpan">Simpan</button>
+        <button class="btn-batal">Batal</button>
+      `;
+
+      editingEmail = true;
+      disableAllButtonsExcept(row, 'emailTable');
+
+      actionCell.querySelector(".btn-simpan").addEventListener("click", () => {
+        const newEmail = row.querySelector("input").value.trim();
+        if (!newEmail) {
+          showToast("Data email tidak boleh kosong.", "error");
+          return;
+        }
+
+        const id = row.getAttribute('data-id');
+        updateEmailById(id, { email: newEmail })
+          .then(() => {
+            cells[0].textContent = newEmail;
+            resetEmailActions(row);
+            showToast("Data email berhasil disimpan.", "success");
+            editingEmail = false;
+            enableAllButtons();
+          })
+          .catch(error => {
+            showToast("Gagal memperbarui data email.", "error");
+            console.error(error);
+          });
+      });
+
+      actionCell.querySelector(".btn-batal").addEventListener("click", () => {
+        cells[0].textContent = originalEmail;
+        resetEmailActions(row);
+        editingEmail = false;
+        enableAllButtons();
+      });
+    });
+  }
+
+  if (hapusBtn) {
+    hapusBtn.addEventListener("click", () => {
+      if (editingEmail) {
+        return;
+      }
+
+      const id = row.getAttribute('data-id');
+      if (!id) {
+        showToast("Data tidak valid, tidak dapat dihapus.", "error");
+        return;
+      }
+
+      else {
+        showToast("Data email berhasil dihapus.", "error");
+        deleteEmailById(id)
+          .then(() => row.remove())
+          .catch(error => {
+            showToast("Gagal menghapus data email.", "error");
+            console.error(error);
+          });
+      }
+    });
+  }
+}
+
+document.querySelector("#btnTambahEmail").addEventListener("click", () => {
+  if (editingEmail) {
+    return;
+  }
+
+  const tbody = document.querySelector("#emailTable tbody");
+  const newRow = document.createElement("tr");
+  newRow.innerHTML = `
+    <td><input type="text" placeholder="Masukkan Email" style="width:100%"></td>
+    <td class="empty-col"></td>
+    <td class="actions">
+      <button class="btn-simpan">Simpan</button>
+      <button class="btn-batal">Batal</button>
+    </td>
+  `;
+  tbody.appendChild(newRow);
+
+  editingEmail = true;
+  disableAllButtonsExcept(newRow, 'emailTable');
+
+  newRow.querySelector(".btn-simpan").addEventListener("click", () => {
+    const emailValue = newRow.querySelector("input").value.trim();
+    if (!emailValue) {
+      showToast("Data email tidak boleh kosong.", "error");
+      return;
+    }
+
+    postEmail({ email: emailValue })
+      .then(newData => {
+        if (!newData || !newData.id) throw new Error("Response data tidak valid");
+
+        newRow.setAttribute("data-id", newData.id);
+        newRow.cells[0].textContent = newData.email;
+        resetEmailActions(newRow);
+        showToast("Data email berhasil ditambahkan.", "success");
+        editingEmail = false;
+        enableAllButtons();
+      })
+      .catch(error => {
+        showToast("Gagal menambahkan data email.", "error");
+        console.error(error);
+      });
+  });
+
+  newRow.querySelector(".btn-batal").addEventListener("click", () => {
+    newRow.remove();
+    editingEmail = false;
+    enableAllButtons();
+  });
+});
+
+function resetEmailActions(row) {
+  const actions = row.querySelector(".actions");
+  if (actions) {
+    actions.innerHTML = `
+      <button class="btn-edit">Edit</button>
+      <button class="btn-hapus">Hapus</button>
+    `;
+    setEmailActionEvents(row);
+  }
+}
+
+function loadInstagram() {
+  const tbody = document.querySelector("#instagramTable tbody");
+  tbody.innerHTML =`<tr><td colspan="3">Loading data instagram...</td></tr>`;
+  getAllInstagram()
+    .then(instagrams => {
+      const tbody = document.querySelector('#instagramTable tbody');
+      tbody.innerHTML = instagrams.map(instagram => `
+        <tr data-id="${instagram.id}">
+          <td>${instagram.username}</td>
+          <td class="empty-col"></td>
+          <td class="actions">
+            <button class="btn-edit">Edit</button>
+            <button class="btn-hapus">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+
+      tbody.querySelectorAll('tr').forEach(row => setInstagramActionEvents(row));
+    })
+    .catch(error => {
+      console.error("Gagal load data Instagram:", error);
+      showToast("Gagal mengambil data Instagram dari server.", "error");
+    });
+}
+
+function setInstagramActionEvents(row) {
+  const editBtn = row.querySelector(".btn-edit");
+  const hapusBtn = row.querySelector(".btn-hapus");
+
+  if (editBtn) {
+    editBtn.addEventListener("click", () => {
+      if (editingInstagram) {
+        return;
+      }
+
+      const cells = row.querySelectorAll("td");
+      const actionCell = cells[cells.length - 1];
+      const originalUsername = cells[0].textContent.trim();
+
+      cells[0].innerHTML = `<input type="text" value="${originalUsername}" placeholder="Masukkan Username Instagram" style="width:100%">`;
+      actionCell.innerHTML = `
+        <button class="btn-simpan">Simpan</button>
+        <button class="btn-batal">Batal</button>
+      `;
+
+      editingInstagram = true;
+      disableAllButtonsExcept(row, 'instagramTable');
+
+      actionCell.querySelector(".btn-simpan").addEventListener("click", () => {
+        const newUsername = row.querySelector("input").value.trim();
+        if (!newUsername) {
+          showToast("Data Instagram tidak boleh kosong.", "error");
+          return;
+        }
+
+        const id = row.getAttribute('data-id');
+        updateInstagramById(id, { ig_name: newUsername })
+          .then(updated => {
+            if (!updated) throw new Error("Update gagal");
+            cells[0].textContent = updated.username;
+            resetInstagramActions(row);
+            showToast("Data Instagram berhasil disimpan.", "success");
+            editingInstagram = false;
+            enableAllButtons();
+          })
+          .catch(error => {
+            showToast("Gagal memperbarui data Instagram.", "error");
+            console.error(error);
+          });
+      });
+
+      actionCell.querySelector(".btn-batal").addEventListener("click", () => {
+        cells[0].textContent = originalUsername;
+        resetInstagramActions(row);
+        editingInstagram = false;
+        enableAllButtons();
+      });
+    });
+  }
+
+  if (hapusBtn) {
+    hapusBtn.addEventListener("click", () => {
+      if (editingInstagram) {
+        return;
+      }
+
+      const id = row.getAttribute('data-id');
+      if (!id) {
+        showToast("Data tidak valid, tidak dapat dihapus.", "error");
+        return;
+      }
+
+      else {
+        showToast("Data Instagram berhasil dihapus.", "error");
+        deleteInstagramById(id)
+          .then(() => row.remove())
+          .catch(error => {
+            showToast("Gagal menghapus data Instagram.", "error");
+            console.error(error);
+          });
+      }
+    });
+  }
+}
+
+document.querySelector("#btnTambahInstagram").addEventListener("click", () => {
+  if (editingInstagram) {
+    return;
+  }
+
+  const tbody = document.querySelector("#instagramTable tbody");
+  const newRow = document.createElement("tr");
+  newRow.innerHTML = `
+    <td><input type="text" placeholder="Masukkan Username Instagram" style="width:100%"></td>
+    <td class="empty-col"></td>
+    <td class="actions">
+      <button class="btn-simpan">Simpan</button>
+      <button class="btn-batal">Batal</button>
+    </td>
+  `;
+  tbody.appendChild(newRow);
+
+  editingInstagram = true;
+  disableAllButtonsExcept(newRow, 'instagramTable');
+
+  newRow.querySelector(".btn-simpan").addEventListener("click", () => {
+    const usernameValue = newRow.querySelector("input").value.trim();
+    if (!usernameValue) {
+      showToast("Data Instagram tidak boleh kosong.", "error");
+      return;
+    }
+
+    postInstagram({ ig_name: usernameValue })
+      .then(newData => {
+        if (!newData || !newData.id) throw new Error("Response data tidak valid");
+
+        newRow.setAttribute("data-id", newData.id);
+        newRow.cells[0].textContent = newData.username;
+        resetInstagramActions(newRow);
+        showToast("Data Instagram berhasil ditambahkan.", "success");
+        editingInstagram = false;
+        enableAllButtons();
+      })
+      .catch(error => {
+        showToast("Gagal menambahkan data Instagram.", "error");
+        console.error(error);
+      });
+  });
+
+  newRow.querySelector(".btn-batal").addEventListener("click", () => {
+    newRow.remove();
+    editingInstagram = false;
+    enableAllButtons();
+  });
+});
+
+function resetInstagramActions(row) {
+  const actions = row.querySelector(".actions");
+  if (actions) {
+    actions.innerHTML = `
+      <button class="btn-edit">Edit</button>
+      <button class="btn-hapus">Hapus</button>
+    `;
+    setInstagramActionEvents(row);
+  }
+}
+
+function loadAlamat() {
+  const tbody = document.querySelector("#alamatTable tbody");
+  tbody.innerHTML =`<tr><td colspan="3">Loading data alamat...</td></tr>`;
+  getAllAlamat()
+    .then(alamats => {
+      const tbody = document.querySelector('#alamatTable tbody');
+      tbody.innerHTML = alamats.map(alamat => `
+        <tr data-id="${alamat.id}">
+          <td>${alamat.alamat}</td>
+          <td class="empty-col"></td>
+          <td class="actions">
+            <button class="btn-edit">Edit</button>
+            <button class="btn-hapus">Hapus</button>
+          </td>
+        </tr>
+      `).join('');
+
+      tbody.querySelectorAll('tr').forEach(row => setAlamatActionEvents(row));
+    })
+    .catch(error => {
+      console.error("Gagal load data Alamat:", error);
+      showToast("Gagal mengambil data Alamat dari server.", "error");
+    });
+}
+
+function setAlamatActionEvents(row) {
+  const editBtn = row.querySelector(".btn-edit");
+  const hapusBtn = row.querySelector(".btn-hapus");
+
+  if (editBtn) {
+    editBtn.addEventListener("click", () => {
+      if (editingAlamat) {
+        return;
+      }
+
+      const cells = row.querySelectorAll("td");
+      const actionCell = cells[cells.length - 1];
+      const originalAlamat = cells[0].textContent.trim();
+
+      cells[0].innerHTML = `<input type="text" value="${originalAlamat}" placeholder="Masukkan Alamat" style="width:100%">`;
+      actionCell.innerHTML = `
+        <button class="btn-simpan">Simpan</button>
+        <button class="btn-batal">Batal</button>
+      `;
+
+      editingAlamat = true;
+      disableAllButtonsExcept(row, 'alamatTable');
+
+      actionCell.querySelector(".btn-simpan").addEventListener("click", () => {
+        const newAlamat = row.querySelector("input").value.trim();
+        if (!newAlamat) {
+          showToast("Data alamat tidak boleh kosong.", "error");
+          return;
+        }
+
+        const id = row.getAttribute('data-id');
+        updateAlamatById(id, { alamat: newAlamat })
+          .then(updated => {
+            if (!updated) throw new Error("Update gagal");
+            cells[0].textContent = updated.alamat;
+            resetAlamatActions(row);
+            showToast("Data alamat berhasil disimpan.", "success");
+            editingAlamat = false;
+            enableAllButtons();
+          })
+          .catch(error => {
+            showToast("Gagal memperbarui data alamat.", "error");
+            console.error(error);
+          });
+      });
+
+      actionCell.querySelector(".btn-batal").addEventListener("click", () => {
+        cells[0].textContent = originalAlamat;
+        resetAlamatActions(row);
+        editingAlamat = false;
+        enableAllButtons();
+      });
+    });
+  }
+
+  if (hapusBtn) {
+    hapusBtn.addEventListener("click", () => {
+      if (editingAlamat) {
+        return;
+      }
+
+      const id = row.getAttribute('data-id');
+      if (!id) {
+        showToast("Data tidak valid, tidak dapat dihapus.", "error");
+        return;
+      }
+
+      else {
+        showToast("Data alamat berhasil dihapus.", "error");
+        deleteAlamatById(id)
+          .then(() => row.remove())
+          .catch(error => {
+            showToast("Gagal menghapus data alamat.", "error");
+            console.error(error);
+          });
+      }
+    });
+  }
+}
+
+document.querySelector("#btnTambahAlamat").addEventListener("click", () => {
+  if (editingAlamat) {
+    return;
+  }
+
+  const tbody = document.querySelector("#alamatTable tbody");
+  const newRow = document.createElement("tr");
+  newRow.innerHTML = `
+    <td><input type="text" placeholder="Masukkan Alamat" style="width:100%"></td>
+    <td class="empty-col"></td>
+    <td class="actions">
+      <button class="btn-simpan">Simpan</button>
+      <button class="btn-batal">Batal</button>
+    </td>
+  `;
+  tbody.appendChild(newRow);
+
+  editingAlamat = true;
+  disableAllButtonsExcept(newRow, 'alamatTable');
+
+  newRow.querySelector(".btn-simpan").addEventListener("click", () => {
+    const alamatValue = newRow.querySelector("input").value.trim();
+    if (!alamatValue) {
+      showToast("Data alamat tidak boleh kosong.", "error");
+      return;
+    }
+
+    postAlamat({ alamat: alamatValue })
+      .then(newData => {
+        if (!newData || !newData.id) throw new Error("Response data tidak valid");
+
+        newRow.setAttribute("data-id", newData.id);
+        newRow.cells[0].textContent = newData.alamat;
+        resetAlamatActions(newRow);
+        showToast("Data alamat berhasil ditambahkan.", "success");
+        editingAlamat = false;
+        enableAllButtons();
+      })
+      .catch(error => {
+        showToast("Gagal menambahkan data alamat.", "error");
+        console.error(error);
+      });
+  });
+
+  newRow.querySelector(".btn-batal").addEventListener("click", () => {
+    newRow.remove();
+    editingAlamat = false;
+    enableAllButtons();
+  });
+});
+
+function resetAlamatActions(row) {
+  const actions = row.querySelector(".actions");
+  if (actions) {
+    actions.innerHTML = `
+      <button class="btn-edit">Edit</button>
+      <button class="btn-hapus">Hapus</button>
+    `;
+    setAlamatActionEvents(row);
+  }
+}
+
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
+}
+
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
+
+loadContactPersons();
+loadEmails();
+loadInstagram();
+loadAlamat();
 
 initSidebarFunctionality();

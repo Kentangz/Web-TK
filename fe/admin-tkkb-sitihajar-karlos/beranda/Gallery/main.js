@@ -2,6 +2,8 @@ import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
 
+import { getAllGambarVisiMisi, postGambarVisiMisi, updateGambarVisiMisiById, deleteGambarVisiMisiById, getAllGambarTujuanStrategi, postGambarTujuanStrategi, updateGambarTujuanStrategiById, deleteGambarTujuanStrategiById } from './fetch.js';
+
 document.querySelector('#gallery-beranda').innerHTML = `
   ${createSidebarHTML({
     activePage: 'gallery-beranda',
@@ -19,12 +21,13 @@ document.querySelector('#gallery-beranda').innerHTML = `
       </div>
     </div>
 
+
     <div class="gallery-card">
       <div class="card-header">
         <div class="card-title">Data Gambar Visi & Misi</div>
       </div>
       <div class="card-body">
-        <table class="card-table">
+        <table class="card-table" id="table-visimisi">
           <thead>
             <tr>
               <th>Gambar</th>
@@ -35,16 +38,16 @@ document.querySelector('#gallery-beranda').innerHTML = `
         </table>
       </div>
     </div>
-      <div class="button-group">
-        <button class="btn-tambah">Tambah Foto</button>
-      </div>
+    <div class="button-group">
+      <button class="btn-tambah" data-type="visimisi">Tambah Foto</button>
+    </div>
 
     <div class="gallery-card">
       <div class="card-header">
         <div class="card-title">Data Gambar Tujuan & Strategi</div>
       </div>
       <div class="card-body">
-        <table class="card-table">
+        <table class="card-table" id="table-tujuan">
           <thead>
             <tr>
               <th>Gambar</th>
@@ -55,15 +58,11 @@ document.querySelector('#gallery-beranda').innerHTML = `
         </table>
       </div>
     </div>
-      <div class="button-group">
-        <button class="btn-tambah">Tambah Foto</button>
-      </div>
+    <div class="button-group">
+      <button class="btn-tambah" data-type="tujuan">Tambah Foto</button>
+    </div>
   </div>
 `;
-
-const gambarData = [
-  { gambar: '/user.png' },
-];
 
 const fileInput = document.createElement('input');
 fileInput.type = 'file';
@@ -92,41 +91,216 @@ function enableAllButtons() {
   document.querySelectorAll('button').forEach(btn => btn.disabled = false);
 }
 
-function tambahBaris(tableIndex, imageSrc) {
-  const tbody = document.querySelectorAll('.card-table')[tableIndex].querySelector('tbody');
+function tambahBaris({ id, img }, type) {
   const newRow = document.createElement('tr');
+  newRow.setAttribute('data-id', id);
+
   newRow.innerHTML = `
-    <td><img src="${imageSrc}" style="width:100px;"></td>
+    <td><img src="${img}" style="width:100px;"></td>
     <td>
       <button class="btn-edit">Edit</button>
       <button class="btn-hapus">Hapus</button>
     </td>
   `;
-  tbody.appendChild(newRow);
-  attachButtonHandlers(newRow);
-  updateButtonVisibility();
+  attachButtonHandlers(newRow, type);
+  return newRow;
 }
 
-gambarData.forEach(data => {
-  tambahBaris(0, data.gambar);
-  tambahBaris(1, data.gambar);
-});
-updateButtonVisibility();
+function attachButtonHandlers(row, type) {
+  const tdImage = row.children[0];
+  const tdOptions = row.children[1];
+  let originalSrc = tdImage.querySelector('img').src;
+  const id = row.getAttribute('data-id');
 
-// Tombol tambah foto
-document.querySelectorAll('.btn-tambah').forEach((btn, index) => {
-  btn.addEventListener('click', () => {
-    disableAllButtons(null);
-    fileInput.value = '';
+  const btnEdit = row.querySelector('.btn-edit');
+  const btnHapus = row.querySelector('.btn-hapus');
+
+  btnEdit.addEventListener('click', () => {
+      disableAllButtons(row);
+
+      const img = tdImage.querySelector('img');
+      let newSrc = originalSrc;
+      let selectedFile = null;
+
+      tdOptions.innerHTML = `
+        <button class="btn-upload">Upload Foto</button>
+        <button class="btn-simpan">Simpan</button>
+        <button class="btn-batal">Batal</button>
+      `;
+
+      const btnUpload = tdOptions.querySelector('.btn-upload');
+      const btnSimpan = tdOptions.querySelector('.btn-simpan');
+      const btnBatal = tdOptions.querySelector('.btn-batal');
+
+      btnUpload.addEventListener('click', () => {
+        fileInput.value = "";
+        fileInput.click();
+        fileInput.onchange = function() {
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+        const maxSize = 2 * 1024 * 1024;
+
+        if (!allowedTypes.includes(file.type)) {
+          showToast('Format file tidak didukung.', "error");
+          fileInput.value = '';
+          return;
+        }
+
+        if (file.size > maxSize) {
+          showToast('Ukuran gambar maksimal 2MB.', "error");
+          fileInput.value = '';
+          return;
+        }
+
+        selectedFile = file;
+
+        const reader = new FileReader();
+        reader.onload = e => {
+          newSrc = e.target.result;
+          img.src = newSrc;
+          showToast("Foto berhasil di upload.", "success");
+        };
+        reader.readAsDataURL(file);
+        };
+      });
+
+      btnSimpan.addEventListener('click', () => {
+          if (!selectedFile) {
+          tdOptions.innerHTML = `
+            <button class="btn-edit">Edit</button>
+            <button class="btn-hapus">Hapus</button>
+          `;
+          img.src = originalSrc;
+          enableAllButtons();
+          updateButtonVisibility();
+          attachButtonHandlers(row, type);
+          return;
+        }
+        
+        if (type === 'visimisi') {
+        updateGambarVisiMisiById(id, {  imageFile: selectedFile }).then(updated => {
+          if (updated) {
+            img.src = updated.img;
+            originalSrc = updated.img;
+            showToast('Data gambar visi dan misi berhasil disimpan.', "success");
+          } else {
+            showToast('Gagal memperbarui data gambar visi dan misi.', "error");
+          }
+          tdOptions.innerHTML = `
+              <button class="btn-edit">Edit</button>
+              <button class="btn-hapus">Hapus</button>
+            `;
+          enableAllButtons();
+          updateButtonVisibility();
+          attachButtonHandlers(row, type);
+        });
+      } else {
+        updateGambarTujuanStrategiById(id, { imageFile: selectedFile }).then(updated => {
+          if (updated) {
+            originalSrc = updated.img;
+            img.src = updated.img;
+            showToast('Data gambar tujuan dan strategi berhasil disimpan.', "success");
+          } else {
+            showToast('Gagal memperbarui data gambar tujuan dan strategi.', "error");
+          }
+          tdOptions.innerHTML = `
+            <button class="btn-edit">Edit</button>
+            <button class="btn-hapus">Hapus</button>
+          `;
+          enableAllButtons();
+          updateButtonVisibility();
+          attachButtonHandlers(row, type);
+        });
+      }
+    });
+
+      btnBatal.addEventListener('click', () => {
+        fileInput.value = "";
+        img.src = originalSrc;
+        tdOptions.innerHTML = `
+          <button class="btn-edit">Edit</button>
+          <button class="btn-hapus">Hapus</button>
+        `;
+        enableAllButtons();
+        attachButtonHandlers(row, type);
+      });
+    });
+    
+
+  btnHapus.addEventListener('click', function() {
+
+    disableAllButtons(row);
+
+    if (type === 'visimisi') {
+      deleteGambarVisiMisiById(id).then(function(deleted) {
+        if (deleted) {
+          row.remove();
+          showToast('Data gambar visi dan misi berhasil dihapus.', "error");
+        } else {
+          showToast('Gagal menghapus data gambar visi dan misi.', "error");
+        }
+        enableAllButtons();
+        updateButtonVisibility();
+      });
+    } else {
+      deleteGambarTujuanStrategiById(id).then(function(deleted) {
+        if (deleted) {
+          row.remove();
+          showToast('Data gambar tujuan dan strategi berhasil dihapus.', "error");
+        } else {
+          showToast('Gagal menghapus data gambar tujuan dan strategi.', "error");
+        }
+        enableAllButtons();
+        updateButtonVisibility();
+      });
+    }
+  });
+}
+
+function loadData(type) {
+  const tbody = document.querySelector(`#table-${type} tbody`);
+  tbody.innerHTML =`<tr><td colspan="2">Loading data gambar...</td></tr>`;
+
+  if (type === 'visimisi') {
+    getAllGambarVisiMisi().then(function(data) {
+      const tbody = document.querySelector(`#table-${type} tbody`);
+      tbody.innerHTML = '';
+      if (data) {
+        data.forEach(function(item) {
+          const row = tambahBaris(item, type);
+          tbody.appendChild(row);
+        });
+      }
+      updateButtonVisibility();
+    });
+  } else {
+    getAllGambarTujuanStrategi().then(function(data) {
+      const tbody = document.querySelector(`#table-${type} tbody`);
+      tbody.innerHTML = '';
+      if (data) {
+        data.forEach(function(item) {
+          const row = tambahBaris(item, type);
+          tbody.appendChild(row);
+        });
+      }
+      updateButtonVisibility();
+    });
+  }
+}
+
+document.querySelectorAll('.btn-tambah').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    const type = btn.dataset.type;
     fileInput.click();
 
     let reenabled = false;
-
     setTimeout(() => {
       if (!reenabled) enableAllButtons();
     }, 1000);
 
-    fileInput.onchange = () => {
+    fileInput.onchange = function() {
       const file = fileInput.files[0];
       if (!file) {
         enableAllButtons();
@@ -134,82 +308,80 @@ document.querySelectorAll('.btn-tambah').forEach((btn, index) => {
         return;
       }
 
-      const reader = new FileReader();
-      reader.onload = e => {
-        tambahBaris(index, e.target.result);
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+      const maxSize = 2 * 1024 * 1024;
+
+      if (!allowedTypes.includes(file.type)) {
+        showToast('Format file tidak didukung.', "error");
+        fileInput.value = '';
         enableAllButtons();
         reenabled = true;
-      };
-      reader.readAsDataURL(file);
+        return;
+      }
+
+      if (file.size > maxSize) {
+        showToast('Ukuran gambar maksimal 2MB.', "error");
+        fileInput.value = '';
+        enableAllButtons();
+        reenabled = true;
+        return;
+      }
+
+      disableAllButtons();
+
+      if (type === 'visimisi') {
+        postGambarVisiMisi({ imageFile : file }).then(function(added) {
+          if (added) {
+            const tbody = document.querySelector(`#table-${type} tbody`);
+            const row = tambahBaris(added, type);
+            tbody.appendChild(row);
+            showToast('Foto visi dan misi berhasil ditambahkan.', "success");
+          } else {
+            showToast('Gagal menambahkan data gambar visi dan misi.', "error");
+          }
+          enableAllButtons();
+          updateButtonVisibility();
+          reenabled = true;
+        });
+      } else {
+        postGambarTujuanStrategi({ imageFile : file }).then(function(added) {
+          if (added) {
+            const tbody = document.querySelector(`#table-${type} tbody`);
+            const row = tambahBaris(added, type);
+            tbody.appendChild(row);
+            showToast('Foto tujuan dan strategi berhasil ditambahkan.',"success");
+          } else {
+            showToast('Gagal menambahkan data gambar tujuan dan strategi.', "error");
+          }
+          enableAllButtons();
+          updateButtonVisibility();
+          reenabled = true;
+        });
+      }
     };
   });
 });
 
-function attachButtonHandlers(row) {
-  const tdImage = row.children[0];
-  const tdOptions = row.children[1];
-  let originalSrc = tdImage.querySelector('img').src;
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
 
-  const btnEdit = row.querySelector('.btn-edit');
-  const btnHapus = row.querySelector('.btn-hapus');
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
 
-  btnHapus.addEventListener('click', () => {
-    const konfirmasi = confirm('Yakin ingin menghapus data ini?');
-    if (konfirmasi) {
-      row.remove();
-      updateButtonVisibility();
-    }
-  });
+  container.appendChild(toast);
 
-  btnEdit.addEventListener('click', () => {
-    disableAllButtons(row);
-    const img = tdImage.querySelector('img');
-    let newSrc = originalSrc;
-
-    tdOptions.innerHTML = `
-      <button class="btn-upload">Upload Foto</button>
-      <button class="btn-simpan">Simpan</button>
-      <button class="btn-batal">Batal</button>
-    `;
-
-    const btnUpload = tdOptions.querySelector('.btn-upload');
-    const btnSimpan = tdOptions.querySelector('.btn-simpan');
-    const btnBatal = tdOptions.querySelector('.btn-batal');
-
-    btnUpload.addEventListener('click', () => {
-      fileInput.click();
-      fileInput.onchange = () => {
-        const file = fileInput.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = e => {
-          newSrc = e.target.result;
-          img.src = newSrc;
-        };
-        reader.readAsDataURL(file);
-      };
-    });
-
-    btnSimpan.addEventListener('click', () => {
-      originalSrc = newSrc;
-      tdOptions.innerHTML = `
-        <button class="btn-edit">Edit</button>
-        <button class="btn-hapus">Hapus</button>
-      `;
-      attachButtonHandlers(row);
-      enableAllButtons();
-    });
-
-    btnBatal.addEventListener('click', () => {
-      img.src = originalSrc;
-      tdOptions.innerHTML = `
-        <button class="btn-edit">Edit</button>
-        <button class="btn-hapus">Hapus</button>
-      `;
-      attachButtonHandlers(row);
-      enableAllButtons();
-    });
-  });
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
 }
+
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
+
+loadData('visimisi');
+loadData('tujuan');
 
 initSidebarFunctionality();

@@ -2,6 +2,8 @@ import '../../global.css';
 import './style.css';
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar';
 
+import { getAllWaktu, postWaktu, updateWaktuById, deleteWaktuById, getAllJadwal, postJadwal, updateJadwalById, deleteJadwalById } from './fetch.js';
+
 document.querySelector('#jadwal-a-b').innerHTML = `
   ${createSidebarHTML({
     activePage: 'jadwal-a-b',
@@ -60,167 +62,107 @@ document.querySelector('#jadwal-a-b').innerHTML = `
     </div>
     <div class="button-group">
       <button class="btn-tambah" id="btnTambah">Tambah</button>
+    </div>
   </div>
 `;
 
-const jadwalHariData = [
-  { hari: "Senin — Kamis", jam: "07:00 - 11:00" },
-  { hari: "Jum'at", jam: "07:15 - 10:30" }
-];
-
-const jadwalABData = [
-  { ikon: "/user.png", deskripsi: "Setiap hari ananda wajib membawa air minum (bukan susu kotak atau minuman dalam kemasan)." },
-  { ikon: "/user.png", deskripsi: "Hari senin, rabu, jum’at mendapatkan kue dari sekolah." },
-  { ikon: "/user.png", deskripsi: "Hari selasa & kamis ananda wajib membawa bekal nasi, sayur, dan lauk." },
-  { ikon: "/user.png", deskripsi: "Ananda tidak diperkenankan membawa snack dari rumah." },
-  { ikon: "/user.png", deskripsi: "Hari kamis ananda wajib mengisi kotak amal di sekolah (untuk melatih ananda terbiasa bersedekah dan peduli dengan orang yang membutuhkan)." },
-  { ikon: "/user.png", deskripsi: "Hari jum’at ananda wajib membawa alat sholat untuk sholat bersama di sekolah." },
-];
+let jadwalHariData = [];
+let jadwalABData = [];
 
 let editingIndexHari = null;
 let editingIndexAB = null;
 
-function renderTabelHari() {
-  const tbody = document.querySelector("#tableHari tbody");
-  tbody.innerHTML = "";
-
-  jadwalHariData.forEach((item, index) => {
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td class="hari">${item.hari}</td>
-      <td class="jam">${item.jam}</td>
-      <td>
-        <button class="btn-edit" data-index="${index}">Edit</button>
-        <button class="btn-hapus" data-index="${index}">Hapus</button>
-      </td>
-    `;
-
-    tbody.appendChild(tr);
-
-    const btnEdit = tr.querySelector(".btn-edit");
-    const btnHapus = tr.querySelector(".btn-hapus");
-
-    btnEdit.addEventListener("click", () => {
-      if (editingIndexHari !== null) return alert("Selesaikan edit lain dulu!");
-      editingIndexHari = index;
-      disableAllButtonsExcept(tr);
-
-      tr.querySelector(".hari").innerHTML = `<input type="text" value="${item.hari}" style="width: 100%;">`;
-      tr.querySelector(".jam").innerHTML = `<input type="text" value="${item.jam}" style="width: 100%;">`;
-      tr.querySelector("td:last-child").innerHTML = `
-        <button class="btn-edit btn-simpan">Simpan</button>
-        <button class="btn-hapus btn-batal">Batal</button>
-      `;
-
-      tr.querySelector(".btn-simpan").addEventListener("click", () => {
-        const hari = tr.querySelector(".hari input").value;
-        const jam = tr.querySelector(".jam input").value;
-        if (!hari || !jam) return alert("Data tidak boleh kosong!");
-        jadwalHariData[index] = { hari, jam };
-        editingIndexHari = null;
-        renderTabelHari();
-        enableAllButtons();
-      });
-
-      tr.querySelector(".btn-batal").addEventListener("click", () => {
-        editingIndexHari = null;
-        renderTabelHari();
-        enableAllButtons();
-      });
-    });
-
-    btnHapus.addEventListener("click", () => {
-      if (editingIndexHari !== null) return alert("Selesaikan edit lain dulu!");
-      if (confirm("Yakin ingin menghapus?")) {
-        jadwalHariData.splice(index, 1);
-        renderTabelHari();
-      }
-    });
+function disableAllButtonsExcept(row) {
+  document.querySelectorAll("button").forEach(btn => {
+    if (!row.contains(btn)) {
+      btn.disabled = true;
+    }
   });
 }
 
-function renderTabelAB() {
-  const tbody = document.querySelector("#tableAB tbody");
-  tbody.innerHTML = "";
-
-  jadwalABData.forEach((item, index) => {
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td class="ikon">${item.ikon ? `<img src="${item.ikon}" width="50" height="50"/>` : "0"}</td>
-      <td class="deskripsi">${item.deskripsi}</td>
-      <td>
-        <button class="btn-edit" data-index="${index}">Edit</button>
-        <button class="btn-hapus" data-index="${index}">Hapus</button>
-      </td>
-    `;
-
-    tbody.appendChild(tr);
-
-    const btnEdit = tr.querySelector(".btn-edit");
-    const btnHapus = tr.querySelector(".btn-hapus");
-
-    btnEdit.addEventListener("click", () => {
-      if (editingIndexAB !== null) return alert("Selesaikan edit lain dulu!");
-      editingIndexAB = index;
-      disableAllButtonsExcept(tr);
-
-      let newIcon = item.ikon;
-
-      tr.querySelector(".ikon").innerHTML = `<img src="${item.ikon}" width="50" height="50"/>`;
-      tr.querySelector(".deskripsi").innerHTML = `<input type="text" value="${item.deskripsi}" style="width: 100%;">`;
-      tr.querySelector("td:last-child").innerHTML = `
-        <button class="btn-upload">Upload Ikon</button>
-        <button class="btn-edit btn-simpan">Simpan</button>
-        <button class="btn-hapus btn-batal">Batal</button>
-      `;
-
-      tr.querySelector(".btn-upload").addEventListener("click", () => {
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = "image/*";
-        input.onchange = (e) => {
-          const file = e.target.files[0];
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            newIcon = ev.target.result;
-            tr.querySelector(".ikon").innerHTML = `<img src="${newIcon}" width="50" height="50"/>`;
-          };
-          reader.readAsDataURL(file);
-        };
-        input.click();
-      });
-
-      tr.querySelector(".btn-simpan").addEventListener("click", () => {
-        const deskripsi = tr.querySelector(".deskripsi input").value;
-        if (!deskripsi || !newIcon) return alert("Data tidak boleh kosong!");
-        jadwalABData[index] = { ikon: newIcon, deskripsi };
-        editingIndexAB = null;
-        renderTabelAB();
-        enableAllButtons();
-      });
-
-      tr.querySelector(".btn-batal").addEventListener("click", () => {
-        editingIndexAB = null;
-        renderTabelAB();
-        enableAllButtons();
-      });
-    });
-
-    btnHapus.addEventListener("click", () => {
-      if (editingIndexAB !== null) return alert("Selesaikan edit lain dulu!");
-      if (confirm("Yakin ingin menghapus?")) {
-        jadwalABData.splice(index, 1);
-        renderTabelAB();
-      }
-    });
+function enableAllButtons() {
+  document.querySelectorAll("button").forEach(btn => {
+    btn.disabled = false;
   });
+}
+
+function renderTabelHari() {
+  const tbody = document.querySelector("#tableHari tbody");
+  tbody.innerHTML =`<tr><td colspan="3">Loading data waktu...</td></tr>`;
+
+  getAllWaktu()
+    .then(data => {
+      jadwalHariData = data;
+      tbody.innerHTML = "";
+
+      jadwalHariData.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+        <tr data-id="${item.id}">
+          <td class="hari">${item.day}</td>
+          <td class="jam">${item.hour}</td>
+          <td>
+            <button class="btn-edit" data-index="${index}">Edit</button>
+            <button class="btn-hapus" data-index="${index}">Hapus</button>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+
+        const btnEdit = tr.querySelector(".btn-edit");
+        const btnHapus = tr.querySelector(".btn-hapus");
+
+        btnEdit.addEventListener("click", () => {
+          if (editingIndexHari !== null) return
+          editingIndexHari = index;
+          disableAllButtonsExcept(tr);
+
+          tr.querySelector(".hari").innerHTML = `<input type="text" value="${item.day}" style="width: 100%;">`;
+          tr.querySelector(".jam").innerHTML = `<input type="text" value="${item.hour}" style="width: 100%;">`;
+          tr.querySelector("td:last-child").innerHTML = `
+            <button class="btn-edit btn-simpan">Simpan</button>
+            <button class="btn-hapus btn-batal">Batal</button>
+          `;
+
+          tr.querySelector(".btn-simpan").addEventListener("click", () => {
+            const hari = tr.querySelector(".hari input").value.trim();
+            const jam = tr.querySelector(".jam input").value.trim();
+            if (!hari || !jam) return showToast("Data waktu tidak boleh kosong.", "error");
+
+            updateWaktuById(item.id, { hari, jam })
+              .then(() => {
+                editingIndexHari = null;
+                showToast("Data waktu berhasil disimpan.", "success");
+                renderTabelHari();
+                enableAllButtons();
+              })
+              .catch(() => showToast("Gagal menyimpan data waktu.", "error"));
+          });
+
+          tr.querySelector(".btn-batal").addEventListener("click", () => {
+            editingIndexHari = null;
+            renderTabelHari();
+            enableAllButtons();
+          });
+        });
+
+        btnHapus.addEventListener("click", () => {
+          if (editingIndexHari !== null) return
+          else {
+            showToast("Data waktu berhasil dihapus.", "error");
+            deleteWaktuById(item.id)
+              .then(() => renderTabelHari())
+              .catch(() => showToast("Gagal menghapus data waktu.", "error"));
+          }
+        });
+      });
+    })
+    .catch(() => showToast("Gagal memuat data waktu.", "error"));
 }
 
 document.getElementById("btnTambahHari").addEventListener("click", () => {
-  if (editingIndexHari !== null) return alert("Selesaikan edit terlebih dahulu.");
-  editingIndexHari = jadwalHariData.length;
+  if (editingIndexHari !== null) return
+  editingIndexHari = "new";
 
   const tbody = document.querySelector("#tableHari tbody");
   const tr = document.createElement("tr");
@@ -240,31 +182,139 @@ document.getElementById("btnTambahHari").addEventListener("click", () => {
   tr.querySelector(".btn-simpan").addEventListener("click", () => {
     const hari = tr.querySelector(".hari input").value.trim();
     const jam = tr.querySelector(".jam input").value.trim();
-    if (!hari || !jam) return alert("Data tidak boleh kosong!");
-    jadwalHariData.push({ hari, jam });
-    editingIndexHari = null;
-    renderTabelHari();
-    enableAllButtons();
+    if (!hari || !jam) return showToast("Data waktu tidak boleh kosong.", "error");
+
+    postWaktu({ hari, jam })
+      .then(() => {
+        editingIndexHari = null;
+        showToast("Data waktu berhasil ditambahkan.", "success");
+        renderTabelHari();
+        enableAllButtons();
+      })
+      .catch(() => showToast("Gagal menambahkan data waktu.", "error"));
   });
 
   tr.querySelector(".btn-batal").addEventListener("click", () => {
     editingIndexHari = null;
-    tr.remove();
+    renderTabelHari();
     enableAllButtons();
   });
 });
 
+function renderTabelAB() {
+  const tbody = document.querySelector("#tableAB tbody");
+  tbody.innerHTML =`<tr><td colspan="3">Loading data jadwal...</td></tr>`;
+
+  getAllJadwal()
+    .then(data => {
+      jadwalABData = data;
+      const tbody = document.querySelector("#tableAB tbody");
+      tbody.innerHTML = "";
+
+      jadwalABData.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+        <tr data-id="${item.id}">
+          <td class="icon">${item.icon ? `<img src="${item.icon}" width="50" height="50"/>` : "0"}</td>
+          <td class="deskripsi">${item.desc}</td>
+          <td>
+            <button class="btn-edit" data-index="${index}">Edit</button>
+            <button class="btn-hapus" data-index="${index}">Hapus</button>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+
+        const btnEdit = tr.querySelector(".btn-edit");
+        const btnHapus = tr.querySelector(".btn-hapus");
+
+        btnEdit.addEventListener("click", () => {
+          if (editingIndexAB !== null) return
+          editingIndexAB = index;
+          disableAllButtonsExcept(tr);
+
+          let selectedFile = null;
+
+          tr.querySelector(".icon").innerHTML = `<img src="${item.icon}" width="50" height="50"/>`;
+          tr.querySelector(".deskripsi").innerHTML = `<input type="text" value="${item.desc}" style="width: 100%;">`;
+          tr.querySelector("td:last-child").innerHTML = `
+            <button class="btn-upload">Upload Ikon</button>
+            <button class="btn-edit btn-simpan">Simpan</button>
+            <button class="btn-hapus btn-batal">Batal</button>
+          `;
+
+          tr.querySelector(".btn-upload").addEventListener("click", () => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "image/*";
+            input.onchange = (e) => {
+              const file = e.target.files[0];
+              if (!file) return;
+              const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+              if (!allowedTypes.includes(file.type)) {
+                showToast("Format file tidak didukung.", "error");
+                return;
+              }
+
+              const maxSize = 2 * 1024 * 1024;
+              if (file.size > maxSize) {
+                showToast("Ukuran gambar maksimal 2MB.", "error");
+                return;
+              }
+           
+              selectedFile = file;
+              tr.querySelector(".icon").innerHTML = `<img src="${URL.createObjectURL(selectedFile)}" width="50" height="50"/>`;
+              showToast("Ikon jadwal berhasil di upload.", "success");
+            };
+            input.click();
+          });
+
+          tr.querySelector(".btn-simpan").addEventListener("click", () => {
+            const deskripsi = tr.querySelector(".deskripsi input").value.trim();
+            if (!deskripsi) return showToast("Data jadwal tidak boleh kosong.", "error");
+
+            updateJadwalById(item.id, { deskripsi }, selectedFile)
+              .then(() => {
+                editingIndexAB = null;
+                showToast("Data jadwal berhasil disimpan.", "success");
+                renderTabelAB();
+                enableAllButtons();
+              })
+              .catch(() => showToast("Gagal menyimpan data jadwal.", "error"));
+          });
+
+          tr.querySelector(".btn-batal").addEventListener("click", () => {
+            editingIndexAB = null;
+            renderTabelAB();
+            enableAllButtons();
+          });
+        });
+
+        btnHapus.addEventListener("click", () => {
+          if (editingIndexAB !== null) return
+          else {
+            showToast("Data jadwal berhasil dihapus.", "error");
+            deleteJadwalById(item.id)
+              .then(() => renderTabelAB())
+              .catch(() => showToast("Gagal menghapus data jadwal.", "error"));
+          }
+        });
+      });
+    })
+    .catch(() =>showToast("Gagal memuat data jadwal.", "error"));
+}
+
 document.getElementById("btnTambah").addEventListener("click", () => {
-  if (editingIndexAB !== null) return alert("Selesaikan edit terlebih dahulu.");
-  editingIndexAB = jadwalABData.length;
+  if (editingIndexAB !== null) return
+  editingIndexAB = "new";
 
   const tbody = document.querySelector("#tableAB tbody");
   const tr = document.createElement("tr");
 
-  let newIcon = "";
+  let selectedFile = null;
 
   tr.innerHTML = `
-    <td class="ikon"><img src="/user.png" width="50" height="50" /></td>
+    <td class="icon"><img src="/user.png" width="50" height="50" /></td>
     <td class="deskripsi"><input type="text" placeholder="Masukkan deskripsi" style="width: 100%;"></td>
     <td>
       <button class="btn-upload">Upload Ikon</button>
@@ -282,48 +332,70 @@ document.getElementById("btnTambah").addEventListener("click", () => {
     input.accept = "image/*";
     input.onchange = (e) => {
       const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        newIcon = ev.target.result;
-        tr.querySelector(".ikon").innerHTML = `<img src="${newIcon}" width="50" height="50"/>`;
-      };
-      reader.readAsDataURL(file);
+      if (!file) return;
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+      if (!allowedTypes.includes(file.type)) {
+        showToast("Format file tidak didukung.", "error");
+        return;
+      }
+
+      const maxSize = 2 * 1024 * 1024; 
+      if (file.size > maxSize) {
+        showToast("Ukuran gambar maksimal 2MB.", "error");
+        return;
+      }
+
+      selectedFile = file;
+      tr.querySelector(".icon").innerHTML = `<img src="${URL.createObjectURL(selectedFile)}" width="50" height="50"/>`;
+      showToast("Ikon jadwal berhasil di upload.", "success");
     };
+
     input.click();
   });
 
   tr.querySelector(".btn-simpan").addEventListener("click", () => {
     const deskripsi = tr.querySelector(".deskripsi input").value.trim();
-    if (!deskripsi || !newIcon) return alert("Data tidak boleh kosong!");
-    jadwalABData.push({ ikon: newIcon, deskripsi });
-    editingIndexAB = null;
-    renderTabelAB();
-    enableAllButtons();
+    if (!deskripsi || !selectedFile) return showToast("Data jadwal tidak boleh kosong.", "error");
+
+    postJadwal({ deskripsi }, selectedFile)
+      .then(() => {
+        editingIndexAB = null;
+        showToast("Data jadwal berhasil ditambahkan.", "success");
+        renderTabelAB();
+        enableAllButtons();
+      })
+      .catch(() => showToast("Gagal menambahkan data jadwal.", "error"));
   });
 
   tr.querySelector(".btn-batal").addEventListener("click", () => {
     editingIndexAB = null;
-    tr.remove();
+    renderTabelAB();
     enableAllButtons();
   });
 });
 
-function disableAllButtonsExcept(row) {
-  document.querySelectorAll("button").forEach(btn => {
-    if (!row.contains(btn)) {
-      btn.disabled = true;
-    }
-  });
+
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
 }
 
-function enableAllButtons() {
-  document.querySelectorAll("button").forEach(btn => {
-    btn.disabled = false;
-  });
-}
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
 
-renderTabelHari();
-renderTabelAB();
-
-
-initSidebarFunctionality();
+window.onload = () => {
+  renderTabelHari();
+  renderTabelAB();
+  initSidebarFunctionality();
+};

@@ -2,6 +2,8 @@ import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
 
+import { getAllOutput, postOutput, updateOutputById, deleteOutputById } from './fetch.js';
+
 document.querySelector('#output').innerHTML = `
   ${createSidebarHTML({
     activePage: 'output',
@@ -51,16 +53,19 @@ document.querySelector('#output').innerHTML = `
 const hasilOutputTable = document.getElementById('hasilOutputTable');
 const btnTambah = document.getElementById('btnTambah');
 
-const hasilOutputDefault = ['Mengenal sholat.', 'Perilaku Sosial Baik.', 'Belajar berbakti kepada orang tua.', 'Disiplin dan Mandiri.','Hafal Hadist pilihan.','Kemampuan Komunikasi baik.','Belajar percaya diri.','Memiliki budaya bersih.','Terbiasa mengucap salam.','Mengenal baca Al- Qur’an','Hafal Do’a Harian.'];
-
 function renderHasilOutput() {
-  hasilOutputTable.innerHTML = '';
-  hasilOutputDefault.forEach(item => hasilOutputTable.appendChild(createRow(item)));
+  hasilOutputTable.innerHTML = `<tr><td colspan="2">Loading data output yang dihasilkan...</td></tr>`;
+  getAllOutput().then(data => {
+     hasilOutputTable.innerHTML = '';
+    if (data && Array.isArray(data) && data.length) {
+      data.forEach(item => hasilOutputTable.appendChild(createRow(item.id, item.output)));
+    }
+  });
 }
 
 btnTambah.addEventListener('click', () => {
   if (document.querySelector('.input-edit')) return;
-  hasilOutputTable.appendChild(createRow('', true));
+  hasilOutputTable.appendChild(createRow(null, '', true));
   setButtonsDisabled(true);
 });
 
@@ -71,7 +76,7 @@ function setButtonsDisabled(disabled) {
   btnTambah.disabled = disabled;
 }
 
-function createRow(text, isEdit = false) {
+function createRow(id, text, isEdit = false) {
   const tr = document.createElement('tr');
   const tdHasilOutput = document.createElement('td');
   const tdOpsi = document.createElement('td');
@@ -79,20 +84,34 @@ function createRow(text, isEdit = false) {
   if (isEdit) {
     const input = document.createElement('input');
     input.type = 'text';
-    input.placeholder = 'Masukkan kegiatan penunjang';
+    input.placeholder = 'Masukkan output yang dihasilkan';
     input.value = text;
     input.classList.add('input-edit');
     input.style.width = '100%';
     tdHasilOutput.appendChild(input);
 
     const btnSimpan = createButton('Simpan', 'btn-simpan', () => {
-      saveRow(tr, input.value.trim(), text);
+      const value = input.value.trim();
+      if (!value) {
+        showToast('Data output yang dihasilkan tidak boleh kosong.', "error");
+        return;
+      }
+      if (id) {
+        updateOutputById(id, { output_description: value }).then(() => renderHasilOutput());
+        showToast("Data output yang dihasilkan berhasil disimpan.", "success");
+      } else {
+        postOutput({ output_description: value }).then(() => renderHasilOutput());
+        showToast("Data output yang dihasilkan berhasil ditambahkan.", "success")
+      }
       setButtonsDisabled(false);
     });
 
     const btnBatal = createButton('Batal', 'btn-batal', () => {
-      if (text === '') tr.remove();
-      else tr.replaceWith(createRow(text));
+      if (id) {
+        tr.replaceWith(createRow(id, text));
+      } else {
+        tr.remove();
+      }
       setButtonsDisabled(false);
     });
 
@@ -109,13 +128,17 @@ function createRow(text, isEdit = false) {
     tdHasilOutput.style.paddingRight = '2em';
     tdHasilOutput.appendChild(ul);
 
-
     const btnEdit = createButton('Edit', 'btn-edit', () => {
-      tr.replaceWith(createRow(text, true));
+      tr.replaceWith(createRow(id, text, true));
       setButtonsDisabled(true);
     });
 
-    const btnHapus = createButton('Hapus', 'btn-hapus', () => deleteRow(tr, text));
+    const btnHapus = createButton('Hapus', 'btn-hapus', () => {
+      showToast("Data output yang dihasilkan berhasil dihapus.","error");
+        deleteOutputById(id).then(() => {
+          tr.remove();
+        });
+    });
 
     tdOpsi.append(btnEdit, btnHapus);
   }
@@ -132,26 +155,24 @@ function createButton(text, className, onClick) {
   return btn;
 }
 
-function saveRow(tr, newText, oldText) {
-  if (!newText) return alert('Data tidak boleh kosong');
+function showToast(message, type = "info") {
+  const container = document.getElementById("toast-container");
+  if (!container) return;
 
-  if (!oldText) {
-    hasilOutputDefault.push(newText);
-  } else {
-    const index = hasilOutputDefault.indexOf(oldText);
-    if (index > -1) hasilOutputDefault[index] = newText;
-  }
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
 
-  tr.replaceWith(createRow(newText));
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 4000);
 }
 
-function deleteRow(tr, text) {
-  if (confirm('Yakin ingin menghapus data ini?')) {
-    const index = hasilOutputDefault.indexOf(text);
-    if (index > -1) hasilOutputDefault.splice(index, 1);
-    tr.remove();
-  }
-}
+document.body.insertAdjacentHTML("beforeend", `
+  <div id="toast-container"></div>
+`);
 
 renderHasilOutput();
 initSidebarFunctionality();
