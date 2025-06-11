@@ -1,4 +1,3 @@
-// checkX.ts
 export function checkAuth(
 	redirectUrl = "/admin-tkkb-sitihajar-karlos/login"
 ): boolean {
@@ -14,7 +13,7 @@ export function checkAuth(
 	const expiredDate = new Date(expiredAt);
 
 	if (now > expiredDate) {
-		alert("Sesi Anda telah berakhir. Silakan login kembali.");
+		alert("Sesi berakhir");
 		redirectToLogin(redirectUrl);
 		return false;
 	}

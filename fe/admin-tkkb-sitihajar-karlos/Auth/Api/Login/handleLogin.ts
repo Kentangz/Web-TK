@@ -25,8 +25,6 @@ export function handleLogin(): void {
 		} catch (err: unknown) {
 			if (err instanceof Error) {
 				errorDiv.innerText = err.message;
-			} else {
-				errorDiv.innerText = "Terjadi kesalahan tak terduga.";
 			}
 		}
 	});
