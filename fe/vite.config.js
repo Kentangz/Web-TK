@@ -13,11 +13,13 @@ export default defineConfig({
                 pendaftaran:'pendaftaran.html',
                 contact:'contact.html',
 
-
+                login:'admin-tkkb-sitihajar-karlos/login.html',
+                    
                 admin:'admin-tkkb-sitihajar-karlos/dashboard.html',
                 gurua:'admin-tkkb-sitihajar-karlos/guru.html',
                 contacta:'admin-tkkb-sitihajar-karlos/contact.html',
 
+                visimisi:'admin-tkkb-sitihajar-karlos/beranda/dummy.html',
                 visimisi:'admin-tkkb-sitihajar-karlos/beranda/visi-misi.html',
                 tujuanstrategi:'admin-tkkb-sitihajar-karlos/beranda/tujuan-strategi.html',
                 galleryberanda:'admin-tkkb-sitihajar-karlos/beranda/gallery-beranda.html',

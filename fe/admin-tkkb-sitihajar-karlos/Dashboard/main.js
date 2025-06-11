@@ -1,6 +1,11 @@
 import '../global.css';
 import './style.css';
+import { checkAuth } from '../Auth/Api/checkX';
 import { createSidebarHTML, initSidebarFunctionality } from '../Component/Sidebar/sidebar';
+
+if (!checkAuth()) {
+	throw new Error("Not authenticated");
+}
 
 document.querySelector('#dashboard').innerHTML = `
   ${createSidebarHTML({
