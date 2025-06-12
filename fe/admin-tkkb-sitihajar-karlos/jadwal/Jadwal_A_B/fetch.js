@@ -48,27 +48,32 @@ export function postWaktu({ hari, jam }) {
   formData.append('jam', jam);
 
   return fetch(`${import.meta.env.VITE_API_KEY}/jadwal/waktukegiatantk`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal menambahkan data waktu. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const waktu = result.data;
-      return {
-        id: waktu.id,   
-        day: waktu.hari,
-        hour: waktu.jam
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan postWaktu:", error);
-      return null;
-    });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal menambahkan data waktu. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const waktu = result.data;
+			return {
+				id: waktu.id,
+				day: waktu.hari,
+				hour: waktu.jam,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postWaktu:", error);
+			return null;
+		});
 }
 
 export function updateWaktuById(id, { hari, jam }) {
@@ -78,41 +83,52 @@ export function updateWaktuById(id, { hari, jam }) {
   formData.append('_method', 'PUT');
 
   return fetch(`${import.meta.env.VITE_API_KEY}/jadwal/waktukegiatantk/${id}`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal memperbarui data waktu. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const waktu = result.data;
-      return {
-        id: waktu.id,   
-        day: waktu.hari,
-        hour: waktu.jam
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan updateWaktuById", error);
-      return null;
-    });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal memperbarui data waktu. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const waktu = result.data;
+			return {
+				id: waktu.id,
+				day: waktu.hari,
+				hour: waktu.jam,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateWaktuById", error);
+			return null;
+		});
 }
 
 export function deleteWaktuById(id) {
   return fetch(`${import.meta.env.VITE_API_KEY}/jadwal/waktukegiatantk/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus data waktu. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteWaktuById:", error);
-    return null;
-  });
+		method: "DELETE",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menghapus data waktu. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteWaktuById:", error);
+			return null;
+		});
 }
 
 export function getAllJadwal() {
@@ -165,27 +181,32 @@ export function postJadwal({ deskripsi }, imageFile) {
   formData.append('deskripsi', deskripsi);
 
   return fetch(`${import.meta.env.VITE_API_KEY}/jadwal/jadwalkelompoktk`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal menambahkan data jadwal. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const jadwal = result.data;
-      return {
-        id: jadwal.id,   
-        icon: jadwal.icon,
-        desc: jadwal.deskripsi
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan postJadwal:", error);
-      return null;
-    });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal menambahkan data jadwal. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const jadwal = result.data;
+			return {
+				id: jadwal.id,
+				icon: jadwal.icon,
+				desc: jadwal.deskripsi,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postJadwal:", error);
+			return null;
+		});
 }
 
 export function updateJadwalById(id, { deskripsi }, imageFile) {
@@ -194,40 +215,57 @@ export function updateJadwalById(id, { deskripsi }, imageFile) {
   formData.append('deskripsi', deskripsi);
   formData.append('_method', 'PUT');
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/jadwal/jadwalkelompoktk/${id}`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal memperbarui data jadwal. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const jadwal = result.data;
-      return {
-        id: jadwal.id,   
-        icon: jadwal.icon,
-        desc: jadwal.deskripsi
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan updateJadwalById:", error);
-      return null;
-    });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/jadwal/jadwalkelompoktk/${id}`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal memperbarui data jadwal. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const jadwal = result.data;
+			return {
+				id: jadwal.id,
+				icon: jadwal.icon,
+				desc: jadwal.deskripsi,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateJadwalById:", error);
+			return null;
+		});
 }
 
 export function deleteJadwalById(id) {
-  return fetch(`${import.meta.env.VITE_API_KEY}/jadwal/jadwalkelompoktk/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus data jadwal. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteJadwalById:", error);
-    return null;
-  });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/jadwal/jadwalkelompoktk/${id}`,
+		{
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	)
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menghapus data jadwal. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteJadwalById:", error);
+			return null;
+		});
 }

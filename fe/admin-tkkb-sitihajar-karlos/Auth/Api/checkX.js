@@ -1,6 +1,4 @@
-export function checkAuth(
-	redirectUrl = "/admin-tkkb-sitihajar-karlos/login"
-): boolean {
+export function checkAuth(redirectUrl = "/admin-tkkb-sitihajar-karlos/login") {
 	const token = localStorage.getItem("token");
 	const expiredAt = localStorage.getItem("token_expired_at");
 
@@ -20,7 +18,7 @@ export function checkAuth(
 	return true;
 }
 
-export function redirectToLogin(redirectUrl: string): void {
+export function redirectToLogin(redirectUrl) {
 	localStorage.removeItem("token");
 	localStorage.removeItem("token_expired_at");
 	window.location.href = redirectUrl;

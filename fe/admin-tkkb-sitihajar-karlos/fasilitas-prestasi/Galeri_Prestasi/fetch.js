@@ -45,26 +45,31 @@ export function postGambarPrestasi({ imageFile }) {
   if (imageFile) formData.append('image', imageFile);
 
   return fetch(`${import.meta.env.VITE_API_KEY}/fasilitasprestasi/gallery`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal menambahkan data gambar prestasi. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const  gambarprestasi = result.data;
-      return {
-        id: gambarprestasi.id,   
-        img: gambarprestasi.image
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan postGambarPrestasi:", error);
-      return null;
-    });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal menambahkan data gambar prestasi. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const gambarprestasi = result.data;
+			return {
+				id: gambarprestasi.id,
+				img: gambarprestasi.image,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postGambarPrestasi:", error);
+			return null;
+		});
 }
 
 export function updateGambarPrestasiById(id, { imageFile }) {
@@ -72,39 +77,56 @@ export function updateGambarPrestasiById(id, { imageFile }) {
   if (imageFile) formData.append('image', imageFile);
   formData.append('_method', 'PUT');
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/fasilitasprestasi/gallery/${id}`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal memperbarui data gambar prestasi. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const gambarprestasi = result.data;
-      return {
-        id: gambarprestasi.id,   
-        img: gambarprestasi.image
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan updateGambarPrestasiById:", error);
-      return null;
-    });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/fasilitasprestasi/gallery/${id}`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal memperbarui data gambar prestasi. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const gambarprestasi = result.data;
+			return {
+				id: gambarprestasi.id,
+				img: gambarprestasi.image,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateGambarPrestasiById:", error);
+			return null;
+		});
 }
 
 export function deleteGambarPrestasiById(id) {
-  return fetch(`${import.meta.env.VITE_API_KEY}/fasilitasprestasi/gallery/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus data gambar prestasi. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteGambarPrestasiById:", error);
-    return null;
-  });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/fasilitasprestasi/gallery/${id}`,
+		{
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	)
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menghapus data gambar prestasi. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteGambarPrestasiById:", error);
+			return null;
+		});
 }

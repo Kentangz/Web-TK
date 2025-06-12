@@ -1,8 +1,12 @@
 import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
-
 import { getAllKegiatanUnggulan, postKegiatanUnggulan, updateKegiatanUnggulanById, deleteKegiatanUnggulanById } from './fetch.js';
+import { checkAuth } from '../../Auth/Api/checkX.js';
+
+if (!checkAuth()) {
+	throw new Error("Not authenticated");
+}
 
 document.querySelector('#kegiatan-unggulan').innerHTML = `
   ${createSidebarHTML({

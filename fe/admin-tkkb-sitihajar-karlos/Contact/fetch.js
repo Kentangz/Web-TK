@@ -49,27 +49,32 @@ export function postContactPerson({ nomor, nama }) {
   formData.append('nama', nama);
 
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/contactperson`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal menambahkan data contact person. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const contact_person = result.data;
-      return {
-        id: contact_person.id,
-        phone: contact_person.nomor,
-        name: contact_person.nama,
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan postContactPerson:", error);
-      return null;
-    });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal menambahkan data contact person. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const contact_person = result.data;
+			return {
+				id: contact_person.id,
+				phone: contact_person.nomor,
+				name: contact_person.nama,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postContactPerson:", error);
+			return null;
+		});
 }
 
 export function updateContactPersonById(id, { nomor, nama }) {
@@ -79,41 +84,52 @@ export function updateContactPersonById(id, { nomor, nama }) {
   formData.append('_method', 'PUT');
 
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/contactperson/${id}`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal memperbarui data contact person. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const contact_person = result.data;
-      return {
-        id: contact_person.id,
-        phone: contact_person.nomor,
-        name: contact_person.nama,
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan updateContactPersonById:", error);
-      return null;
-    });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal memperbarui data contact person. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const contact_person = result.data;
+			return {
+				id: contact_person.id,
+				phone: contact_person.nomor,
+				name: contact_person.nama,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateContactPersonById:", error);
+			return null;
+		});
 }
 
 export function deleteContactPersonById(id) {
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/contactperson/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus data contact person. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteContactPersonById:", error);
-    return null;
-  });
+		method: "DELETE",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menghapus data contact person. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteContactPersonById:", error);
+			return null;
+		});
 }
 
 // email.js
@@ -160,24 +176,28 @@ export function postEmail({ email }) {
   formData.append('email', email);
 
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/email`, {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menambahkan email. Status: ${response.status}`);
-    return response.json();
-  })
-  .then(result => {
-    const email = result.data;
-    return {
-      id: email.id,
-      email: email.email
-    };
-  })
-  .catch(error => {
-    console.error("Kesalahan postEmail:", error);
-    return null;
-  });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(`Gagal menambahkan email. Status: ${response.status}`);
+			return response.json();
+		})
+		.then((result) => {
+			const email = result.data;
+			return {
+				id: email.id,
+				email: email.email,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postEmail:", error);
+			return null;
+		});
 }
 
 export function updateEmailById(id, { email }) {
@@ -186,38 +206,46 @@ export function updateEmailById(id, { email }) {
   formData.append('_method', 'PUT');
 
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/email/${id}`, {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal memperbarui email. Status: ${response.status}`);
-    return response.json();
-  })
-  .then(result => {
-    const email = result.data;
-    return {
-      id: email.id,
-      email: email.email
-    };
-  })
-  .catch(error => {
-    console.error("Kesalahan updateEmailById:", error);
-    return null;
-  });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(`Gagal memperbarui email. Status: ${response.status}`);
+			return response.json();
+		})
+		.then((result) => {
+			const email = result.data;
+			return {
+				id: email.id,
+				email: email.email,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateEmailById:", error);
+			return null;
+		});
 }
 
 export function deleteEmailById(id) {
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/email/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus email. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteEmailById:", error);
-    return null;
-  });
+		method: "DELETE",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(`Gagal menghapus email. Status: ${response.status}`);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteEmailById:", error);
+			return null;
+		});
 }
 
 // instagram.js
@@ -263,24 +291,30 @@ export function postInstagram({ ig_name }) {
   formData.append('ig_name', ig_name);
 
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/instagram`, {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menambahkan Instagram. Status: ${response.status}`);
-    return response.json();
-  })
-  .then(result => {
-    const instagram = result.data;
-    return {
-      id: instagram.id,
-      username: instagram.ig_name
-    };
-  })
-  .catch(error => {
-    console.error("Kesalahan postInstagram:", error);
-    return null;
-  });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menambahkan Instagram. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.then((result) => {
+			const instagram = result.data;
+			return {
+				id: instagram.id,
+				username: instagram.ig_name,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postInstagram:", error);
+			return null;
+		});
 }
 
 export function updateInstagramById(id, { ig_name }) {
@@ -289,38 +323,50 @@ export function updateInstagramById(id, { ig_name }) {
   formData.append('_method', 'PUT');
 
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/instagram/${id}`, {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal memperbarui Instagram. Status: ${response.status}`);
-    return response.json();
-  })
-  .then(result => {
-    const instagram = result.data;
-    return {
-      id: instagram.id,
-      username: instagram.ig_name
-    };
-  })
-  .catch(error => {
-    console.error("Kesalahan updateInstagramById:", error);
-    return null;
-  });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal memperbarui Instagram. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.then((result) => {
+			const instagram = result.data;
+			return {
+				id: instagram.id,
+				username: instagram.ig_name,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateInstagramById:", error);
+			return null;
+		});
 }
 
 export function deleteInstagramById(id) {
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/instagram/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus Instagram. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteInstagramById:", error);
-    return null;
-  });
+		method: "DELETE",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menghapus Instagram. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteInstagramById:", error);
+			return null;
+		});
 }
 
 // alamat.js
@@ -367,24 +413,28 @@ export function postAlamat({ alamat }) {
   formData.append('alamat', alamat);
 
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/alamat`, {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menambahkan alamat. Status: ${response.status}`);
-    return response.json();
-  })
-  .then(result => {
-    const alamat = result.data;
-    return {
-      id: alamat.id,
-      alamat: alamat.alamat
-    };
-  })
-  .catch(error => {
-    console.error("Kesalahan postAlamat:", error);
-    return null;
-  });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(`Gagal menambahkan alamat. Status: ${response.status}`);
+			return response.json();
+		})
+		.then((result) => {
+			const alamat = result.data;
+			return {
+				id: alamat.id,
+				alamat: alamat.alamat,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postAlamat:", error);
+			return null;
+		});
 }
 
 export function updateAlamatById(id, { alamat }) {
@@ -393,36 +443,44 @@ export function updateAlamatById(id, { alamat }) {
   formData.append('_method', 'PUT');
 
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/alamat/${id}`, {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal memperbarui alamat. Status: ${response.status}`);
-    return response.json();
-  })
-  .then(result => {
-    const alamat = result.data;
-    return {
-      id: alamat.id,
-      alamat: alamat.alamat
-    };
-  })
-  .catch(error => {
-    console.error("Kesalahan updateAlamatById:", error);
-    return null;
-  });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(`Gagal memperbarui alamat. Status: ${response.status}`);
+			return response.json();
+		})
+		.then((result) => {
+			const alamat = result.data;
+			return {
+				id: alamat.id,
+				alamat: alamat.alamat,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateAlamatById:", error);
+			return null;
+		});
 }
 
 export function deleteAlamatById(id) {
   return fetch(`${import.meta.env.VITE_API_KEY}/contact/alamat/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus alamat. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteAlamatById:", error);
-    return null;
-  });
+		method: "DELETE",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(`Gagal menghapus alamat. Status: ${response.status}`);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteAlamatById:", error);
+			return null;
+		});
 }

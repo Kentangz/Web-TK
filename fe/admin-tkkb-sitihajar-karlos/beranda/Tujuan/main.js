@@ -1,8 +1,12 @@
 import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
-
 import { getAllTujuan, postTujuan, updateTujuanById, deleteTujuanById, getAllStrategi, postStrategi, updateStrategiById, deleteStrategiById } from './fetch.js';
+import { checkAuth } from '../../Auth/Api/checkX.js';
+
+if (!checkAuth()) {
+  throw new Error("Not authenticated");
+}
 
 document.querySelector('#tujuan-strategi').innerHTML = `
   ${createSidebarHTML({

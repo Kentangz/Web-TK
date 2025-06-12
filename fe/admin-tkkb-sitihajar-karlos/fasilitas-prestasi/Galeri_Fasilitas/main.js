@@ -1,8 +1,12 @@
 import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
-
 import { getAllGambarFasilitas, postGambarFasilitas, updateGambarFasilitasById, deleteGambarFasilitasById } from './fetch.js';
+import { checkAuth } from '../../Auth/Api/checkX.js';
+
+if (!checkAuth()) {
+  throw new Error("Not authenticated");
+}
 
 document.querySelector('#galeri-fasilitas').innerHTML = `
   ${createSidebarHTML({

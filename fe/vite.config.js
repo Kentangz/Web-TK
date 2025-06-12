@@ -19,7 +19,6 @@ export default defineConfig({
                 gurua:'admin-tkkb-sitihajar-karlos/guru.html',
                 contacta:'admin-tkkb-sitihajar-karlos/contact.html',
 
-                visimisi:'admin-tkkb-sitihajar-karlos/beranda/dummy.html',
                 visimisi:'admin-tkkb-sitihajar-karlos/beranda/visi-misi.html',
                 tujuanstrategi:'admin-tkkb-sitihajar-karlos/beranda/tujuan-strategi.html',
                 galleryberanda:'admin-tkkb-sitihajar-karlos/beranda/gallery-beranda.html',

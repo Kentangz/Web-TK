@@ -1,8 +1,12 @@
 import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
-
 import { getAllGambarKegiatan, postGambarkegiatan, updateGambarKegiatanById, deleteGambarKegiatanById } from './fetch.js';
+import { checkAuth } from '../../Auth/Api/checkX.js';
+
+if (!checkAuth()) {
+	throw new Error("Not authenticated");
+}
 
 document.querySelector('#galeri-kegiatan').innerHTML = `
   ${createSidebarHTML({
