@@ -1,8 +1,10 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-    
-    build:{
+    build: {
+        optimization: {
+            include: ['notiflix']
+        },
         rollupOptions:{
             input:{
                 index:'index.html',

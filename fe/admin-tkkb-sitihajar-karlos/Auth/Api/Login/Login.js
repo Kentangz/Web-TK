@@ -1,4 +1,4 @@
-import { api } from "../Axios";
+import { api } from "../api";
 
 export async function login(
 	email,

@@ -1,6 +1,6 @@
 import "../global.css";
 import "./style.css";
-import { handleLogin } from "./Api/Login/handleLogin";
+import { handleLogin } from "./Api/Login/loginHandler";
 
 const Login = document.querySelector("#login");
 
