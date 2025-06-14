@@ -3,15 +3,6 @@ import { Report } from "notiflix/build/notiflix-report-aio";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
 import { authStyles, authTemplates, authMessages } from "./authStyles.js";
 
-export function showWelcomeDialog(onLoginClick) {
-	Report.info(
-		authMessages.titles.welcome,
-		authMessages.buttons.login,
-		onLoginClick,
-		authStyles.welcomeDialog
-	);
-}
-
 export function showSessionWarning(remainingTime) {
 	Notify.warning(
 		authTemplates.sessionWarning(remainingTime),

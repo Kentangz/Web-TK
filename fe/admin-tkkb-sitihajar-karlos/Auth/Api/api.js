@@ -14,3 +14,15 @@ api.interceptors.request.use((config) => {
 	}
 	return config;
 });
+
+// for 404
+api.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (error.response?.status === 401) {
+			localStorage.clear();
+			window.location.href = "/admin-tkkb-sitihajar-karlos/login";
+		}
+		return Promise.reject(error);
+	}
+);
