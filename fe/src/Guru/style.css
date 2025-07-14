@@ -1,9 +1,21 @@
 body {
-  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/images/gurubg.jpg');
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/images/bgguru.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* Agar tidak ikut scroll jika ingin efek tetap */
+  background-attachment: fixed;
+}
+
+.guru-text {
+  word-break: break-all; 
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  margin: 0.2rem 0;
+}
+
+h3.guru-text {
+  font-size: 1.3rem;
 }
 
 .judul {
@@ -28,8 +40,20 @@ body {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 4rem;
   margin: 2rem 0;
+  align-items: flex-start;
+}
+
+.guru-item {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  border-radius: 1rem; 
+  background: transparent;
 }
 
 .guru-scroll {
@@ -38,28 +62,31 @@ body {
   gap: 1rem;
   padding: 1rem;
   scroll-snap-type: x mandatory;
+  min-height: 10vh;
 }
 
-.guru-card {
-  display: flex; 
-  align-items: center;
+.guru-card { 
   background: white;
   border-radius: 1rem;
   padding: 1rem;
   min-width: 350px; 
   flex-shrink: 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  scroll-snap-align: start;
-  text-align: left; 
+  scroll-snap-align: start; 
   gap: 1rem; 
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
+
 .guru-img {
-  width: 190px; 
-  height: 190px;
+  width: 200px; 
+  height: 200px;
   object-fit: cover;
   border-radius: 0.5rem;
-  border: 3px solid black;
+  border: 4px solid black;
+}
+
+.guru-img-box {
   flex-shrink: 0;
 }
 
@@ -76,6 +103,9 @@ body {
   font-size: 1rem;
   text-align: center;
   line-height: 2;
+  max-height: 350px; 
+  overflow-y: auto;
+  font-size: 20px;
 }
 .guru-scroll {
   overflow-x: auto;
@@ -86,6 +116,7 @@ body {
 .guru-scroll-container {
   display: flex;
   gap: 5rem;
+  align-items: flex-start;
 }
 
 .guru-scroll-wrapper {
@@ -98,40 +129,16 @@ body {
   padding: 0 1rem;
 }
 
-.scroll-icon {
-  width: 40px; /* ukuran ikon panah */
-  height: 40px;
-  object-fit: contain;
-}
-
-.scroll-btn {
-  background-color: #f0f0f0;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border-radius: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, background-color 0.3s ease;
-}
-
 #scrollContainer {
   overflow-x: auto;
   flex: 1;
   scroll-snap-type: x mandatory;
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none;   
 }
 
 #scrollContainer::-webkit-scrollbar {
-  display: none;              /* Chrome/Safari */
-}
-
-.guru-scroll-container {
-  display: flex;
-  gap: 1rem;
+  display: none;              
 }
 
 /* Responsive untuk tablet dan ke bawah */
@@ -154,20 +161,36 @@ body {
     margin-left: 0.5rem;
   }
 
-  .guru-card {
-    flex-direction: column; /* Gambar di atas, teks di bawah */
+  .guru-item  {
+    gap: 0;
+    flex-direction: column;
     align-items: center;
-    text-align: center;
-    min-width: 250px;
+    background: white;
+    padding: 1rem;
+    border-radius: 1rem;
+    max-width: 80%;
   }
 
   .guru-img {
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    max-width: 220px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .guru-img-box {
+    margin-bottom: 1rem;
+  }
+
+  .guru-card {
+    all: unset;
   }
 
   .guru-info {
-    font-size: 0.85rem;
+    text-align: center;
+    font-size: 1rem;
+    max-height: none;
+    overflow: visible;
   }
 
   .scroll-btn {
@@ -176,23 +199,28 @@ body {
   }
 
   .guru-scroll-container {
-    gap: 1rem;
+    gap: 2.5rem;
   }
 }
 
 /* Responsive untuk hp kecil */
 @media (max-width: 480px) {
   .guru-card {
-    min-width: 220px;
+    min-width: 250px;
   }
 
   .guru-img {
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    aspect-ratio: 1 / 1;
   }
 
   .guru-info {
-    font-size: 0.8rem;
+    max-height: 160px; 
+    max-width: 300px;
+    overflow-y: auto;
+    font-size: 1rem;
   }
 
   .scroll-btn {

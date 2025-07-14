@@ -10,7 +10,7 @@ export function fetchTujuan() {
       const data = result.data[0];
       return `
         <h2>Tujuan</h2>
-        <p>${data.tujuan_description}</p>
+        <p class="beranda-text">${data.tujuan_description}</p>
       `;
     })
     .catch(error => `<p style="color:red;">Gagal memuat tujuan</p>`);

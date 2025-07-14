@@ -1,0 +1,424 @@
+.kop-formulir {
+  max-width: 180mm; 
+  margin: 0 auto 5px; 
+  font-family: 'Times New Roman', Times, serif;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; 
+  position: relative;
+}
+
+.logo-formulir {
+  height: 85px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.judul-formulir {
+  flex: 1;
+  text-align: center; 
+  margin: 15px 0; 
+}
+
+.judul-formulir h3,
+.judul-formulir h2 {
+  margin: 0;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.judul-formulir h3 {
+  font-size: 16px;
+}
+
+.judul-formulir h2 {
+  font-size: 20px;
+}
+
+.judul-formulir p {
+  margin: 4px 0 0;
+  font-size: 14px;
+}
+
+.teks-formulir h1 {
+  width: 90%;
+  margin: 10px auto 10px 15px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+.teks-formulir h2 {
+  width: 90%;
+  margin: 10px auto 10px 15px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+}
+
+
+.garis-tebal {
+  border: none;
+  border-top: 5px solid black;
+  width: 95%;
+  margin: 5px auto 10px auto;
+}
+
+.konten-formulir {
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 10px;
+  line-height: 1.6;
+  color: #000;
+  background: #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.formulir-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 20px;
+  table-layout: fixed;
+}
+
+.formulir-table td {
+  vertical-align: top;
+  padding: 4px 4px;
+}
+
+.td-middle {
+  vertical-align: middle !important;
+  padding: 4px 4px;
+}
+
+
+.td-first-middle {
+  width: 22%;
+  white-space: nowrap;
+  text-align: left;
+  vertical-align: middle !important;
+}
+
+.formulir-table td:first-child {
+  width: 22%;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.konten-formulir h3 {
+  text-align: center;
+}
+
+.sub-alamat {
+  margin: 4px 0 4px 20px;
+  padding-left: 0;
+  list-style: none;
+}
+.sub-alamat li {
+  margin-bottom: 2px;
+}
+
+#preview {
+  width: 210mm;
+  min-height: 330mm;
+  margin: auto;
+  background: white;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 12pt;
+  color: #000;
+  line-height: 1.6;
+  padding: 0;
+}
+
+.formulir-penutup {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8px;
+}
+
+.formulir-penutup-kiri {
+  width: 60%;
+  margin-left: 30px;
+}
+
+.formulir-penutup-kanan {
+  width: 38%;
+  text-align: center;
+  margin-right: 50px;
+}
+
+.kotak-dokumen {
+  border:0.1px solid black;
+  padding: 10px;
+  display: inline-block;
+  
+}
+
+.catatan-penutup {
+  margin-top: 20px;
+  font-size: 7px;
+}
+
+.tanggal-wali {
+  margin-bottom: 30px;
+}
+
+.label-ttd {
+  font-size: 10px;
+}
+
+.page-break {
+  display: block;
+  height: 0;
+  page-break-before: always;
+  break-before: page;
+}
+
+.formulir-table td.label-miring {
+  padding-left: 20px;
+  vertical-align: top;
+}
+
+.formulir-table td.label-indented {
+  padding-left: 20px;
+}
+
+.isi-memuat {
+  vertical-align: top;
+}
+
+.isi-teks {
+  word-break: break-word;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.isi-sebaris {
+  white-space: nowrap;
+}
+
+.inline-label {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.kotak-output {
+  border:0.1px solid black;
+  padding: 0 4px;  
+  display: inline-block;
+  width: 470px;              
+  height: 17px;
+  align-items: center;         
+  white-space: normal;       
+  max-width: 100%; 
+  word-wrap: break-word; 
+  word-break: break-word; 
+  white-space: pre-wrap;  
+  vertical-align: top;      
+  margin-left: 3px;
+}
+
+
+.kotak-output-1 {
+  border:0.1px solid black;
+  padding: 0 4px;  
+  display: inline-block;
+  min-width: 470px; 
+  height: 17px;
+  align-items: center;
+  margin-left: 8px;
+  margin-top: 10px;
+}
+
+.kotak-output-wide {
+  border:0.1px solid black;
+  padding: 0 4px;  
+  display: inline-block;
+  min-width: 470px; 
+  height: 17px;
+  align-items: center;
+  margin-left: 3px;
+}
+
+.kotak-output-medium {
+  border:0.1px solid black;
+  padding: 0 4px;  
+  display: inline-block;
+  min-width: 345px; 
+  height: 17px;
+  align-items: center;
+  margin-left: 3px;
+}
+
+.kotak-output-medium-1{
+  border:0.1px solid black;
+  padding: 0 4px;  
+  display: inline-block;
+  min-width: 300px;
+  height: 17px;
+  align-items: center;
+  margin-left: 3px;
+}
+
+.kotak-output-small {
+  border:0.1px solid black;
+  padding: 0 4px;  
+  display: inline-block;
+  min-width: 100px; 
+  height: 17px;
+  align-items: center;
+  margin-left: 3px;
+}
+.kotak-output-smaller {
+  border:0.1px solid black;
+  padding: 0 4px;  
+  display: inline-block;
+  min-width: 50px; 
+  height: 17px;
+  align-items: center;
+  margin-left: 3px;
+}
+.kotak-output-small-1{
+  border:0.1px solid black;
+  padding: 0 4px;  
+  display: inline-block;
+  min-width: 155px; 
+  height: 17px;
+  align-items: center;
+  margin-left: 3px;
+}
+
+.kotak-wrapper {
+  display: inline-flex;
+  margin-left: 5px;
+}
+
+.kotak-angka {
+  border: 1px solid #000;
+  padding: 0 4px;  
+  height: 17px;
+  align-items: center;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  margin-right: -1px;
+}
+
+.transportasi-flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.daftar-transportasi {
+  white-space: nowrap;
+  font-size: 8px;
+}
+
+.spangap{
+  margin-left: 20px;
+  font-size: 8px;
+}
+.spangaphp{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.daftar-transportasi table {
+  font-size: 6px;
+  margin-left: 10px;
+  border-collapse: collapse;
+}
+
+.daftar-transportasi td {
+  padding: 1px 35px 1px 0;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.kolom-data-vertikal {
+  display: flex;
+  flex-direction: column;
+}
+
+.kolom-data-horizontal {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 3px;
+}
+
+
+@media print {
+  @page {
+    margin: 0mm;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  .section-utama {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+  display: block;
+}
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: #fff;
+  }
+  #preview {
+    margin: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    box-shadow: none !important;
+  }
+  .kop-formulir {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  .judul-formulir,
+  .judul-formulir h2,
+  .judul-formulir h3 {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+  .logo-formulir {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+    table, tr, td {
+    page-break-inside: avoid !important;
+  }
+    tr, td, th {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  .teks-formulir, 
+  .formulir-penutup, 
+  .formulir-table {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+  .teks-formulir {
+    page-break-before: always;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .formulir-penutup {
+    page-break-before: always;
+  }
+
+}

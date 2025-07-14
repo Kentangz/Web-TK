@@ -11,7 +11,7 @@ export function fetchMisi() {
             return `
                 <h2>Misi</h2>
                 <ul>
-                    ${items.map(item => `<li>${item.misi_description}</li>`).join('')}
+                    ${items.map(item => `<li class="beranda-text">${item.misi_description}</li>`).join('')}
                 </ul>
             `;
         })

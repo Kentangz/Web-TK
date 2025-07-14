@@ -1,4 +1,10 @@
 /* beranda */
+.beranda-text {
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 .hero::before {
   content: "";
   position: absolute;
@@ -27,13 +33,12 @@
 .hero-content {
   display: flex;
   flex-direction: row; 
-  justify-content: center; 
+  justify-content: space-between; 
   align-items: center;
-  max-width: 100%;
-  margin: 0 100px;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 40px 20px;
   flex-wrap: wrap;
-  gap: 300px;
   min-height: 90vh; 
   position: relative;
   text-align: left;
@@ -41,23 +46,24 @@
 }
 
 .text-content {
-  max-width: 450px;
+  max-width: 500px;
   margin-right: 40px;
 }
 
 .text-content h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
+  font-weight: normal;
 }
 
 .text-content p {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   line-height: 1.5;
   color: Black;
 }
 
 .text-child p{
-    font-size: 1rem;
-    margin-bottom: 10px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
 }
 
 .hero-buttons {
@@ -69,15 +75,14 @@
 
 .btn-outline,
 .btn-filled {
+  font-size: 1.5rem;
   display: inline-flex;            
   align-items: center;              
   justify-content: center;
-  font-weight: bold;
   border-radius: 50px;
   text-decoration: none;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  font-size: 16px;
   gap: 10px;                        
 }
 
@@ -120,16 +125,17 @@
 }
 
 .school-logo {
-  max-width: 250px;
+  max-width: 300px;
   height: auto;
 }
 
 .akreditasi {
-  font-weight: bold;
+  display: inline-block;
   margin-top: 20px;
-  background-color: #c5c3c3;
+  background-color: #dedcdc;
   border-radius: 10px;
   padding: 10px 5px;
+  font-size: 1.5rem;
 }
 
 /* visi dan misi */
@@ -138,25 +144,40 @@
   padding: 40px 20px;
   display: flex;
   justify-content: center;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),  url('/images/gurubg.jpg'); /* Sesuaikan jika Anda punya background zig-zag seperti di gambar */
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)),  url('/images/gurubg.jpg'); /* Sesuaikan jika Anda punya background zig-zag seperti di gambar */
   background-size: cover;
   background-repeat: no-repeat;
+  position: relative; /* penting untuk positioning pseudo-element */
+  overflow: hidden; /* supaya ::before tidak bocor keluar */
+}
+
+.visi-misi::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(2px); /* efek blur */
+  z-index: 0; /* di bawah isi konten */
 }
 
 .visi-misi .container {
   display: flex;
   flex-direction: row;
   gap: 40px;
-  max-width: 1000px;
+  max-width: 1200px;
   align-items: center;
   min-height: 90vh;
+  position: relative;
+  z-index: 1;
 }
 
 .image-section img {
   max-width: 100%;
   max-height: 500px;
-  width: 500px;
-  height: 450px;
+  width: 600px;
+  height: 550px;
   border: 3px solid #000;
   object-fit: cover;
   border-radius: 8px;
@@ -167,26 +188,27 @@
 }
 
 .text-section h2 {
-  font-size: 30px;
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-size: 35px;
+  font-weight: normal;
 }
 
 .text-section p {
-  font-size: 20px;
+  font-size: 1.5rem;
   line-height: 1.6;
   margin-bottom: 20px;
 }
 
 .text-section ul {
   list-style: disc;
-  padding-left: 20px;
+  padding-left: 40px;
+  text-align: justify;
 }
 
 .text-section li {
-  font-size: 20px;
+  font-size: 1.5rem;
   margin-bottom: 12px;
   line-height: 1.6;
+  text-align: justify;
 }
 
 /* tujuan dan strategi  */
@@ -195,18 +217,33 @@
   padding: 40px 20px;
   display: flex;
   justify-content: center;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/images/gurubg.jpg'); 
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/images/gurubg.jpg'); 
   background-size: cover;
   background-repeat: no-repeat;
+  position: relative; /* penting untuk positioning pseudo-element */
+  overflow: hidden; /* supaya ::before tidak bocor keluar */
+}
+
+.tujuan-strategi::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(2px); /* efek blur */
+  z-index: 0; /* di bawah isi konten */
 }
 
 .tujuan-strategi .container {
   display: flex;
   flex-direction: row;
   gap: 40px;
-  max-width: 1000px;
+  max-width: 1200px;
   align-items: center;
   min-height: 90vh;
+  position: relative;
+  z-index: 1;
 }
 
 .tujuan-strategi .text-section {
@@ -222,32 +259,26 @@
 .tujuan-strategi .image-section img {
   max-width: 100%;
   max-height: 500px;
-  width: 500px;
-  height: 450px;
+  width: 600px;
+  height: 550px;
   border: 3px solid #000;
   object-fit: cover;
   border-radius: 8px;
 }
 
 .tujuan-strategi .text-section h2 {
-  font-size: 30px;
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-size: 35px;
+  font-weight: normal;
 }
 
 .tujuan-strategi .text-section p {
-  font-size: 20px;
+  font-size: 1.5rem;
   line-height: 1.6;
   margin-bottom: 20px;
 }
 
-.tujuan-strategi .text-section ul {
-  list-style: disc;
-  padding-left: 20px;
-}
-
 .tujuan-strategi .text-section li {
-  font-size: 20px;
+  font-size: 1.5rem;
   margin-bottom: 12px;
   line-height: 1.6;
 }
@@ -259,11 +290,29 @@
   background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),  url('/images/gurubg.jpg'); /* Sesuaikan jika Anda punya background zig-zag seperti di gambar */
   background-size: cover;
   background-repeat: no-repeat;
+  position: relative; /* penting untuk positioning pseudo-element */
+  overflow: hidden;
+}
+
+.preview-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(2px); /* efek blur */
+  z-index: 0; /* di bawah isi konten */
+}
+
+.preview-section .container {
+  position: relative;
+  z-index: 1;
 }
 
 .preview-title {
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 40px;
+  font-weight: normal;
   margin-bottom: 40px;
 }
 
@@ -273,25 +322,25 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-left: 140px; 
+  padding-left: 100px; 
 }
 
 .preview-category h3 {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 35px;
+  font-weight: normal;
   margin-bottom: 10px;
 }
 
 .preview-gallery {
   display: flex;
   justify-content: flex-start;
-  gap: 30px;
+  gap: 120px;
   flex-wrap: wrap;
 }
 
 .preview-gallery img {
-  width: 350px;
-  height: 200px;
+  width: 300px;
+  height: 180px;
   object-fit: cover;
   border: 2px solid #000;
   border-radius: 6px;
@@ -311,9 +360,9 @@
   right: 40px;
   cursor: pointer;
   text-decoration: none;
-  display: flex; /* baru */
-  justify-content: center; /* baru */
-  align-items: center; /* baru */
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
 }
 
 .preview-next .arrow-icon {
@@ -322,122 +371,274 @@
   object-fit: contain;
 }
 
-@media (max-width: 1024px) {
+@media screen and (min-width: 2048px){
+  .hero-content{
+    min-height: 50vh;
+  }
+  .visi-misi .container{
+    min-height: 50vh;
+  }
+  .tujuan-strategi .container{
+    min-height: 50vh;
+  }
+  .visi-misi .container{
+    min-height: 50vh;
+  }
+}
+
+@media (max-width: 1300px) {
   .hero-content {
     flex-direction: column;
     text-align: center;
     gap: 30px;
+    margin: 0 20px;
+    flex-direction: column-reverse;
+    padding: 30px 20px;
+    min-height: 75vh;
   }
 
+  .logo-content{
+    flex: none;
+  }
   .text-content {
     margin-right: 0;
+    max-width: 600px;
+  }
+
+  .text-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .text-content p {
+    font-size: 1.3rem;
+  }
+
+  .text-child p {
+    font-size: 1.1rem;
   }
 
   .school-logo {
     max-width: 200px;
+    margin: 0 auto;
   }
 
-  .preview-gallery img {
-    width: 300px;
-    height: 180px;
+  .hero-buttons {
+    justify-content: center;
+    gap: 20px;
   }
 
-  .preview-next {
-    width: 60px;
-    height: 60px;
-    font-size: 20px;
-    right: 20px;
-  }
-
-  .preview-category {
-    padding-left: 60px;
+  .btn-outline,
+  .btn-filled {
+    padding: 15px 40px;
+    font-size: 15px;
   }
 
   .visi-misi .container,
   .tujuan-strategi .container {
     flex-direction: column;
     text-align: center;
+    gap: 30px;
+    padding: 30px 20px;
+    min-height: auto;
   }
 
   .visi-misi .image-section img,
   .tujuan-strategi .image-section img {
-    width: 90%;
-    height: auto;
+    max-width: 100%;
+    max-height: 500px;
+    width: 500px;
+    height: 275px;
+  }
+
+  .tujuan-strategi .text-section {
+    order: 2;
+  }
+
+  .tujuan-strategi .image-section {
+    order: 1;
+  }
+
+  .text-section h2 {
+    font-size: 28px;
+  }
+
+  .text-section p,
+  .text-section li {
+    font-size: 1.5rem;
+    text-align: initial;
+  }
+  
+  .preview-title {
+    font-size: 26px;
+    margin-bottom: 30px;
+  }
+
+  .preview-category {
+    padding-left: 10px;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+
+  .preview-category h3 {
+    text-align: center;
+    font-size: 25px;
+  }
+
+  .preview-gallery {
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .preview-gallery img {
+    width: 280px;    /* dari 350→300 */
+    height: 180px;   /* skala 350×200 ⇒ 300×~170 */
+  }
+
+  .preview-next {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-25%);
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+    border: 2px solid black;
+    border-radius: 50%;
+    background-color: pink;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .preview-next .arrow-icon {
+    width: 25px;
+    height: 25px;
   }
 }
 
+@media (max-width: 1000px){
+  .preview-gallery img {
+    width: 230px;    
+    height: 180px;   
+  }
 
-@media (max-width: 768px) {
+  /* .preview-next {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-25%);
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+    border: 2px solid black;
+    border-radius: 50%;
+    background-color: pink;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .preview-next .arrow-icon {
+    width: 25px;
+    height: 25px;
+  } */
+}
+
+@media (max-width: 940px) {
   .hero-content {
     min-height: 70vh;
     flex-direction: column-reverse;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
-    padding: 60px 30px;
-    gap: 10px;
+    padding: 40px 20px;
+    gap: 20px;
   }
 
+  .text-content {
+    max-width: 90%;
+  }
 
-  .text-content,
+  .text-content h1 {
+    font-size: 2rem;
+  }
+
   .logo-content {
     width: 100%;
-    max-width: 300px; /* agar proporsional dan center */
+    max-width: 250px;
+    flex: none;
   }
 
   .school-logo {
     display: block;
     margin: 0 auto;
-    max-width: 120px;
+    max-width: 150px;
     height: auto;
   }
 
   .akreditasi {
-    margin-top: 10px;
-    margin: 8px auto 0;
-    display: inline-block;
+    margin: 10px auto 0;
     padding: 6px 12px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     background-color: #f0f0f0;
     border-radius: 8px;
     text-align: center;
   }
-  
 
   .hero-buttons {
-    display: flex;
     flex-direction: column;
     gap: 12px;
     align-items: center;
-    justify-content: center;
-    margin-top: 10px;
+    margin-top: 20px;
   }
 
   .btn-outline,
   .btn-filled {
-    padding: 10px 20px;
+    width: 80%;
+    max-width: 250px;
+    padding: 12px 25px;
     font-size: 0.95rem;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
   }
 
   .visi-misi .container,
   .tujuan-strategi .container {
-    flex-direction: column;
-    text-align: center;
+    padding: 30px 15px;
+    gap: 20px;
   }
 
-  .image-section img {
+  .visi-misi .image-section img,
+  .tujuan-strategi .image-section img{
     width: 100%;
-    max-width: 100%;
-    aspect-ratio: 12 / 9; 
+    max-width: 400px;
+    height: 180px;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     border: 2px solid #000;
     border-radius: 8px;
     margin: 0 auto;
+  }
+
+  .text-section h2 {
+    font-size: 24px;
+  }
+
+  .text-content p,
+  .text-child p,
+  .text-section p,
+  .text-section li,
+  .tujuan-strategi .text-section li,
+  .tujuan-strategi .text-section p {
+    font-size: 1.4rem;
+    line-height: 1.5;
+  }
+
+  .text-section ul,
+  .text-section li {
+    list-style: disc;
+    padding-left: 5px;
   }
 
   .preview-gallery {
@@ -468,6 +669,7 @@
 
   .preview-category h3 {
     text-align: center;
+    font-size: 25px;
   }
 
   .preview-next {
@@ -475,24 +677,67 @@
     margin-top: 20px;
     align-self: center;
   }
-
 }
 
-
 @media (max-width: 480px) {
+  .hero-content {
+    padding: 30px 0px;
+    gap: 15px;
+    min-height: 80vh;
+  }
+
+  .logo-content{
+    flex: none;
+  }
+
   .text-content h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 
   .text-content p,
   .text-child p,
   .text-section p,
-  .text-section li {
-    font-size: 14px;
+  .text-section li,
+  .tujuan-strategi .text-section li,
+  .tujuan-strategi .text-section p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .school-logo {
+    max-width: 100px;
+  }
+
+  .btn-outline,
+  .btn-filled {
+    width: 90%;
+    max-width: 220px;
+    padding: 10px 15px;
+    font-size: 0.85rem;
+  }
+
+  .visi-misi .container,
+  .tujuan-strategi .container {
+    padding: 20px 10px;
+    gap: 15px;
+  }
+
+  .visi-misi .image-section img,
+  .tujuan-strategi .image-section img{
+    max-width: 300px;
+    aspect-ratio: 4 / 3;
+  }
+
+  .text-section h2 {
+    font-size: 20px;
   }
 
   .preview-title {
     font-size: 20px;
+  }
+
+  .preview-category h3 {
+    font-size: 25px;
   }
 
   .preview-gallery {
@@ -507,5 +752,20 @@
 
   .preview-gallery img:first-child {
     display: block;
+
+  }
+}
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #555;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 40px auto;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

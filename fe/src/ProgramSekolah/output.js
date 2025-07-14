@@ -21,10 +21,9 @@ export function fetchOutput() {
 
         const columnHTML = columns.map(col => `
             <ul>
-            ${col.map(item => `<li>${item.output_description}</li>`).join('')}
+              ${col.map(item => `<li class="programsekolah-text">${item.output_description}</li>`).join('')}
             </ul>
-        `).join('');
-
+          `).join('');
         return `
             <div class="output-section">
             <div class="output-columns">

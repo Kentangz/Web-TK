@@ -7,13 +7,13 @@ export function fetchPenunjang() {
       return res.json();
     })
     .then(responseData => {
-      const items = responseData.data; // ambil array sebenarnya
+      const items = responseData.data;
 
       if (!Array.isArray(items) || items.length === 0) {
         throw new Error('Data kegiatan penunjang kosong');
       }
 
-      const listItems = items.map(item => `<li>${item.kegiatan_penunjang}</li>`).join('');
+      const listItems = items.map(item => `<li class="programsekolah-text">${item.kegiatan_penunjang}</li>`).join('');
 
       return `
         <ul class="penunjang-list">

@@ -19,33 +19,34 @@ export function fetchKurikulumPlus() {
       return res.json();
     });
 
-  return Promise.all([suratPendekAPI, doaAPI, haditsAPI])  // <= INI HARUS ADA
+  return Promise.all([suratPendekAPI, doaAPI, haditsAPI]) 
     .then(([suratPendekRes, doaRes, haditsRes]) => {
       const suratPendek = suratPendekRes.data;
       const doa = doaRes.data;
       const hadits = haditsRes.data;
 
-      const suratHTML = suratPendek.map(s => `${s.surat_name}`).join('<br>');
-      const doaHTML = doa.map(d => `${d.doa_name}`).join('<br>');
-      const haditsHTML = hadits.map(h => `${h.hadits_name}`).join('<br>');
+      const suratHTML = suratPendek.map(s => `${s.surat_name}`).join('<br><br>');
+      const doaHTML = doa.map(d => `${d.doa_name}`).join('<br><br>');
+      const haditsHTML = hadits.map(h => `${h.hadits_name}`).join('<br><br>');
+
 
       return `
-          <table class="kurikulum-table">
-            <thead>
-              <tr>
-                <th>SURAT-SURAT PENDEK</th>
-                <th>DOA</th>
-                <th>HADIST</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>${suratHTML}</td>
-                <td>${doaHTML}</td>
-                <td>${haditsHTML}</td>
-              </tr>
-            </tbody>
-          </table>
+        <table class="kurikulum-table">
+          <thead>
+            <tr>
+              <th>SURAT-SURAT PENDEK</th>
+              <th>DOA</th>
+              <th>HADIST</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="programsekolah-text">${suratHTML}</div></td>
+              <td><div class="programsekolah-text">${doaHTML}</div></td>
+              <td><div class="programsekolah-text">${haditsHTML}</div></td>
+            </tr>
+          </tbody>
+        </table>
       `;
     })
     .catch(err => {

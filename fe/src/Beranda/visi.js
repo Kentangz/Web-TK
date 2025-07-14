@@ -7,12 +7,11 @@ export function fetchvisi() {
       return response.json();
     })
     .then(result => {
-      const items = result.data; // Ambil seluruh array
+      const items = result.data; 
 
-      // Buat HTML dari setiap item visi
       const visiHTML = items
-        .map(item => `<p>${item.visi_description}</p>`)
-        .join(''); // Gabungkan jadi satu string
+        .map(item => `<p class="beranda-text">${item.visi_description}</p>`)
+        .join(''); 
 
       return `
         <h2>Visi</h2>

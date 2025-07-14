@@ -12,11 +12,11 @@ export function fetchGuru() {
         throw new Error("Format data guru tidak valid");
       }
       return data.map(guru => ({
-        img: guru.image,         // URL gambar
-        title: guru.jabatan,     // Jabatan
-        name: guru.nama,         // Nama
-        ttl: guru.ttl,           // Tempat, Tanggal Lahir
-        phone: guru.nomor        // Nomor telepon
+        img: guru.image,       
+        title: guru.jabatan,     
+        name: guru.nama,       
+        ttl: guru.ttl,           
+        phone: guru.nomor       
       }));
     })
     .catch(error => {

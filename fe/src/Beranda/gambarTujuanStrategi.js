@@ -8,7 +8,7 @@ export function fetchGambarTujuan() {
     })
     .then(result => {
       const gambar = result.data[0];
-      return `<img src="${gambar.image}" alt="Gambar Tujuan Strategi" />`;
+      return `<img src="${gambar.image}" alt="Gambar Tujuan Strategi" class="beranda-text" />`;
     })
     .catch(error => `<p style="color:red;">Gagal memuat gambar</p>`);
 }

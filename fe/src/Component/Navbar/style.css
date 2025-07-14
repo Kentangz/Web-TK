@@ -1,241 +1,236 @@
 .tk-navbar {
-    width: 100%;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  /* Navbar layout */
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #FFF9F9;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 2rem;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease;
+}
+.logo-container:hover {
+  transform: scale(1.02);
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.school-name {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #333;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+.logo-container:hover .school-name {
+  color: #ff7ca9;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+.nav-links li {
+  position: relative;
+}
+.nav-link {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: -4px;
+  left: 0;
+  background-color: #ff9bbd;
+  transition: width 0.3s ease;
+}
+.nav-link:hover {
+  color: #ff7ca9;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active {
+  color: #ff7ca9;
+  font-weight: 600;
+}
+.nav-link.active::after {
+  width: 100%;
+}
+
+.contact-btn {
+  background-color: #ff9bbd;
+  color: #ffffff;
+  border: none;
+  padding: 0.7rem 1.8rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(255, 155, 189, 0.3);
+}
+.contact-btn:hover {
+  background-color: #ff7ca9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 155, 189, 0.4);
+}
+.contact-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(255, 155, 189, 0.3);
+}
+.contact-btn.active {
+  background-color: #ff6b9e;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: transform 0.3s ease;
+}
+.menu-toggle:hover {
+  transform: scale(1.1);
+}
+.menu-icon {
+  width: 28px;
+  height: 28px;
+}
+
+@media (max-width: 1024px) {
   .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 3rem;
-    background-color: #FFF9F9;
-    box-shadow: 0 4px 12px rgba(255, 155, 189, 0.1);
-    transition: all 0.3s ease;
+    padding: 0.75rem 1.5rem;
+    text-align: center;
   }
-  
-  .navbar:hover {
-    box-shadow: 0 6px 16px rgba(255, 155, 189, 0.15);
+  .nav-links {
+    gap: 1.5rem;
   }
-  
-  /* Logo section */
-  .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: transform 0.3s ease;
-  }
-  
-  .logo-container:hover {
-    transform: scale(1.02);
-  }
-  
   .logo {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    border-radius: 50%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    width: 55px;
+    height: 55px;
   }
-  
   .school-name {
-    font-weight: 700;
-    font-size: 1.4rem;
-    color: #333;
-    letter-spacing: 0.5px;
-    transition: color 0.3s ease;
+    font-size: 1.3rem;
   }
-  
-  .logo-container:hover .school-name {
+}
+
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+    position: relative;
+  }
+
+  .logo-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .menu-toggle {
+    display: block;
     color: #ff7ca9;
   }
-  
-  /* Navigation links */
+
   .nav-links {
     display: flex;
-    align-items: center;
-    list-style: none;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
+    flex-direction: column;
+    width: 100%;
+    background-color: #FFF9F9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 0;
+    margin-top: 0.5rem;
+    border-radius: 0 0 8px 8px;
+    z-index: 999;
   }
-  
+
+  .nav-links.show {
+    max-height: 1000px; 
+    padding: 1rem 0;
+  }
+
   .nav-links li {
-    position: relative;
+    width: 100%;
   }
-  
   .nav-link {
-    text-decoration: none;
-    color: #555;
-    font-weight: 500;
-    font-size: 1.1rem;
-    padding: 0.5rem 0;
-    position: relative;
-    transition: all 0.3s ease;
-  }
-  
-  /* Underline animation links */
-  .nav-link:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 3px;
-    bottom: -2px;
-    left: 0;
-    background-color: #ff9bbd;
-    transition: width 0.3s ease;
-  }
-  
-  .nav-link:hover:after {
     width: 100%;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
   }
-  
-  .nav-link.active {
-    color: #ff7ca9;
-    font-weight: 600;
+  .nav-link::after {
+    display: none; 
   }
-  
-  .nav-link.active:after {
-    width: 100%;
-  }
-  
   .nav-link:hover {
+    background-color: rgba(255, 155, 189, 0.1);
     color: #ff7ca9;
   }
-
-  .menu-icon {
-    width: 28px;
-    height: 28px;
-  }
-
-  .menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #ff7ca9;
-  }
-  
-  /* Contact button styling */
   .contact-btn {
-    background-color: #ff9bbd;
-    color: white;
-    border: none;
-    padding: 0.7rem 1.8rem;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 1.05rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    box-shadow: 0 4px 8px rgba(255, 155, 189, 0.3);
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    text-align: center;
   }
-  
-  .contact-btn:hover {
-    background-color: #ff7ca9;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(255, 155, 189, 0.4);
-  }
-  
-  .contact-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(255, 155, 189, 0.3);
-  }
-  
-  .contact-btn.active {
-    background-color: #ff6b9e;
-    color: white;
-  }
-  
-  /* responsive design */
-  @media (max-width: 1024px) {
-    .navbar {
-      padding: 0.75rem 2rem;
-    }
-    
-    .nav-links {
-      gap: 1.5rem;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      padding: 1rem;
-      position: relative; /* penting agar position: absolute anak bisa bekerja */
-    }
-    
-    .logo-container {
-      margin-bottom: 1rem;
-    }
+}
 
-    .menu-toggle {
-    display: block;
-  }
-    
-    .nav-links {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 100%; /* tepat di bawah navbar */
-      left: 0;
-      width: 100%;
-      background-color: #FFF9F9; /* sama seperti navbar */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      z-index: 999;
-      padding: 1rem 0;
-    }
-    .nav-links.show {
-      display: flex;
-    }
-    .nav-links.active {
-      display: flex;
-    }
-  
-    .nav-link {
-      font-size: 1rem;
-    }
-  
-    .contact-btn {
-      padding: 0.6rem 1.5rem;
-      font-size: 1rem;
-    }
-  }
 
-  @media (max-width: 480px) {
-    .school-name {
-      font-size: 1.2rem;
-    }
-    
-    .logo {
-      width: 50px;
-      height: 50px;
-    }
-    
-    .nav-links {
-      flex-direction: column;
-      width: 100%;
-    }
-    
-    .nav-links li {
-      width: 100%;
-      text-align: center;
-    }
-    
-    .nav-link, 
-    .contact-btn {
-      display: block;
-      width: 100%;
-      padding: 0.8rem;
-      border-radius: 0;
-      margin: 0.2rem 0;
-    }
-    
-    .contact-btn {
-      border-radius: 8px;
-    }
+@media (max-width: 480px) {
+  .logo {
+    width: 50px;
+    height: 50px;
   }
+  .school-name {
+    font-size: 1.2rem;
+  }
+  .nav-link {
+    padding: 0.7rem 1.25rem;
+    font-size: 0.95rem;
+  }
+  .contact-btn {
+    padding: 0.7rem 1.25rem;
+    font-size: 0.95rem;
+    border-radius: 6px;
+  }
+}
+.tk-navbar.scrolled {
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}

@@ -4,7 +4,7 @@ export async function fetchGambarFasilitas(limit) {
     if (!response.ok) throw new Error(`Error! Status: ${response.status}`);
 
     const result = await response.json();
-    const sorted = [...result.data].reverse(); // Gambar terbaru duluan
+    const sorted = [...result.data].reverse(); 
     const gambarList = typeof limit === 'number' ? sorted.slice(0, limit) : sorted;
 
     if (!gambarList || gambarList.length === 0) {
@@ -13,8 +13,7 @@ export async function fetchGambarFasilitas(limit) {
 
     return gambarList.map(gambar => `
       <div class="gallery-item">
-        <img src="${gambar.image}" alt="Galeri Fasilitas" loading="lazy"
-             onerror="this.src='/images/fallback.jpg';" />
+        <img src="${gambar.image}" alt="Galeri Fasilitas" onerror="this.src='/images/fallback.jpg';" />
       </div>
     `).join('');
   } catch (error) {

@@ -13,16 +13,18 @@ export function fetchContactPerson() {
         if (data.length === 0) {
           throw new Error("Data contact person kosong");
         }
-        return data.map(item => `${item.nomor} (${item.nama})`).join(', ');
+        const kontakList = data.map(item => `${item.nomor} (${item.nama})`).join(', ');
+        return `<p class="contact-text">${kontakList}</p>`;
       }
+
       if (typeof data === 'object' && data !== null && data.nomor && data.nama) {
-        return `${data.nomor} (${data.nama})`;
+        return `<p class="contact-text">${data.nomor} (${data.nama})</p>`;
       }
 
       throw new Error("Format data contact person tidak valid");
     })
     .catch(error => {
       console.error("Kesalahan saat fetch contact person:", error);
-      return "Gagal memuat contact person";
+      return `<p class="contact-text" style="color:red;">Gagal memuat contact person</p>`;
     });
 }

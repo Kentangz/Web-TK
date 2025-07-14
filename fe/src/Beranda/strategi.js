@@ -8,10 +8,14 @@ export function fetchStrategi() {
     })
     .then(result => {
       const strategiList = result.data;
-      const items = strategiList.map(item => `<li>${item.strategi_description}</li>`).join('');
+      const items = strategiList
+        .map(item => `<li class="beranda-text">${item.strategi_description}</li>`)
+        .join(''); 
       return `
         <h2>Strategi</h2>
-        <ul>${items}</ul>
+        <ul>
+          ${items}
+        </ul>
       `;
     })
     .catch(error => `<p style="color:red;">Gagal memuat strategi</p>`);

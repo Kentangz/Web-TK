@@ -8,10 +8,11 @@ import { fetchVisiMisiImage } from './gambarVisiMisi.js';
 import { fetchTujuan } from './tujuan.js'
 import { fetchStrategi } from './strategi.js'
 import { fetchGambarTujuan } from './gambarTujuanStrategi.js'
-import { fetchGambarGaleriKegiatan } from '../ProgramSekolah/gambargalerikegiatan.js';
+import { fetchGambarGaleriKegiatanPreview } from '../ProgramSekolah/gambargalerikegiatan.js';
 import { fetchGambarFasilitas } from '../FasilitasPrestasi/galerifasilitas.js';
 import { createFooterHTML } from '../Component/Footer/footer.js';
-
+import { initScrollAnimations } from '../Component/animasi/animasiscroll.js'
+import { fetchWithCache } from '../cache/cache.js'
 
 document.querySelector('#beranda').innerHTML = `
   ${createNavbarHTML({
@@ -20,7 +21,7 @@ document.querySelector('#beranda').innerHTML = `
     activePage: 'beranda'
   })}
   <section class="hero">
-    <div class="hero-content">
+    <div class="hero-content scroll-animate">
         <div class="text-content">
           <h1>TK & KB SITI HAJAR</h1>
           <div class="text-child">
@@ -49,87 +50,122 @@ document.querySelector('#beranda').innerHTML = `
       </div>
   </section>
 
-  <section class="visi-misi" id="tentang-kami">
+  <section class="visi-misi scroll-animate" id="tentang-kami">
     <div class="container">
-      <div class="image-section" id="gambar-visi-misi">
-        <!-- Gambar akan dimuat di sini -->
+      <div class="image-section scroll-animate" id="gambar-visi-misi">
+        <div class="loader"></div>
       </div>
-      <div class="text-section" id="visi-misi-content">
-        <p>Sedang memuat visi & misi...</p>
+      <div class="text-section scroll-animate" id="visi-misi-content">
       </div>
     </div>
   </section>
 
-  <section class="tujuan-strategi">
+  <section class="tujuan-strategi scroll-animate">
     <div class="container">
-      <div class="text-section" id="tujuan-strategi-content">
-        <p>Sedang memuat tujuan & strategi...</p>
+      <div class="text-section scroll-animate" id="tujuan-strategi-content">
       </div>
-      <div class="image-section" id="gambar-tujuan-strategi">
-        <!-- Gambar dari API akan muncul di sini -->
+      <div class="image-section scroll-animate" id="gambar-tujuan-strategi">
+        <div class="loader"></div>
       </div>
     </div>
   </section>
 
-  <section class="preview-section">
-    <h2 class="preview-title">Preview</h2>
-
-    <div class="preview-category">
-      <h3>Program sekolah</h3>
-      <div class="preview-gallery" id="gallery-kegiatan">
-        <!-- Gambar dari API /programsekolah/gallerykegiatan akan dimuat di sini -->
-      </div>
-      <a href="/program-sekolah" class="preview-next">
-      <img src="/arrow.svg" alt="Next" class="arrow-icon" />
-      </a>
-    </div>
-
-    <div class="preview-category">
-      <h3>Fasilitas & Prestasi</h3>
-      <div class="preview-gallery" id="gallery-fasilitas">
-        <!-- Gambar dari API /fasilitasprestasi/galleryfasilitas akan dimuat di sini -->
-      </div>
-      <a href="/fasilitas-prestasi" class="preview-next">
+  <section class="preview-section scroll-animate">
+    <div class = "container">
+      <h2 class="preview-title">Preview</h2>
+      <div class="preview-category scroll-animate">
+        <h3>Program sekolah</h3>
+        <div class="preview-gallery" id="gallery-kegiatan">
+          <div class="loader"></div>
+        </div>
+        <a href="/program-sekolah" class="preview-next">
         <img src="/arrow.svg" alt="Next" class="arrow-icon" />
-      </a>
+        </a>
+      </div>
+      <div class="preview-category scroll-animate">
+        <h3>Fasilitas & Prestasi</h3>
+        <div class="preview-gallery" id="gallery-fasilitas">
+          <div class="loader"></div>
+        </div>
+        <a href="/fasilitas-prestasi" class="preview-next">
+          <img src="/arrow.svg" alt="Next" class="arrow-icon" />
+        </a>
+      </div>
     </div>
   </section>
 `
 document.querySelector('#beranda').innerHTML += createFooterHTML();
 // Isi konten dari API
-Promise.all([
-  fetchvisi(),
-  fetchMisi(),
-  fetchVisiMisiImage(),
-  fetchTujuan(),
-  fetchStrategi(),
-  fetchGambarTujuan(),
-  fetchGambarFasilitas(3),
-  fetchGambarGaleriKegiatan(3)
-])
-.then(([visiberanda, misiberanda, gambarvisimisi, tujuanberanda, strategiberanda, gambartujuanstrategi, gambarFasilitas, gambarGaleriKegiatan]) => {
-  // Isi ke DOM
-  document.querySelector('#visi-misi-content').innerHTML = `
-    ${visiberanda}
-    ${misiberanda}
-  `;
-  document.querySelector('#tujuan-strategi-content').innerHTML = `
-    ${tujuanberanda}
-    ${strategiberanda}
-  `;
-  document.querySelector('#gambar-visi-misi').innerHTML = gambarvisimisi;
-  document.querySelector('#gambar-tujuan-strategi').innerHTML = gambartujuanstrategi;
-  document.querySelector('#gallery-kegiatan').innerHTML = gambarGaleriKegiatan;
-  document.querySelector('#gallery-fasilitas').innerHTML = gambarFasilitas;
-})
-.catch(err => {
-  console.error("Gagal memuat salah satu atau lebih data:", err);
-  document.querySelector('#visi-misi-content').innerHTML = `<p style="color:red;">Gagal memuat visi & misi</p>`;
-  document.querySelector('#gambar-visi-misi').innerHTML = `<p style="color:red;">Gagal memuat gambar</p>`;
-  document.querySelector('#tujuan-strategi-content').innerHTML = `<p style="color:red;">Gagal memuat data tujuan & strategi</p>`;
-  document.querySelector('#gambar-tujuan-strategi').innerHTML = `<p style="color:red;">Gagal memuat gambar</p>`;
-  document.querySelector('#gallery-kegiatan').innerHTML = `<p style="color:red;">Gagal memuat galeri kegiatan</p>`;
-  document.querySelector('#gallery-fasilitas').innerHTML = `<p style="color:red;">Gagal memuat galeri fasilitas</p>`;
-});
-
 initNavbarFunctionality();
+initScrollAnimations();
+// VISI
+fetchWithCache('visi', fetchvisi)
+  .then(data => {
+    document.querySelector('#visi-misi-content').innerHTML += data;
+  })
+  .catch(() => {
+    document.querySelector('#visi-misi-content').innerHTML += `<p style="color:red;">Gagal memuat visi</p>`;
+  });
+
+// MISI
+fetchWithCache('misi', fetchMisi)
+  .then(data => {
+    document.querySelector('#visi-misi-content').innerHTML += data;
+  })
+  .catch(() => {
+    document.querySelector('#visi-misi-content').innerHTML += `<p style="color:red;">Gagal memuat misi</p>`;
+  });
+
+// GAMBAR VISI MISI
+fetchWithCache('gambarVisiMisi', fetchVisiMisiImage)
+  .then(data => {
+    document.querySelector('#gambar-visi-misi').innerHTML = data;
+  })
+  .catch(() => {
+    document.querySelector('#gambar-visi-misi').innerHTML = `<p style="color:red;">Gagal memuat gambar</p>`;
+  });
+
+// TUJUAN
+fetchWithCache('tujuan', fetchTujuan)
+  .then(data => {
+    document.querySelector('#tujuan-strategi-content').innerHTML += data;
+  })
+  .catch(() => {
+    document.querySelector('#tujuan-strategi-content').innerHTML += `<p style="color:red;">Gagal memuat tujuan</p>`;
+  });
+
+// STRATEGI
+fetchWithCache('strategi', fetchStrategi)
+  .then(data => {
+    document.querySelector('#tujuan-strategi-content').innerHTML += data;
+  })
+  .catch(() => {
+    document.querySelector('#tujuan-strategi-content').innerHTML += `<p style="color:red;">Gagal memuat strategi</p>`;
+  });
+
+// GAMBAR TUJUAN
+fetchWithCache('gambarTujuan', fetchGambarTujuan)
+  .then(data => {
+    document.querySelector('#gambar-tujuan-strategi').innerHTML = data;
+  })
+  .catch(() => {
+    document.querySelector('#gambar-tujuan-strategi').innerHTML = `<p style="color:red;">Gagal memuat gambar tujuan</p>`;
+  });
+
+// GALERI KEGIATAN
+fetchWithCache('gambarGaleriKegiatan', () => fetchGambarGaleriKegiatanPreview(3))
+  .then(data => {
+    document.querySelector('#gallery-kegiatan').innerHTML = data;
+  })
+  .catch(() => {
+    document.querySelector('#gallery-kegiatan').innerHTML = `<p style="color:red;">Gagal memuat galeri kegiatan</p>`;
+  });
+
+// GALERI FASILITAS
+fetchWithCache('gambarFasilitas', () => fetchGambarFasilitas(3))
+  .then(data => {
+    document.querySelector('#gallery-fasilitas').innerHTML = data;
+  })
+  .catch(() => {
+    document.querySelector('#gallery-fasilitas').innerHTML = `<p style="color:red;">Gagal memuat galeri fasilitas</p>`;
+  });

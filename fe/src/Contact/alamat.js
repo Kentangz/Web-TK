@@ -10,13 +10,17 @@ export function fetchAlamat() {
       const data = result.data;
 
       if (Array.isArray(data) && data.length > 0 && data[0].alamat) {
-        return `${data[0].alamat}`;
+        return `
+          <div class="contact-text">
+            <span>${data[0].alamat}</span>
+          </div>
+        `;
       } else {
         throw new Error("Data alamat tidak ditemukan atau format tidak valid");
       }
     })
     .catch(error => {
       console.error("Kesalahan fetchAlamat:", error);
-      return `Gagal memuat contact person`;
+      return `<p class="contact-text" style="color:red;">Gagal memuat contact person</p>`;
     });
 }

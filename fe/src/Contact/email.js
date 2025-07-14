@@ -10,13 +10,13 @@ export function fetchEmail() {
       const data = result.data;
 
       if (Array.isArray(data) && data.length > 0 && data[0].email) {
-        return `${data[0].email}`;
+        return `<p class="contact-text">${data[0].email}</p>`;
       } else {
         throw new Error("Data email tidak ditemukan atau format tidak valid");
       }
     })
     .catch(error => {
       console.error("Kesalahan fetchEmail:", error);
-      return `Gagal memuat contact person`;
+      return `<p class="contact-text" style="color:red;">Gagal memuat contact person</p>`;
     });
 }

@@ -7,7 +7,7 @@ export function fetchActivityCards() {
       return response.json();
     })
     .then(responseData => {
-      const items = responseData.data; // Ambil array dari dalam objek
+      const items = responseData.data; 
       if (!Array.isArray(items) || items.length === 0) {
         throw new Error('Data activity card kosong');
       }
@@ -17,15 +17,16 @@ export function fetchActivityCards() {
         const title = card.nama_kegiatan || 'Tanpa Judul';
         const description = card.deskripsi_kegiatan || '';
         return `
-          <div class="card">
+          <div class="card programsekolah-text">
             <div class="icon">
               <img src="${icon}" alt="${title}" />
             </div>
-            <h3 class="card-title">${title}</h3>
-            <p class="card-desc">${description}</p>
+            <h3 class="card-title programsekolah-text">${title}</h3>
+            <p class="card-desc programsekolah-text">${description}</p>
           </div>
         `;
       }).join('');
+
     })
     .catch(error => {
       console.error('Error loading activity cards:', error);
