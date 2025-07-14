@@ -1,8 +1,10 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-    
-    build:{
+    build: {
+        optimization: {
+            include: ['notiflix']
+        },
         rollupOptions:{
             input:{
                 index:'index.html',
@@ -13,7 +15,8 @@ export default defineConfig({
                 pendaftaran:'pendaftaran.html',
                 contact:'contact.html',
 
-
+                login:'admin-tkkb-sitihajar-karlos/login.html',
+                    
                 admin:'admin-tkkb-sitihajar-karlos/dashboard.html',
                 gurua:'admin-tkkb-sitihajar-karlos/guru.html',
                 contacta:'admin-tkkb-sitihajar-karlos/contact.html',

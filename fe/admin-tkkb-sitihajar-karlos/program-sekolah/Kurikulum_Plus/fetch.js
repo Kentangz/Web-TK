@@ -44,27 +44,35 @@ export function postSurat({ surat_name }) {
   const formData = new FormData();
   formData.append('surat_name', surat_name);
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/suratpendek`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal menambahkan data surat-surat pendek. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const surat = result.data;
-      return {
-        id: surat.id,   
-        surat: surat.surat_name
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan postSurat:", error);
-      return null;
-    });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/suratpendek`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal menambahkan data surat-surat pendek. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const surat = result.data;
+			return {
+				id: surat.id,
+				surat: surat.surat_name,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postSurat:", error);
+			return null;
+		});
 }
 
 export function updateSuratById(id, { surat_name }) {
@@ -72,41 +80,62 @@ export function updateSuratById(id, { surat_name }) {
   formData.append('surat_name', surat_name);
   formData.append('_method', 'PUT');
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/suratpendek/${id}`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal memperbarui data surat-surat pendek. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const surat = result.data;
-      return {
-        id: surat.id,   
-        surat: surat.surat_name
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan updateSuratById:", error);
-      return null;
-    });
+  return fetch(
+		`${
+			import.meta.env.VITE_API_KEY
+		}/programsekolah/kurikulumplus/suratpendek/${id}`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal memperbarui data surat-surat pendek. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const surat = result.data;
+			return {
+				id: surat.id,
+				surat: surat.surat_name,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateSuratById:", error);
+			return null;
+		});
 }
 
 export function deleteSuratById(id) {
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/suratpendek/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus data surat-surat pendek. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteSuratById:", error);
-    return null;
-  });
+  return fetch(
+		`${
+			import.meta.env.VITE_API_KEY
+		}/programsekolah/kurikulumplus/suratpendek/${id}`,
+		{
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	)
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menghapus data surat-surat pendek. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteSuratById:", error);
+			return null;
+		});
 }
 
 export function getAllDoa() {
@@ -155,27 +184,35 @@ export function postDoa({ doa_name }) {
   const formData = new FormData();
   formData.append('doa_name', doa_name);
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/doa`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal menambahkan data doa. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const doa = result.data;
-      return {
-        id: doa.id,   
-        doa: doa.doa_name
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan postDoa:", error);
-      return null;
-    });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/doa`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal menambahkan data doa. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const doa = result.data;
+			return {
+				id: doa.id,
+				doa: doa.doa_name,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postDoa:", error);
+			return null;
+		});
 }
 
 export function updateDoaById(id, { doa_name }) {
@@ -183,41 +220,56 @@ export function updateDoaById(id, { doa_name }) {
   formData.append('doa_name', doa_name);
   formData.append('_method', 'PUT');
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/doa/${id}`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal memperbarui data doa. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const doa = result.data;
-      return {
-        id: doa.id,   
-        doa: doa.doa_name
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan updateDoaById:", error);
-      return null;
-    });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/doa/${id}`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal memperbarui data doa. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const doa = result.data;
+			return {
+				id: doa.id,
+				doa: doa.doa_name,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateDoaById:", error);
+			return null;
+		});
 }
 
 export function deleteDoaById(id) {
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/doa/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus data doa. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteDoaById:", error);
-    return null;
-  });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/doa/${id}`,
+		{
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	)
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(`Gagal menghapus data doa. Status: ${response.status}`);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteDoaById:", error);
+			return null;
+		});
 }
 
 export function getAllHadits() {
@@ -266,27 +318,35 @@ export function postHadits({ hadits_name }) {
   const formData = new FormData();
   formData.append('hadits_name', hadits_name);
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/hadits`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal menambahkan data hadits. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const hadits = result.data;
-      return {
-        id: hadits.id,   
-        hadits: hadits.hadits_name
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan postHadits:", error);
-      return null;
-    });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/hadits`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal menambahkan data hadits. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const hadits = result.data;
+			return {
+				id: hadits.id,
+				hadits: hadits.hadits_name,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postHadits:", error);
+			return null;
+		});
 }
 
 export function updateHaditsById(id, { hadits_name }) {
@@ -294,39 +354,56 @@ export function updateHaditsById(id, { hadits_name }) {
   formData.append('hadits_name', hadits_name);
   formData.append('_method', 'PUT');
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/hadits/${id}`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal memperbarui data hadits. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const hadits = result.data;
-      return {
-        id: hadits.id,   
-        hadits: hadits.hadits_name
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan updateHaditsById:", error);
-      return null;
-    });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/hadits/${id}`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal memperbarui data hadits. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const hadits = result.data;
+			return {
+				id: hadits.id,
+				hadits: hadits.hadits_name,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateHaditsById:", error);
+			return null;
+		});
 }
 
 export function deleteHaditsById(id) {
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/hadits/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus data hadits. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteHaditsById:", error);
-    return null;
-  });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/programsekolah/kurikulumplus/hadits/${id}`,
+		{
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	)
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menghapus data hadits. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteHaditsById:", error);
+			return null;
+		});
 }

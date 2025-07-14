@@ -27,7 +27,7 @@ class AuthController extends Controller
         $user->tokens()->delete();
 
         //testing
-        // $expiresAt = now()->addMinutes(1);
+        // $expiresAt = now()->addMinutes(1/2);
 
         $expiresAt = now()->addDays(2);
         $token = $user -> createToken('adminToken', ['*'],$expiresAt)->plainTextToken;

@@ -1,8 +1,12 @@
 import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
-
 import { getAllVisi, postVisi, updateVisiById, deleteVisiById, getAllMisi, postMisi, updateMisiById, deleteMisiById } from './fetch.js';
+import { checkAuth } from '../../Auth/Api/checkX.js';
+
+if (!checkAuth()) {
+	throw new Error("Not authenticated");
+}
 
 document.querySelector('#visi-misi').innerHTML = `
   ${createSidebarHTML({

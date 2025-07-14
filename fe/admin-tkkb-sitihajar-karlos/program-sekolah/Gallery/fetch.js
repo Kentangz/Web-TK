@@ -47,28 +47,36 @@ export function postGambarkegiatan({ nama_kegiatan }, imageFile) {
   if (imageFile) formData.append('image', imageFile);
   formData.append('nama_kegiatan', nama_kegiatan);
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/gallerykegiatan`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal menambahkan data gambar kegiatan. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const kegiatan = result.data;
-      return {
-        id: kegiatan.id,   
-        img: kegiatan.image,
-        activity: kegiatan.nama_kegiatan
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan postGambarkegiatan:", error);
-      return null;
-    });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/programsekolah/gallerykegiatan`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal menambahkan data gambar kegiatan. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const kegiatan = result.data;
+			return {
+				id: kegiatan.id,
+				img: kegiatan.image,
+				activity: kegiatan.nama_kegiatan,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postGambarkegiatan:", error);
+			return null;
+		});
 }
 
 export function updateGambarKegiatanById(id, { nama_kegiatan }, imageFile) {
@@ -77,40 +85,57 @@ export function updateGambarKegiatanById(id, { nama_kegiatan }, imageFile) {
   formData.append('nama_kegiatan', nama_kegiatan);
   formData.append('_method', 'PUT');
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/gallerykegiatan/${id}`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal memperbarui data gambar kegiatan. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const kegiatan = result.data;
-      return {
-        id: kegiatan.id,   
-        img: kegiatan.image,
-        activity: kegiatan.nama_kegiatan
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan updateGambarKegiatanById:", error);
-      return null;
-    });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/programsekolah/gallerykegiatan/${id}`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal memperbarui data gambar kegiatan. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const kegiatan = result.data;
+			return {
+				id: kegiatan.id,
+				img: kegiatan.image,
+				activity: kegiatan.nama_kegiatan,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateGambarKegiatanById:", error);
+			return null;
+		});
 }
 
 export function deleteGambarKegiatanById(id) {
-  return fetch(`${import.meta.env.VITE_API_KEY}/programsekolah/gallerykegiatan/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus data gambar kegiatan. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteGambarKegiatanById:", error);
-    return null;
-  });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/programsekolah/gallerykegiatan/${id}`,
+		{
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	)
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menghapus data gambar kegiatan. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteGambarKegiatanById:", error);
+			return null;
+		});
 }

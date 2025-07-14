@@ -45,26 +45,31 @@ export function postFasilitas({ fasilitas_name }) {
   formData.append('fasilitas_name', fasilitas_name);
 
   return fetch(`${import.meta.env.VITE_API_KEY}/fasilitasprestasi/fasilitas`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal menambahkan data fasilitas. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const fasilitas = result.data;
-      return {
-        id: fasilitas.id,   
-        facility: fasilitas.fasilitas_name
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan postFasilitas:", error);
-      return null;
-    });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal menambahkan data fasilitas. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const fasilitas = result.data;
+			return {
+				id: fasilitas.id,
+				facility: fasilitas.fasilitas_name,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postFasilitas:", error);
+			return null;
+		});
 }
 
 export function updateFasilitasById(id, { fasilitas_name }) {
@@ -72,39 +77,56 @@ export function updateFasilitasById(id, { fasilitas_name }) {
   formData.append('fasilitas_name', fasilitas_name);
   formData.append('_method', 'PUT');
 
-  return fetch(`${import.meta.env.VITE_API_KEY}/fasilitasprestasi/fasilitas/${id}`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal memperbarui data fasilitas. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const fasilitas = result.data;
-      return {
-        id: fasilitas.id,   
-        facility: fasilitas.fasilitas_name
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan updateFasilitasById:", error);
-      return null;
-    });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/fasilitasprestasi/fasilitas/${id}`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			body: formData,
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal memperbarui data fasilitas. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const fasilitas = result.data;
+			return {
+				id: fasilitas.id,
+				facility: fasilitas.fasilitas_name,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateFasilitasById:", error);
+			return null;
+		});
 }
 
 export function deleteFasilitasById(id) {
-  return fetch(`${import.meta.env.VITE_API_KEY}/fasilitasprestasi/fasilitas/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus data fasilitas. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteFasilitasById:", error);
-    return null;
-  });
+  return fetch(
+		`${import.meta.env.VITE_API_KEY}/fasilitasprestasi/fasilitas/${id}`,
+		{
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		}
+	)
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menghapus data fasilitas. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteFasilitasById:", error);
+			return null;
+		});
 }

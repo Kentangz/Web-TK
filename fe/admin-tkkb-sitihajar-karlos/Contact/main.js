@@ -1,8 +1,12 @@
 import '../global.css';
 import './style.css';
 import { createSidebarHTML, initSidebarFunctionality } from '../Component/Sidebar/sidebar';
-
 import { getAllContactPerson, postContactPerson, updateContactPersonById, deleteContactPersonById, getAllEmail, postEmail, updateEmailById, deleteEmailById, getAllInstagram, postInstagram, updateInstagramById, deleteInstagramById, getAllAlamat, postAlamat, updateAlamatById, deleteAlamatById  } from './fetch.js';
+import { checkAuth } from '../Auth/Api/checkX.js';
+
+if (!checkAuth()) {
+  throw new Error("Not authenticated");
+}
 
 document.querySelector('#contact').innerHTML = `
   ${createSidebarHTML({

@@ -1,8 +1,12 @@
 import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
-
 import { getAllSurat, postSurat, updateSuratById, deleteSuratById, getAllDoa, postDoa, updateDoaById, deleteDoaById, getAllHadits, postHadits, updateHaditsById, deleteHaditsById  } from './fetch.js';
+import { checkAuth } from '../../Auth/Api/checkX.js';
+
+if (!checkAuth()) {
+  throw new Error("Not authenticated");
+}
 
 document.querySelector('#kurikulum-plus').innerHTML = `
   ${createSidebarHTML({

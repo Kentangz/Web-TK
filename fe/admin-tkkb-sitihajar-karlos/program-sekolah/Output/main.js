@@ -1,8 +1,12 @@
 import '../../global.css'
 import './style.css'
 import { createSidebarHTML, initSidebarFunctionality } from '../../Component/Sidebar/sidebar'
-
 import { getAllOutput, postOutput, updateOutputById, deleteOutputById } from './fetch.js';
+import { checkAuth } from '../../Auth/Api/checkX.js';
+
+if (!checkAuth()) {
+  throw new Error("Not authenticated");
+}
 
 document.querySelector('#output').innerHTML = `
   ${createSidebarHTML({

@@ -12,6 +12,8 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
-    "fe": "file:"
+    "axios": "^1.9.0",
+    "fe": "file:",
+    "notiflix": "^3.2.8"
   }
 }

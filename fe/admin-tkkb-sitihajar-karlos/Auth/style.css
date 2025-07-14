@@ -1,0 +1,112 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 1rem;
+}
+
+#login {
+  width: 100%;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 53px;
+  color: #333;
+}
+
+.login-container {
+  background-color: white;
+  padding: 2rem;
+  width: 512px;
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.login-container p {
+  max-width: 238px;
+  margin: 0 auto 14px auto;
+  font-size: 16px;
+  line-height: 25px;
+  color: #000000;
+}
+
+.login-container input {
+  width: 248px;
+  height: 42px;
+  padding: 0 12px;
+  margin: 0 auto 14px auto;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.login-container input::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+
+.login-container button {
+  width: 248px;
+  height: 42px;
+  margin: 0 auto;
+  display: block;
+  background-color: #2f80ed;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.login-container button:hover {
+  background-color: #246fdb;
+}
+
+#error {
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+}
+
+
+@media (max-width: 550px) {
+  .login-container {
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .login-container input,
+  .login-container button {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-bottom: 40px;
+  }
+
+  .login-container p {
+    font-size: 15px;
+    line-height: 22px;
+    max-width: 100%;
+  }
+}

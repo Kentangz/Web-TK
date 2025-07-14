@@ -57,30 +57,35 @@ export function postGuru({ jabatan, nama, ttl, nomor }, imageFile) {
   formData.append('nomor', nomor);
 
   return fetch(`${import.meta.env.VITE_API_KEY}/guru`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal menambahkan data guru. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const guru = result.data;
-      return {
-        id: guru.id,
-        img: guru.image,
-        title: guru.jabatan,
-        name: guru.nama,
-        ttl: guru.ttl,
-        phone: guru.nomor
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan postGuru:", error);
-      return null;
-    });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal menambahkan data guru. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const guru = result.data;
+			return {
+				id: guru.id,
+				img: guru.image,
+				title: guru.jabatan,
+				name: guru.nama,
+				ttl: guru.ttl,
+				phone: guru.nomor,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan postGuru:", error);
+			return null;
+		});
 }
 
 export function updateGuruById(id, { jabatan, nama, ttl, nomor }, imageFile) {
@@ -93,42 +98,53 @@ export function updateGuruById(id, { jabatan, nama, ttl, nomor }, imageFile) {
   formData.append('_method', 'PUT');
 
   return fetch(`${import.meta.env.VITE_API_KEY}/guru/${id}`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Gagal memperbarui data guru. Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      const guru = result.data;
-      return {
-        id: guru.id,
-        img: guru.image,
-        title: guru.jabatan,
-        name: guru.nama,
-        ttl: guru.ttl,
-        phone: guru.nomor
-      };
-    })
-    .catch(error => {
-      console.error("Kesalahan updateGuruById:", error);
-      return null;
-    });
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+		body: formData,
+	})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Gagal memperbarui data guru. Status: ${response.status}`
+				);
+			}
+			return response.json();
+		})
+		.then((result) => {
+			const guru = result.data;
+			return {
+				id: guru.id,
+				img: guru.image,
+				title: guru.jabatan,
+				name: guru.nama,
+				ttl: guru.ttl,
+				phone: guru.nomor,
+			};
+		})
+		.catch((error) => {
+			console.error("Kesalahan updateGuruById:", error);
+			return null;
+		});
 }
 
 export function deleteGuruById(id) {
   return fetch(`${import.meta.env.VITE_API_KEY}/guru/${id}`, {
-    method: 'DELETE'
-  })
-  .then(response => {
-    if (!response.ok) throw new Error(`Gagal menghapus data guru. Status: ${response.status}`);
-    return response.json();
-  })
-  .catch(error => {
-    console.error("Kesalahan deleteGuruById:", error);
-    return null;
-  });
+		method: "DELETE",
+		headers: {
+			Authorization: `Bearer ${localStorage.getItem("token")}`,
+		},
+	})
+		.then((response) => {
+			if (!response.ok)
+				throw new Error(
+					`Gagal menghapus data guru. Status: ${response.status}`
+				);
+			return response.json();
+		})
+		.catch((error) => {
+			console.error("Kesalahan deleteGuruById:", error);
+			return null;
+		});
 }
