@@ -30,12 +30,23 @@
   flex-direction: column;
   justify-content: center;
   color: #000;
-  text-align: left; 
+  text-align: left;
+  border-radius: 0.75rem;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.jadwal-kelompok-ab:hover,
+.jadwal-kelompok-kb:hover {
+  transform: translateY(-5px);
+  background-color: transparent; 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
 
 .jadwal-kelompok-ab h1,
 .jadwal-kelompok-kb h1 {
   text-align: center;
+  font-weight: normal;
   font-size: 1.8rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -44,8 +55,9 @@
 
 .jadwal-kelompok-ab p,
 .jadwal-kelompok-kb p {
+  font-weight: normal;
   margin: 0.5rem 0;
-  font-weight: bold;
+  font-size: 1.3rem;
 }
 
 .jadwal-list {
@@ -60,18 +72,10 @@
   align-items: center;
   gap: 1rem;
   margin-bottom: 2rem;
-  font-size: 1rem;
+  font-size: 1.3rem;
   line-height: 1.6;
-  transition: transform 0.3s ease, background-color 0.3s ease;
   cursor: default;
-  flex-wrap: nowrap;
-}
-
-.jadwal-list li:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
+  flex-wrap: wrap; 
 }
 
 .jadwal-list img {
@@ -81,7 +85,26 @@
   flex-grow: 0;
 }
 
-@media (max-width: 600px) {
+.jadwal-text {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  text-align: justify;
+}
+
+@media screen and (min-width: 2048px){
+  .jadwal-section,
+  .jadwal2-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    min-height: 45vh;
+  }
+}
+
+@media (max-width: 700px) {
   .jadwal-section,
   .jadwal2-section {
     padding: 2rem;
@@ -96,17 +119,33 @@
   .jadwal-kelompok-ab h1,
   .jadwal-kelompok-kb h1 {
     margin-bottom: 0.5rem;
+    font-size: 1.8rem;
   }
 
   .jadwal-kelompok-ab p,
   .jadwal-kelompok-kb p {
     margin-top: 0.5rem;
+    font-size: 0.95rem;
   }
 
   .jadwal-list li {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     gap: 0.75rem;
     word-break: break-word;
     white-space: normal;
+  }
+}
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #555;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 40px auto;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

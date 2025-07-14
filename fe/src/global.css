@@ -9,3 +9,10 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
+
+
+@media screen and (min-width: 2048px){
+  body{
+    zoom: 1.7 ;
+  }
+}

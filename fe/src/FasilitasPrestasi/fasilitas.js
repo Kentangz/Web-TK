@@ -14,7 +14,7 @@ export function fetchFasilitas() {
       }
 
       const listItems = data.map(item =>
-        `<li>${item.fasilitas_name}</li>`
+        `<li class="fasilitas-text">${item.fasilitas_name}</li>`
       ).join('');
 
       return `

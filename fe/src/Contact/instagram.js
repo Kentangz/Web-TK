@@ -10,13 +10,13 @@ export function fetchInstagram() {
       const data = result.data;
 
       if (Array.isArray(data) && data.length > 0 && data[0].ig_name) {
-        return `${data[0].ig_name}`;
+        return `<p class="contact-text">${data[0].ig_name}</p>`;
       } else {
         throw new Error("Data Instagram tidak ditemukan atau format tidak valid");
       }
     })
     .catch(error => {
       console.error("Kesalahan fetchInstagram:", error);
-      return `Gagal memuat contact person`;
+      return `<p class="contact-text" style="color:red;">Gagal memuat contact person</p>`;
     });
 }

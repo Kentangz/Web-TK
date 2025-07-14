@@ -5,8 +5,8 @@ export function fetchVisiMisiImage() {
       return response.json();
     })
     .then(result => {
-      const item = result.data[0]; // Ambil 1 data pertama (karena cuma 1 gambar)
-      return `<img src="${item.image}" alt="Gambar Visi Misi" class="visi-img" />`;
+      const item = result.data[0]; 
+      return `<img src="${item.image}" alt="Gambar Visi Misi" class="visi-img beranda-text" />`;
     })
     .catch(err => {
       return `<p style="color:red;">Gagal memuat gambar</p>`;

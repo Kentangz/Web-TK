@@ -11,7 +11,7 @@ export function fetchJadwalKB() {
       return data.map(item => `
         <li>
           <img src="${item.icon}" alt="Icon Jadwal KB" />
-          ${item.deskripsi}
+          <span class="jadwal-text">${item.deskripsi}</span>
         </li>
       `).join('');
     })

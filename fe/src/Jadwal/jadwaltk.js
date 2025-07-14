@@ -17,7 +17,7 @@ export function fetchJadwalAB() {
           ${data.map(item => `
             <li>
               <img src="${item.icon}" alt="Icon Jadwal" />
-              ${item.deskripsi}
+              <span class="jadwal-text">${item.deskripsi}</span>
             </li>
           `).join('')}
         </ul>
