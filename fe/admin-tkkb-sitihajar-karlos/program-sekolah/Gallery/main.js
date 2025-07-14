@@ -76,7 +76,7 @@ function tambahBaris({ id, img, activity }) {
 
   newRow.innerHTML = `
     <td><img src="${img}" style="width:100px;"></td>
-    <td>${activity}</td>
+    <td style="max-width:300px; word-wrap:break-word; white-space:normal;">${activity}</td>
     <td>
       <button class="btn-edit">Edit</button>
       <button class="btn-hapus">Hapus</button>
@@ -115,7 +115,8 @@ function attachButtonHandlers(row) {
     let newSrc = originalSrc;
     let selectedFile = null;
 
-    tdActivity.innerHTML = `<input type="text" class="input-activity" value="${originalActivity}" style="width:100%;">`;
+    tdActivity.innerHTML = `<input type="text" class="input-activity" value="${originalActivity}" style="width:100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
+
 
     tdOptions.innerHTML = `
       <button class="btn-upload">Upload Foto</button>
@@ -216,7 +217,7 @@ document.querySelector('.btn-tambah').addEventListener('click', () => {
 
   newRow.innerHTML = `
     <td><img src="/user.png" alt="Preview" style="width:80px; height:auto;"></td>
-    <td><input type="text" class="input-activity" placeholder="Nama Kegiatan" style="width:100%;"></td>
+    <td><input type="text" class="input-activity" placeholder="Nama Kegiatan" style="width:100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
     <td>
       <button class="btn-upload">Upload Foto</button>
       <button class="btn-simpan">Simpan</button>

@@ -139,6 +139,12 @@ function createRow(id, text, type, isEdit = false) {
     input.value = text || '';
     input.classList.add('input-edit');
     input.style.width = '100%';
+    input.maxLength = 255;
+    input.oninput = function () {
+      if (this.value.length > 255) {
+        this.value = this.value.slice(0, 255);
+      }
+    };
     tdDeskripsi.appendChild(input);
 
     const btnSimpan = createButton('Simpan', 'btn-simpan', () => {
@@ -177,6 +183,9 @@ function createRow(id, text, type, isEdit = false) {
     tdOpsi.append(btnSimpan, btnBatal);
   } else {
     tdDeskripsi.textContent = text || '-';
+    tdDeskripsi.style.maxWidth = '300px';
+    tdDeskripsi.style.wordWrap = 'break-word';
+    tdDeskripsi.style.whiteSpace = 'normal';
 
     const btnEdit = createButton('Edit', 'btn-edit', () => {
       tr.replaceWith(createRow(id, text, type, true));

@@ -53,6 +53,10 @@ document.querySelector('#guru').innerHTML = `
 let guruData = [];
 let editingIndex = null;
 
+function isValidLength(input, maxLength) {
+  return input.length <= maxLength;
+}
+
 function renderTable() {
   const tbody = document.querySelector("#guruTable tbody");
   tbody.innerHTML = "";
@@ -63,10 +67,10 @@ function renderTable() {
       <td style="text-align: center;">
         <img src="${guru.img}" alt="Foto" width="100" height="100" style="object-fit: cover;">
       </td>
-      <td class="jabatan">${guru.title}</td>
-      <td class="nama">${guru.name}</td>
-      <td class="ttl">${guru.ttl}</td>
-      <td class="nomor">${guru.phone}</td>
+      <td class="jabatan" style="max-width: 300px; word-wrap: break-word; white-space: normal;">${guru.title}</td>
+      <td class="nama" style="max-width: 300px; word-wrap: break-word; white-space: normal;">${guru.name}</td>
+      <td class="ttl" style="max-width: 300px; word-wrap: break-word; white-space: normal;">${guru.ttl}</td>
+      <td class="nomor" style="max-width: 300px; word-wrap: break-word; white-space: normal;">${guru.phone}</td>
       <td style="text-align: center;">
         <button class="btn-edit" data-index="${index}">Edit</button>
         <button class="btn-hapus" data-index="${index}">Hapus</button>
@@ -90,10 +94,10 @@ function renderTable() {
       const dataLama = { ...guruData[index] };
       let uploadedImageFile = null;
 
-      tr.querySelector(".jabatan").innerHTML = `<input type="text" value="${dataLama.title}" style="width: 100%;">`;
-      tr.querySelector(".nama").innerHTML = `<input type="text" value="${dataLama.name}" style="width: 100%;">`;
-      tr.querySelector(".ttl").innerHTML = `<input type="text" value="${dataLama.ttl}" style="width: 100%;">`;
-      tr.querySelector(".nomor").innerHTML = `<input type="text" value="${dataLama.phone}" style="width: 100%;">`;
+      tr.querySelector(".jabatan").innerHTML = `<input type="text" value="${dataLama.title}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
+      tr.querySelector(".nama").innerHTML = `<input type="text" value="${dataLama.name}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
+      tr.querySelector(".ttl").innerHTML = `<input type="text" value="${dataLama.ttl}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
+      tr.querySelector(".nomor").innerHTML = `<input type="text" value="${dataLama.phone}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
 
       const tdImage = tr.querySelector("td:nth-child(1)");
       tdImage.innerHTML = `<img src="${dataLama.img}" alt="Foto" width="100" height="100" style="object-fit: cover;">`;
@@ -110,6 +114,11 @@ function renderTable() {
         const nama = tr.querySelector(".nama input").value.trim();
         const ttl = tr.querySelector(".ttl input").value.trim();
         const nomor = tr.querySelector(".nomor input").value.trim();
+
+        if (![jabatan, nama, ttl, nomor].every(field => isValidLength(field, 255))) {
+            showToast("Panjang input tidak boleh melebihi 255 karakter.", "error");
+            return;
+          }
 
         if (jabatan && nama && ttl && nomor) {
 
@@ -211,10 +220,10 @@ document.getElementById("btnTambah").addEventListener("click", () => {
     <td style="text-align: center;">
       <img src="/user.png" alt="Foto" width="100" height="100" style="object-fit: cover; display:block; margin:auto; margin-bottom:5px;">
     </td>
-    <td><input type="text" placeholder="Jabatan" style="width: 100%;"></td>
-    <td><input type="text" placeholder="Nama" style="width: 100%;"></td>
-    <td><input type="text" placeholder="Tempat, Tgl Lahir" style="width: 100%;"></td>
-    <td><input type="text" placeholder="No Telepon" style="width: 100%;"></td>
+    <td><input type="text" placeholder="Jabatan" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
+    <td><input type="text" placeholder="Nama" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
+    <td><input type="text" placeholder="Tempat, Tgl Lahir" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
+    <td><input type="text" placeholder="No Telepon" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
     <td style="text-align: center;">
       <button class="btn-upload">Upload Foto</button>
       <button class="btn-simpan btn-edit">Simpan</button>
@@ -262,6 +271,11 @@ document.getElementById("btnTambah").addEventListener("click", () => {
     const nama = tr.querySelector("td:nth-child(3) input").value.trim();
     const ttl = tr.querySelector("td:nth-child(4) input").value.trim();
     const nomor = tr.querySelector("td:nth-child(5) input").value.trim();
+
+    if (![jabatan, nama, ttl, nomor].every(field => isValidLength(field, 255))) {
+        showToast("Panjang input tidak boleh melebihi 255 karakter.", "error");
+        return;
+          }
 
     if (jabatan && nama && ttl && nomor && uploadedImageFile) {
       const newGuru = await postGuru({ jabatan, nama, ttl, nomor }, uploadedImageFile);

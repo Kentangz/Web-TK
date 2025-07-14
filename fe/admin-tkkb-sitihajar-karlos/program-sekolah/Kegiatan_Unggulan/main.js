@@ -66,8 +66,8 @@ function renderTabelUnggulan() {
         tr.innerHTML = `
         <tr data-id="${item.id}">
           <td class="icon">${item.icon ? `<img src="${item.icon}" width="50" height="50"/>` : "0"}</td>
-          <td class="judul">${item.activity}</td>
-          <td class="deskripsi">${item.desc}</td>
+          <td class="judul" style="max-width:300px; word-wrap:break-word; white-space:normal;">${item.activity}</td>
+          <td class="deskripsi" style="max-width:300px; word-wrap:break-word; white-space:normal;">${item.desc}</td>
           <td>
             <button class="btn-edit" data-index="${index}">Edit</button>
             <button class="btn-hapus" data-index="${index}">Hapus</button>
@@ -87,8 +87,8 @@ function renderTabelUnggulan() {
           let selectedFile = null;
 
           tr.querySelector(".icon").innerHTML = `<img src="${item.icon}" width="50" height="50"/>`;
-          tr.querySelector(".judul").innerHTML = `<input type="text" value="${item.activity}" style="width: 100%;">`;
-          tr.querySelector(".deskripsi").innerHTML = `<input type="text" value="${item.desc}" style="width: 100%;">`;
+          tr.querySelector(".judul").innerHTML = `<input type="text" value="${item.activity}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
+          tr.querySelector(".deskripsi").innerHTML = `<input type="text" value="${item.desc}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
           tr.querySelector("td:last-child").innerHTML = `
             <button class="btn-upload">Upload Ikon</button>
             <button class="btn-edit btn-simpan">Simpan</button>
@@ -168,8 +168,8 @@ document.getElementById("btnTambah").addEventListener("click", () => {
 
   tr.innerHTML = `
     <td class="icon"><img src="/user.png" width="50" height="50" /></td>
-    <td class="judul"><input type="text" placeholder="Masukkan kegiatan" style="width: 100%;"></td>
-    <td class="deskripsi"><input type="text" placeholder="Masukkan deskripsi" style="width: 100%;"></td>
+    <td class="judul"><input type="text" placeholder="Masukkan kegiatan" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
+    <td class="deskripsi"><input type="text" placeholder="Masukkan deskripsi" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
     <td>
       <button class="btn-upload">Upload Ikon</button>
       <button class="btn-edit btn-simpan">Simpan</button>
