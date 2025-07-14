@@ -88,6 +88,12 @@ function createRow(id, text, isEdit = false) {
     input.value = text;
     input.classList.add('input-edit');
     input.style.width = '100%';
+    input.maxLength = 255;
+    input.oninput = function () {
+      if (this.value.length > 255) {
+        this.value = this.value.slice(0, 255);
+      }
+    };
     tdHasilOutput.appendChild(input);
 
     const btnSimpan = createButton('Simpan', 'btn-simpan', () => {
@@ -126,6 +132,9 @@ function createRow(id, text, isEdit = false) {
 
     ul.appendChild(li);
     tdHasilOutput.style.paddingRight = '2em';
+    tdHasilOutput.style.maxWidth = '300px';
+    tdHasilOutput.style.wordWrap = 'break-word';
+    tdHasilOutput.style.whiteSpace = 'normal';
     tdHasilOutput.appendChild(ul);
 
     const btnEdit = createButton('Edit', 'btn-edit', () => {

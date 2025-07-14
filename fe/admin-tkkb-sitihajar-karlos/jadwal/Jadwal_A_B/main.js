@@ -99,8 +99,8 @@ function renderTabelHari() {
         const tr = document.createElement("tr");
         tr.innerHTML = `
         <tr data-id="${item.id}">
-          <td class="hari">${item.day}</td>
-          <td class="jam">${item.hour}</td>
+          <td class="hari" style="max-width:300px; word-wrap:break-word; white-space:normal;">${item.day}</td>
+          <td class="jam" style="max-width:300px; word-wrap:break-word; white-space:normal;">${item.hour}</td>
           <td>
             <button class="btn-edit" data-index="${index}">Edit</button>
             <button class="btn-hapus" data-index="${index}">Hapus</button>
@@ -117,8 +117,8 @@ function renderTabelHari() {
           editingIndexHari = index;
           disableAllButtonsExcept(tr);
 
-          tr.querySelector(".hari").innerHTML = `<input type="text" value="${item.day}" style="width: 100%;">`;
-          tr.querySelector(".jam").innerHTML = `<input type="text" value="${item.hour}" style="width: 100%;">`;
+          tr.querySelector(".hari").innerHTML = `<input type="text" value="${item.day}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
+          tr.querySelector(".jam").innerHTML = `<input type="text" value="${item.hour}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
           tr.querySelector("td:last-child").innerHTML = `
             <button class="btn-edit btn-simpan">Simpan</button>
             <button class="btn-hapus btn-batal">Batal</button>
@@ -168,8 +168,8 @@ document.getElementById("btnTambahHari").addEventListener("click", () => {
   const tr = document.createElement("tr");
 
   tr.innerHTML = `
-    <td class="hari"><input type="text" placeholder="Masukkan hari" style="width: 100%;"></td>
-    <td class="jam"><input type="text" placeholder="Masukkan jam" style="width: 100%;"></td>
+    <td class="hari"><input type="text" placeholder="Masukkan hari" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
+    <td class="jam"><input type="text" placeholder="Masukkan jam" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
     <td>
       <button class="btn-edit btn-simpan">Simpan</button>
       <button class="btn-hapus btn-batal">Batal</button>
@@ -216,7 +216,7 @@ function renderTabelAB() {
         tr.innerHTML = `
         <tr data-id="${item.id}">
           <td class="icon">${item.icon ? `<img src="${item.icon}" width="50" height="50"/>` : "0"}</td>
-          <td class="deskripsi">${item.desc}</td>
+          <td class="deskripsi" style="max-width:300px; word-wrap:break-word; white-space:normal;">${item.desc}</td>
           <td>
             <button class="btn-edit" data-index="${index}">Edit</button>
             <button class="btn-hapus" data-index="${index}">Hapus</button>
@@ -236,7 +236,7 @@ function renderTabelAB() {
           let selectedFile = null;
 
           tr.querySelector(".icon").innerHTML = `<img src="${item.icon}" width="50" height="50"/>`;
-          tr.querySelector(".deskripsi").innerHTML = `<input type="text" value="${item.desc}" style="width: 100%;">`;
+          tr.querySelector(".deskripsi").innerHTML = `<input type="text" value="${item.desc}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
           tr.querySelector("td:last-child").innerHTML = `
             <button class="btn-upload">Upload Ikon</button>
             <button class="btn-edit btn-simpan">Simpan</button>
@@ -315,7 +315,7 @@ document.getElementById("btnTambah").addEventListener("click", () => {
 
   tr.innerHTML = `
     <td class="icon"><img src="/user.png" width="50" height="50" /></td>
-    <td class="deskripsi"><input type="text" placeholder="Masukkan deskripsi" style="width: 100%;"></td>
+    <td class="deskripsi"><input type="text" placeholder="Masukkan deskripsi" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
     <td>
       <button class="btn-upload">Upload Ikon</button>
       <button class="btn-edit btn-simpan">Simpan</button>

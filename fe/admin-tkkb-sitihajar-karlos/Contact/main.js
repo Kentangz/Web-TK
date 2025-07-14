@@ -169,8 +169,8 @@ function loadContactPersons() {
       const tbody = document.querySelector('#telpTable tbody');
       tbody.innerHTML = contactPersons.map(item => `
         <tr data-id="${item.id}">
-          <td>${item.name}</td>
-          <td>${item.phone}</td>
+          <td style="max-width: 300px; word-wrap: break-word; white-space: normal;">${item.name}</td>
+          <td style="max-width: 300px; word-wrap: break-word; white-space: normal;">${item.phone}</td>
           <td class="actions">
             <button class="btn-edit">Edit</button>
             <button class="btn-hapus">Hapus</button>
@@ -202,8 +202,8 @@ function setContactPersonActionEvents(row) {
       const originalName = cells[0].textContent.trim();
       const originalPhone = cells[1].textContent.trim();
 
-      cells[0].innerHTML = `<input type="text" value="${originalName}" placeholder="Masukkan Nama Contact Person" style="width:100%">`;
-      cells[1].innerHTML = `<input type="text" value="${originalPhone}" placeholder="Masukkan Nomor Telepon" style="width:100%">`;
+      cells[0].innerHTML = `<input type="text" value="${originalName}" placeholder="Masukkan Nama Contact Person" style="width:100%" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
+      cells[1].innerHTML = `<input type="text" value="${originalPhone}" placeholder="Masukkan Nomor Telepon" style="width:100%"  maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
 
       const actions = cells[actionCellIndex];
       actions.innerHTML = `
@@ -288,8 +288,8 @@ document.querySelector("#btnTambahTelp").addEventListener("click", () => {
   const newRow = document.createElement("tr");
 
   newRow.innerHTML = `
-    <td><input type="text" placeholder="Masukkan Nama Contact Person" style="width:100%"></td>
-    <td><input type="text" placeholder="Masukkan Nomor Telepon" style="width:100%"></td>
+    <td><input type="text" placeholder="Masukkan Nama Contact Person" style="width:100%" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
+    <td><input type="text" placeholder="Masukkan Nomor Telepon" style="width:100%" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
     <td class="actions">
       <button class="btn-simpan">Simpan</button>
       <button class="btn-batal">Batal</button>
@@ -315,8 +315,8 @@ document.querySelector("#btnTambahTelp").addEventListener("click", () => {
         if (!newData || !newData.id) throw new Error("Response data tidak valid");
 
         newRow.setAttribute("data-id", newData.id);
-        newRow.cells[0].textContent = newData.phone;
-        newRow.cells[1].textContent = newData.name;
+        newRow.cells[0].outerHTML = `<td style="max-width:300px; word-wrap:break-word; white-space:normal">${newData.phone}</td>`;
+        newRow.cells[1].outerHTML = `<td style="max-width:300px; word-wrap:break-word; white-space:normal">${newData.name}</td>`;
         showToast("Data contact person berhasil ditambahkan.", "success");
         resetActions(newRow);
         editingTelp = false;
@@ -355,7 +355,7 @@ function loadEmails() {
       const tbody = document.querySelector('#emailTable tbody');
       tbody.innerHTML = emails.map(email => `
         <tr data-id="${email.id}">
-          <td>${email.email}</td>
+          <td style="max-width: 300px; word-wrap: break-word; white-space: normal;">${email.email}</td>
           <td class="empty-col"></td>
           <td class="actions">
             <button class="btn-edit">Edit</button>
@@ -386,7 +386,7 @@ function setEmailActionEvents(row) {
       const actionCell = cells[cells.length - 1];
       const originalEmail = cells[0].textContent.trim();
 
-      cells[0].innerHTML = `<input type="text" value="${originalEmail}" placeholder="Masukkan Email" style="width:100%">`;
+      cells[0].innerHTML = `<input type="text" value="${originalEmail}" placeholder="Masukkan Email" style="width:100%" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
       actionCell.innerHTML = `
         <button class="btn-simpan">Simpan</button>
         <button class="btn-batal">Batal</button>
@@ -459,7 +459,7 @@ document.querySelector("#btnTambahEmail").addEventListener("click", () => {
   const tbody = document.querySelector("#emailTable tbody");
   const newRow = document.createElement("tr");
   newRow.innerHTML = `
-    <td><input type="text" placeholder="Masukkan Email" style="width:100%"></td>
+    <td><input type="text" placeholder="Masukkan Email" style="width:100%" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
     <td class="empty-col"></td>
     <td class="actions">
       <button class="btn-simpan">Simpan</button>
@@ -483,7 +483,7 @@ document.querySelector("#btnTambahEmail").addEventListener("click", () => {
         if (!newData || !newData.id) throw new Error("Response data tidak valid");
 
         newRow.setAttribute("data-id", newData.id);
-        newRow.cells[0].textContent = newData.email;
+        newRow.cells[0].outerHTML = `<td style="max-width:300px; word-wrap:break-word; white-space:normal">${newData.email}</td>`;
         resetEmailActions(newRow);
         showToast("Data email berhasil ditambahkan.", "success");
         editingEmail = false;
@@ -521,7 +521,7 @@ function loadInstagram() {
       const tbody = document.querySelector('#instagramTable tbody');
       tbody.innerHTML = instagrams.map(instagram => `
         <tr data-id="${instagram.id}">
-          <td>${instagram.username}</td>
+          <td style="max-width: 300px; word-wrap: break-word; white-space: normal;">${instagram.username}</td>
           <td class="empty-col"></td>
           <td class="actions">
             <button class="btn-edit">Edit</button>
@@ -552,7 +552,7 @@ function setInstagramActionEvents(row) {
       const actionCell = cells[cells.length - 1];
       const originalUsername = cells[0].textContent.trim();
 
-      cells[0].innerHTML = `<input type="text" value="${originalUsername}" placeholder="Masukkan Username Instagram" style="width:100%">`;
+      cells[0].innerHTML = `<input type="text" value="${originalUsername}" placeholder="Masukkan Username Instagram" style="width:100%" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
       actionCell.innerHTML = `
         <button class="btn-simpan">Simpan</button>
         <button class="btn-batal">Batal</button>
@@ -626,7 +626,7 @@ document.querySelector("#btnTambahInstagram").addEventListener("click", () => {
   const tbody = document.querySelector("#instagramTable tbody");
   const newRow = document.createElement("tr");
   newRow.innerHTML = `
-    <td><input type="text" placeholder="Masukkan Username Instagram" style="width:100%"></td>
+    <td><input type="text" placeholder="Masukkan Username Instagram" style="width:100%" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
     <td class="empty-col"></td>
     <td class="actions">
       <button class="btn-simpan">Simpan</button>
@@ -650,7 +650,7 @@ document.querySelector("#btnTambahInstagram").addEventListener("click", () => {
         if (!newData || !newData.id) throw new Error("Response data tidak valid");
 
         newRow.setAttribute("data-id", newData.id);
-        newRow.cells[0].textContent = newData.username;
+        newRow.cells[0].outerHTML = `<td style="max-width:300px; word-wrap:break-word; white-space:normal">${newData.username}</td>`;
         resetInstagramActions(newRow);
         showToast("Data Instagram berhasil ditambahkan.", "success");
         editingInstagram = false;
@@ -688,7 +688,7 @@ function loadAlamat() {
       const tbody = document.querySelector('#alamatTable tbody');
       tbody.innerHTML = alamats.map(alamat => `
         <tr data-id="${alamat.id}">
-          <td>${alamat.alamat}</td>
+          <td style="max-width: 300px; word-wrap: break-word; white-space: normal;">${alamat.alamat}</td>
           <td class="empty-col"></td>
           <td class="actions">
             <button class="btn-edit">Edit</button>
@@ -719,7 +719,7 @@ function setAlamatActionEvents(row) {
       const actionCell = cells[cells.length - 1];
       const originalAlamat = cells[0].textContent.trim();
 
-      cells[0].innerHTML = `<input type="text" value="${originalAlamat}" placeholder="Masukkan Alamat" style="width:100%">`;
+      cells[0].innerHTML = `<input type="text" value="${originalAlamat}" placeholder="Masukkan Alamat" style="width:100%" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
       actionCell.innerHTML = `
         <button class="btn-simpan">Simpan</button>
         <button class="btn-batal">Batal</button>
@@ -793,7 +793,7 @@ document.querySelector("#btnTambahAlamat").addEventListener("click", () => {
   const tbody = document.querySelector("#alamatTable tbody");
   const newRow = document.createElement("tr");
   newRow.innerHTML = `
-    <td><input type="text" placeholder="Masukkan Alamat" style="width:100%"></td>
+    <td><input type="text" placeholder="Masukkan Alamat" style="width:100%" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"></td>
     <td class="empty-col"></td>
     <td class="actions">
       <button class="btn-simpan">Simpan</button>
@@ -817,7 +817,7 @@ document.querySelector("#btnTambahAlamat").addEventListener("click", () => {
         if (!newData || !newData.id) throw new Error("Response data tidak valid");
 
         newRow.setAttribute("data-id", newData.id);
-        newRow.cells[0].textContent = newData.alamat;
+        newRow.cells[0].outerHTML = `<td style="max-width:300px; word-wrap:break-word; white-space:normal">${newData.alamat}</td>`;
         resetAlamatActions(newRow);
         showToast("Data alamat berhasil ditambahkan.", "success");
         editingAlamat = false;
