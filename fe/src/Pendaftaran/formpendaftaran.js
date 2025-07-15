@@ -195,6 +195,7 @@ export function createFormPendaftaranHTML() {
         <label>Pendidikan Wali: <input type="text" name="pendidikan_wali" placeholder="Masukan Pendidikan..."></label><br>
         <label>Penghasilan Wali: <input type="text" name="penghasilan_wali" placeholder="Rp."></label><br>
         <!-- Baris Tinggi & Berat Badan -->
+        <h1>DATA PERIODIK (WAJIB DI ISI)</h1>
         <div class="form-row">
             <div class="form-col flex-1">
                 <label class="side-label">
@@ -288,9 +289,6 @@ export function createFormPendaftaranHTML() {
                 <img src="public/download.svg" alt="Download Icon" class="icon-btn">
             </button>
         </div>
-
-
-
 
         <div class="form-info-container">
             <!-- Panduan Pengisian Formulir -->

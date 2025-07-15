@@ -62,8 +62,8 @@ fetchWithCache('Dataguru', fetchGuru)
       </main>
     `;
 
-    document.querySelector('#guru').innerHTML += createFooterHTML();
     initNavbarFunctionality();
+    document.querySelector('#guru').innerHTML += createFooterHTML();
   })
   .catch(err => {
     console.error('Gagal memuat data guru:', err);

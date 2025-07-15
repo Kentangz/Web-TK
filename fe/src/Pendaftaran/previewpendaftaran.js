@@ -1,4 +1,6 @@
 import logoImage from '/logo.svg';
+import { generateTahunAjaran } from '../Component/Years/years';
+
 
 export function createPreviewPendaftaranHTML(data) {
   return `
@@ -14,7 +16,7 @@ export function createPreviewPendaftaranHTML(data) {
     <hr class="garis-tebal">
     <div class="konten-formulir">
       <div class="teks-formulir">
-        <h1>FORMULIR PESERTA DIDIK (2024/2025)</h1>
+        <h1>FORMULIR PESERTA DIDIK (${generateTahunAjaran()})</h1>
       </div>
       <div class="teks-formulir">
         <h2>IDENTITAS PESERTA DIDIK (WAJIB DI ISI)</h2>
@@ -24,13 +26,13 @@ export function createPreviewPendaftaranHTML(data) {
           <td>a. Nama Lengkap</td>
           <td>
             <div class="kolom-data">
-              <span class="titikdua">:</span>
-              <div class="kotak-output">${data.nama}</div>
+              <span>:</span>
+              <div class="kotak-output">${data.nama || '&nbsp;'}</div>
               <div class="kotak-output-1"></div>
             </div>
           </td>
         </tr>
-        <tr><td>b. Jenis Kelamin</td><td>: <div class="kotak-output-small">${data.gender}</div></td></tr>
+        <tr><td>b. Jenis Kelamin</td><td>: <div class="kotak-output-small">${data.gender || '&nbsp;'}</div></td></tr>
        <tr>
           <td>c. NISN</td>
           <td class="kotak-nisn">:
@@ -53,26 +55,33 @@ export function createPreviewPendaftaranHTML(data) {
         </tr>
         <tr>
           <td>e. Tempat, Tgl Lahir</td>
-          <td>: <div class="kotak-output-medium-1">${data.tempat_lahir}</div>,
+          <td>: 
+            <div class="kotak-output-medium-1">${data.tempat_lahir || '&nbsp;'}</div>,
             <div class="kotak-wrapper">
               ${(() => {
-                if (!data.tgl_lahir) return ''; 
-                const [tahun, bulan, hari] = data.tgl_lahir.split('-');
-                const tglFormatted = `${hari}/${bulan}/${tahun}`.padEnd(10, '\u00A0');
+                let tglFormatted = '  /  /    '; // default kosong
+
+                if (data.tgl_lahir) {
+                  const [tahun, bulan, hari] = data.tgl_lahir.split('-');
+                  tglFormatted = `${hari}/${bulan}/${tahun}`;
+                }
+
                 return tglFormatted.split('').map(char =>
-                  char === '<span class="spangaphp">/</span>' ? '<span class="spangaphp">/</span>' : `<span class="kotak-angka">${char === ' ' ? '&nbsp;' : char}</span>`
+                  char === '/' 
+                    ? '<span class="spangaphp">/</span>' 
+                    : `<span class="kotak-angka">${char === ' ' ? '&nbsp;' : char}</span>`
                 ).join('');
               })()}
             </div>
           </td>
         </tr>
-        <tr><td>f. Agama</td><td>: <div class="kotak-output-small">${data.agama}</div></td></tr>
-        <tr><td>g. Berkebutuhan Khusus</td><td>: <div class="kotak-output-small">${data.kebutuhan_khusus}</div></td></tr>
-        <tr><td>h. Alamat Tempat Tinggal</td><td>: <div class="kotak-output-wide">${data.alamattempattinggal}</div></td></tr>
+        <tr><td>f. Agama</td><td>: <div class="kotak-output-small">${data.agama || '&nbsp;'}</div></td></tr>
+        <tr><td>g. Berkebutuhan Khusus</td><td>: <div class="kotak-output-small">${data.kebutuhan_khusus || '&nbsp;'}</div></td></tr>
+        <tr><td>h. Alamat Tempat Tinggal</td><td>: <div class="kotak-output-wide">${data.alamattempattinggal || '&nbsp;'}</div></td></tr>
         <tr>
           <td class="label-miring">- Dusun</td>
           <td class="isi-memuat">
-            : <div class="kotak-output-medium">${data.dusun}</div>
+            : <div class="kotak-output-medium">${data.dusun || '&nbsp;'}</div>
             RT
             <div class="kotak-wrapper">
               ${(data.rt || '').padStart(3, '\u00A0').split('').map(char =>
@@ -90,7 +99,7 @@ export function createPreviewPendaftaranHTML(data) {
         <tr>
           <td class="label-indented">- Kelurahan</td>
           <td>:
-            <div class="kotak-output-medium">${data.kelurahan}</div>
+            <div class="kotak-output-medium">${data.kelurahan || '&nbsp;'}</div>
             Kode Pos
             <div class="kotak-wrapper">
               ${(data.kode_pos || '').padEnd(5, '\u00A0').split('').map(char =>
@@ -101,21 +110,21 @@ export function createPreviewPendaftaranHTML(data) {
         </tr>
         <tr>
           <td class="label-indented">- Kecamatan</td>
-          <td>: <div class="kotak-output-wide">${data.kecamatan}</div></td>
+          <td>: <div class="kotak-output-wide">${data.kecamatan || '&nbsp;'}</div></td>
         </tr>
         <tr>
           <td class="label-indented">- Kabupaten / Kota</td>
-          <td>: <div class="kotak-output-wide">${data.kota}</div></td>
+          <td>: <div class="kotak-output-wide">${data.kota || '&nbsp;'}</div></td>
         </tr>
         <tr>
           <td class="label-indented">- Provinsi</td>
-          <td>: <div class="kotak-output-wide">${data.provinsi}</div></td>
+          <td>: <div class="kotak-output-wide">${data.provinsi || '&nbsp;'}</div></td>
         </tr>
         <tr>
           <td>i. Alat Transportasi ke Sekolah</td>
           <td>
             <div class="transportasi-flex">
-               : <div class="kotak-output-small-1">${data.transportasi}</div>
+               : <div class="kotak-output-small-1">${data.transportasi || '&nbsp;'}</div>
               <div class="daftar-transportasi">
                 *)1. Jalan Kaki&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5. Kereta api<br>
                 2. Kendaraan Pribadi&nbsp;&nbsp;&nbsp;6. Ojek<br>
@@ -125,7 +134,7 @@ export function createPreviewPendaftaranHTML(data) {
             </div>
           </td>
         </tr>
-        <tr><td>j. Jenis Tinggal</td><td>: <div class="kotak-output-small">${data.jenis_tinggal}</div><span class="spangap">*) 1. Bersama Orang Tua 2. Wall 3. Kost 4. Asrama 5. Panti Asuhan 6. Lainnya</span></td></tr>
+        <tr><td>j. Jenis Tinggal</td><td>: <div class="kotak-output-small">${data.jenis_tinggal || '&nbsp;'}</div><span class="spangap">*) 1. Bersama Orang Tua 2. Wall 3. Kost 4. Asrama 5. Panti Asuhan 6. Lainnya</span></td></tr>
         <tr>
           <td>k. No Telepon Rumah</td>
           <td>:
@@ -146,11 +155,11 @@ export function createPreviewPendaftaranHTML(data) {
             </div>
           </td>
         </tr>
-        <tr><td>l. Email Pribadi</td><td>: <div class="kotak-output-wide">${data.email}</div></td></tr>
+        <tr><td>l. Email Pribadi</td><td>: <div class="kotak-output-wide">${data.email || '&nbsp;'}</div></td></tr>
         <tr>
           <td>m. Penerima KPS</td>
           <td>:
-            <div class="kotak-output-small">${data.penerima_kps}</div>
+            <div class="kotak-output-small">${data.penerima_kps || '&nbsp;'}</div>
             <span class="spangap">No. KPS:</span>
             <div class="kotak-wrapper">
               ${(data.no_kps || '').padEnd(16, '\u00A0').split('').map(char =>
@@ -160,7 +169,7 @@ export function createPreviewPendaftaranHTML(data) {
             <span class = "spangap">*) KPS = Kartu Perlindungan Sosial</span>
           </td>
         </tr>
-        <tr><td>n. Kewarganegaraan</td><td>: <div class="kotak-output-small">${data.kewarganegaraan}</div><span class = "spangap">*) 1. WNI (Indonesia) 2. WNA</span></td></tr>
+        <tr><td>n. Kewarganegaraan</td><td>: <div class="kotak-output-small">${data.kewarganegaraan || '&nbsp;'}</div><span class = "spangap">*) 1. WNI (Indonesia) 2. WNA</span></td></tr>
       </table>
       <div class="teks-formulir">
         <h2>DATA AYAH KANDUNG (WAJIB DI ISI)</h2>
@@ -169,7 +178,7 @@ export function createPreviewPendaftaranHTML(data) {
         <tr>
           <td>o. Nama Ayah</td>
           <td>:
-            <div class="kotak-output-medium">${data.nama_ayah}</div>
+            <div class="kotak-output-medium">${data.nama_ayah || '&nbsp;'}</div>
             Tahun Lahir:
             <div class="kotak-wrapper">
               ${(data.tahun_lahir_ayah || '').slice(0, 4).padEnd(4, '\u00A0').split('').map(char =>
@@ -181,7 +190,7 @@ export function createPreviewPendaftaranHTML(data) {
         <tr>
           <td class="label-indented">- Berkebutuhan Khusus</td>
           <td>: 
-            <div class="kotak-output-smaller">${data.kebutuhan_khusus_ayah}</div>
+            <div class="kotak-output-smaller">${data.kebutuhan_khusus_ayah || '&nbsp;'}</div>
             <div class="kotak-output-small">${data.keterangan_kebutuhan_ayah || '&nbsp;'}</div>
           </td>
         </tr>
@@ -189,7 +198,7 @@ export function createPreviewPendaftaranHTML(data) {
           <td class="label-indented">- Pekerjaan</td>
           <td>
             <div class="transportasi-flex">
-              : <div class="kotak-output-small-1">${data.pekerjaan_ayah}</div>
+              : <div class="kotak-output-small-1">${data.pekerjaan_ayah || '&nbsp;'}</div>
               <div class="daftar-transportasi">
                 <table>
                   <tr>
@@ -219,7 +228,7 @@ export function createPreviewPendaftaranHTML(data) {
           <td class="label-indented">- Pendidikan</td>
           <td>
             <div class="transportasi-flex">
-              : <div class="kotak-output-small-1">${data.pendidikan_ayah}</div>
+              : <div class="kotak-output-small-1">${data.pendidikan_ayah || '&nbsp;'}</div>
               <div class="daftar-transportasi">
                 <table>
                   <tr>
@@ -259,7 +268,7 @@ export function createPreviewPendaftaranHTML(data) {
           <td class="label-indented">- Penghasilan Bulanan</td>
           <td>
             <div class="transportasi-flex">
-              : <div class="kotak-output-small-1">Rp. ${data.penghasilan_ayah}</div>
+              : <div class="kotak-output-small-1">Rp. ${data.penghasilan_ayah || '&nbsp;'}</div>
               <div class="daftar-transportasi">
                 <table>
                   <tr>
@@ -287,7 +296,7 @@ export function createPreviewPendaftaranHTML(data) {
         <tr>
           <td>p. Nama Ibu</td>
           <td>:
-            <div class="kotak-output-medium">${data.nama_ibu}</div>
+            <div class="kotak-output-medium">${data.nama_ibu || '&nbsp;'}</div>
             Tahun Lahir:
             <div class="kotak-wrapper">
               ${(data.tahun_lahir_ibu || '').slice(0, 4).padEnd(4, '\u00A0').split('').map(char =>
@@ -299,7 +308,7 @@ export function createPreviewPendaftaranHTML(data) {
         <tr>
           <td class="label-indented">- Berkebutuhan Khusus</td>
           <td>: 
-            <div class="kotak-output-smaller">${data.kebutuhan_khusus_ibu}</div>
+            <div class="kotak-output-smaller">${data.kebutuhan_khusus_ibu || '&nbsp;'}</div>
             <div class="kotak-output-small">${data.keterangan_kebutuhan_ibu || '&nbsp;'}</div>
           </td>
         </tr>
@@ -307,7 +316,7 @@ export function createPreviewPendaftaranHTML(data) {
           <td class="label-indented">- Pekerjaan</td>
           <td>
             <div class="transportasi-flex">
-              : <div class="kotak-output-small-1">${data.pekerjaan_ibu}</div>
+              : <div class="kotak-output-small-1">${data.pekerjaan_ibu || '&nbsp;'}</div>
               <div class="daftar-transportasi">
                 <table>
                   <tr>
@@ -337,7 +346,7 @@ export function createPreviewPendaftaranHTML(data) {
           <td class="label-indented">- Pendidikan</td>
           <td>
             <div class="transportasi-flex">
-              : <div class="kotak-output-small-1">${data.pendidikan_ibu}</div>
+              : <div class="kotak-output-small-1">${data.pendidikan_ibu || '&nbsp;'}</div>
               <div class="daftar-transportasi">
                 <table>
                   <tr>
@@ -376,7 +385,7 @@ export function createPreviewPendaftaranHTML(data) {
           <td class="label-indented">- Penghasilan Bulanan</td>
           <td>
             <div class="transportasi-flex">
-              : <div class="kotak-output-small-1">Rp. ${data.penghasilan_ibu}</div>
+              : <div class="kotak-output-small-1">Rp. ${data.penghasilan_ibu || '&nbsp;'}</div>
               <div class="daftar-transportasi">
                 <table>
                   <tr>
@@ -404,7 +413,7 @@ export function createPreviewPendaftaranHTML(data) {
         <tr>
           <td>q. Nama Wali</td>
           <td>:
-            <div class="kotak-output-medium">${data.nama_wali}</div>
+            <div class="kotak-output-medium">${data.nama_wali || '&nbsp;'}</div>
             Tahun Lahir:
             <div class="kotak-wrapper">
               ${(data.tahun_lahir_wali || '').slice(0, 4).padEnd(4, '\u00A0').split('').map(char =>
@@ -417,7 +426,7 @@ export function createPreviewPendaftaranHTML(data) {
           <td class="label-indented">- Pekerjaan</td>
           <td>
             <div class="transportasi-flex">
-              : <div class="kotak-output-small-1">${data.pekerjaan_wali}</div>
+              : <div class="kotak-output-small-1">${data.pekerjaan_wali || '&nbsp;'}</div>
               <div class="daftar-transportasi">
                 <table>
                   <tr>
@@ -447,7 +456,7 @@ export function createPreviewPendaftaranHTML(data) {
           <td class="label-indented">- Pendidikan</td>
           <td>
             <div class="transportasi-flex">
-              : <div class="kotak-output-small-1">${data.pendidikan_wali}</div>
+              : <div class="kotak-output-small-1">${data.pendidikan_wali || '&nbsp;'}</div>
               <div class="daftar-transportasi">
                 <table>
                   <tr>
@@ -486,7 +495,7 @@ export function createPreviewPendaftaranHTML(data) {
           <td class="label-indented">- Penghasilan</td>
           <td>
             <div class="transportasi-flex">
-              : <div class="kotak-output-small-1">Rp. ${data.penghasilan_wali}</div>
+              : <div class="kotak-output-small-1">Rp. ${data.penghasilan_wali || '&nbsp;'}</div>
               <div class="daftar-transportasi">
                 <table>
                   <tr>
@@ -537,7 +546,7 @@ export function createPreviewPendaftaranHTML(data) {
         <tr>
           <td>s. Jarak Tempat Tinggal ke Sekolah</td>
           <td>:
-            <div class="kotak-output-small">${data.jarak_ke_sekolah}</div>
+            <div class="kotak-output-small">${data.jarak_ke_sekolah || '&nbsp;'}</div>
             <span class="spangap">2) Lebih dari 1 km sebutkan:</span>
             <div class="kotak-wrapper">
               ${(data.jarak_lebih || '').slice(0, 3).padStart(3, '\u00A0').split('').map(char =>
@@ -550,7 +559,7 @@ export function createPreviewPendaftaranHTML(data) {
         <tr>
           <td>t. Waktu Tempuh ke Sekolah</td>
           <td>:
-            <div class="kotak-output-small">${data.waktu_tempuh}</div>
+            <div class="kotak-output-small">${data.waktu_tempuh || '&nbsp;'}</div>
             <span class="spangap">2) Lebih dari 60 menit sebutkan:</span>
             <div class="kotak-wrapper">
               ${(() => {
@@ -578,20 +587,20 @@ export function createPreviewPendaftaranHTML(data) {
         <h2>DATA SEKOLAH ASAL (WAJIB DI ISI JIKA PINDAHAN ATU PERNAH SEKOLAH KELOMPOK BERMAIN)</h2>
       </div>
       <table class="formulir-table">
-        <tr><td>v. Nama Lembaga</td><td>: <div class="kotak-output-wide">${data.nama_lembaga}</div></td></tr>
-        <tr><td>w. Alamat Lembaga</td><td>: <div class="kotak-output-wide">${data.alamat_lembaga}</div></td></tr>
+        <tr><td>v. Nama Lembaga</td><td>: <div class="kotak-output-wide">${data.nama_lembaga || '&nbsp;'}</div></td></tr>
+        <tr><td>w. Alamat Lembaga</td><td>: <div class="kotak-output-wide">${data.alamat_lembaga || '&nbsp;'}</div></td></tr>
         <tr>
           <td class="label-indented">- Kelurahan / Kode Pos</td>
-          <td>: <div class="kotak-output-wide">${data.kelurahanasal}</div></td>
+          <td>: <div class="kotak-output-wide">${data.kelurahanasal || '&nbsp;'}</div></td>
         </tr>
         <tr>
           <td class="label-indented">- Kecamatan</td>
-          <td>: <div class="kotak-output-wide">${data.kecamatanasal}</div></td>
+          <td>: <div class="kotak-output-wide">${data.kecamatanasal || '&nbsp;'}</div></td>
         </tr>
-        <tr><td>x. NPSN Lembaga</td><td>: <div class="kotak-output-wide">${data.npsn_lembaga}</div></td></tr>
+        <tr><td>x. NPSN Lembaga</td><td>: <div class="kotak-output-wide">${data.npsn_lembaga || '&nbsp;'}</div></td></tr>
       </table>
       <table>
-        <tr><td>Informasi Tambahan</td><td>: ${data.informasi_tambahan}</td></tr>
+        <tr><td>Informasi Tambahan</td><td>: ${data.informasi_tambahan || '&nbsp;'}</td></tr>
       </table>
       <br><br>
       <div class="formulir-penutup">
