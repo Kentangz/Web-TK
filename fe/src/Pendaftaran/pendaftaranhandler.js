@@ -23,8 +23,15 @@ export function handlePendaftaranSubmit(event) {
       margin: [10, 10, 10, 10],
       filename: `Formulir_Pendaftaran_${data.nama.replace(/\s+/g, '_')}.pdf`,
       html2canvas: { scale: 2 },
-      jsPDF: { orientation: 'portrait', unit: 'mm', format: [210, 330] },
-      pagebreak: { mode: ['css', 'legacy'] }
+      jsPDF: {
+        orientation: 'portrait',
+        unit: 'mm',
+        format: [210, 330],
+      },
+      pagebreak: {
+        mode: ['css', 'legacy'],
+        avoid: ['.avoid-break'], 
+      },
     })
     .from(tempContainer)
     .save();

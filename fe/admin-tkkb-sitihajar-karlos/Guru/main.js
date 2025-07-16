@@ -67,10 +67,10 @@ function renderTable() {
       <td style="text-align: center;">
         <img src="${guru.img}" alt="Foto" width="100" height="100" style="object-fit: cover;">
       </td>
-      <td class="jabatan" style="max-width: 300px; word-wrap: break-word; white-space: normal;">${guru.title}</td>
-      <td class="nama" style="max-width: 300px; word-wrap: break-word; white-space: normal;">${guru.name}</td>
-      <td class="ttl" style="max-width: 300px; word-wrap: break-word; white-space: normal;">${guru.ttl}</td>
-      <td class="nomor" style="max-width: 300px; word-wrap: break-word; white-space: normal;">${guru.phone}</td>
+      <td class="jabatan" style="max-width: 200px; word-wrap: break-word; white-space: normal;">${guru.title}</td>
+      <td class="nama" style="max-width: 200px; word-wrap: break-word; white-space: normal;">${guru.name}</td>
+      <td class="ttl" style="max-width: 200px; word-wrap: break-word; white-space: normal;">${guru.ttl}</td>
+      <td class="nomor" style="max-width: 200px; word-wrap: break-word; white-space: normal;">${guru.phone}</td>
       <td style="text-align: center;">
         <button class="btn-edit" data-index="${index}">Edit</button>
         <button class="btn-hapus" data-index="${index}">Hapus</button>

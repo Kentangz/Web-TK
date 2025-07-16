@@ -123,7 +123,7 @@
 
 #preview {
   width: 210mm;
-  min-height: 330mm;
+  min-height: 297mm; /* diubah dari 330mm */
   margin: auto;
   background: white;
   box-shadow: 0 0 5px rgba(0,0,0,0.1);
@@ -357,7 +357,7 @@
   @page {
     margin: 0mm;
   }
-  html, body {
+   html, body {
     margin: 0;
     padding: 0;
     height: 100%;

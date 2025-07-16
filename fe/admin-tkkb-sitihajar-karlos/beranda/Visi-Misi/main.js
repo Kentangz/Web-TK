@@ -61,11 +61,15 @@ let editing = false;
 
 function renderListData(listElement, data, type) {
   listElement.innerHTML = '';
+
   data.forEach(item => {
     const li = document.createElement('li');
     li.textContent = type === 'visi' ? item.vision : item.mission;
     li.dataset.id = item.id;
     li.style.listStyle = 'disc';
+    li.style.whiteSpace = 'normal';      
+    li.style.wordWrap = 'break-word';    
+    li.style.width = '100%';             
     listElement.appendChild(li);
   });
 }
@@ -98,7 +102,7 @@ function setupCardActions(cardType, listElement) {
 
     const li = document.createElement('li');
     li.style.listStyle = 'none';
-    li.innerHTML = `<input type="text" placeholder="Masukkan ${cardType}" style="width: 100%;" />`;
+    li.innerHTML = `<input type="text" placeholder="Masukkan ${cardType}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)"/>`;
     li.style.listStyle = 'disc';
     listElement.appendChild(li);
     li.querySelector('input').focus();
@@ -162,7 +166,7 @@ function setupCardActions(cardType, listElement) {
     items.forEach(li => {
       const original = li.textContent;
       li.setAttribute('data-original', original);
-      li.innerHTML = `<input type="text" value="${original}" style="width: 100%;" />`;
+      li.innerHTML = `<input type="text" value="${original}" style="width: 100%;" maxlength="255" oninput="if(this.value.length > 255) this.value = this.value.slice(0, 255)">`;
     });
 
     function simpan() {
