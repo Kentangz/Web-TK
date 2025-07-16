@@ -296,6 +296,7 @@ select:focus {
 body.no-scroll {
   overflow: hidden;
 }
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -304,6 +305,12 @@ body.no-scroll {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media screen and (min-width: 2048px){
+  .popup-box {
+    height: 100vh;
   }
 }
 
