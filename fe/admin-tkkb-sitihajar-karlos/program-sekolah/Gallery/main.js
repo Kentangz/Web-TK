@@ -297,16 +297,25 @@ document.querySelector('.btn-tambah').addEventListener('click', () => {
 });
 
 const tbody = document.querySelector("table tbody");
-tbody.innerHTML = `<tr><td colspan="3">Loading data gambar kegiatan...</td></tr>`;
+tbody.innerHTML = `
+  <tr>
+    <td colspan="3" style="text-align:center; padding: 1em;">
+      <div class="spinner"></div><br>Loading data gambar kegiatan...
+    </td>
+  </tr>
+`;
 
 getAllGambarKegiatan()
-  .then(data => {
+  .then(async data => {
 
     if (data) {
+      await new Promise(resolve => setTimeout(resolve, 500));
       tbody.innerHTML = '';
       data.forEach(item => {
         tambahBaris(item);
       });
+    tbody.classList.add("fade-in");
+    setTimeout(() => tbody.classList.remove("fade-in"), 500);
     }
   })
   .catch(() => {

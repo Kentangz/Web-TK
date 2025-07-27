@@ -88,22 +88,44 @@ const btnTambahGuru = document.getElementById('btnTambahGuru');
 const btnTambahSiswa = document.getElementById('btnTambahSiswa');
 
 function renderPrestasiGuru() {
-  guruTable.innerHTML = `<tr><td colspan="2">Loading data prestasi guru...</td></tr>`;
-  getAllPrestasiGuru().then(data => {
+  guruTable.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="2" style="text-align: center;">
+        <div class="spinner"></div>
+        <p>Loading data prestasi guru...</p>
+      </td>
+    </tr>
+  `;
+
+  getAllPrestasiGuru().then(async data => {
+    await new Promise(resolve => setTimeout(resolve, 500));
     guruTable.innerHTML = '';
     if (Array.isArray(data) && data.length) {
       data.forEach(item => guruTable.appendChild(createRow(item.id, item.teacher, 'guru')));
     }
+    guruTable.classList.add('fade-in');
+    setTimeout(() => guruTable.classList.remove('fade-in'), 500);
   });
 }
 
 function renderPrestasiSiswa() {
-  siswaTable.innerHTML = `<tr><td colspan="2">Loading data prestasi siswa...</td></tr>`;
-  getAllPrestasiSiswa().then(data => {
+  siswaTable.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="2" style="text-align: center;">
+        <div class="spinner"></div>
+        <p>Loading data prestasi siswa...</p>
+      </td>
+    </tr>
+  `;
+
+  getAllPrestasiSiswa().then(async data => {
+    await new Promise(resolve => setTimeout(resolve, 500));
     siswaTable.innerHTML = '';
     if (Array.isArray(data) && data.length) {
       data.forEach(item => siswaTable.appendChild(createRow(item.id, item.student, 'siswa')));
     }
+    siswaTable.classList.add('fade-in');
+    setTimeout(() => siswaTable.classList.remove('fade-in'), 500);
   });
 }
 

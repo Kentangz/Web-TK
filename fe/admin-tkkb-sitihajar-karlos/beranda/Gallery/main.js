@@ -265,33 +265,37 @@ function attachButtonHandlers(row, type) {
 
 function loadData(type) {
   const tbody = document.querySelector(`#table-${type} tbody`);
-  tbody.innerHTML =`<tr><td colspan="2">Loading data gambar...</td></tr>`;
+  tbody.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="2" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data gambar...</p>
+      </td>
+    </tr>
+  `;
 
-  if (type === 'visimisi') {
-    getAllGambarVisiMisi().then(function(data) {
-      const tbody = document.querySelector(`#table-${type} tbody`);
-      tbody.innerHTML = '';
-      if (data) {
-        data.forEach(function(item) {
-          const row = tambahBaris(item, type);
-          tbody.appendChild(row);
-        });
-      }
-      updateButtonVisibility();
-    });
-  } else {
-    getAllGambarTujuanStrategi().then(function(data) {
-      const tbody = document.querySelector(`#table-${type} tbody`);
-      tbody.innerHTML = '';
-      if (data) {
-        data.forEach(function(item) {
-          const row = tambahBaris(item, type);
-          tbody.appendChild(row);
-        });
-      }
-      updateButtonVisibility();
-    });
-  }
+  const fetchFunction = type === 'visimisi' ? getAllGambarVisiMisi : getAllGambarTujuanStrategi;
+
+  fetchFunction().then(async function(data) {
+    await new Promise(resolve => setTimeout(resolve, 500)); 
+
+    tbody.innerHTML = '';
+
+    if (data) {
+      data.forEach(function(item) {
+        const row = tambahBaris(item, type);
+        tbody.appendChild(row);
+      });
+    }
+
+    tbody.classList.add('fade-in');
+    setTimeout(() => tbody.classList.remove('fade-in'), 500);
+
+    updateButtonVisibility();
+  }).catch(err => {
+    console.error('Gagal memuat data gambar:', err);
+    showToast('Gagal memuat data gambar.', 'error');
+  });
 }
 
 document.querySelectorAll('.btn-tambah').forEach(function(btn) {

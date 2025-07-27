@@ -58,12 +58,23 @@ const fasilitasTable = document.getElementById('fasilitasTable');
 const btnTambah = document.getElementById('btnTambah');
 
 function renderFasilitas() {
-  fasilitasTable.innerHTML = `<tr><td colspan="2">Loading data fasilitas...</td></tr>`;
-  getAllFasilitas().then(data => {
+  fasilitasTable.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="2" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data fasilitas...</p>
+      </td>
+    </tr>
+  `;
+
+  getAllFasilitas().then(async data => {
+    await new Promise(resolve => setTimeout(resolve, 500));
     fasilitasTable.innerHTML = '';
     if (data && Array.isArray(data) && data.length) {
       data.forEach(item => fasilitasTable.appendChild(createRow(item.id, item.facility)));
     }
+    fasilitasTable.classList.add("fade-in");
+    setTimeout(() => fasilitasTable.classList.remove("fade-in"), 500);
   });
 }
 
