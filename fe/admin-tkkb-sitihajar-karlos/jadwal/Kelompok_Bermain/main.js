@@ -90,12 +90,20 @@ function enableAllButtons() {
 
 function renderTabelHari() {
   const tbody = document.querySelector("#tableHari tbody");
-  tbody.innerHTML =`<tr><td colspan="3">Loading data waktu...</td></tr>`;
+  tbody.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="3" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data waktu...</p>
+      </td>
+    </tr>
+  `;
 
   getAllWaktu()
-    .then(data => {
+    .then(async data => {
       jadwalHariData = data;
       const tbody = document.querySelector("#tableHari tbody");
+      await new Promise(resolve => setTimeout(resolve, 500));
       tbody.innerHTML = "";
 
       jadwalHariData.forEach((item, index) => {
@@ -159,6 +167,8 @@ function renderTabelHari() {
           }
         });
       });
+      tbody.classList.add("fade-in");
+      setTimeout(() => tbody.classList.remove("fade-in"), 500);
     })
     .catch(() => showToast("Gagal memuat data waktu.", "error"));
 }
@@ -206,12 +216,20 @@ document.getElementById("btnTambahHari").addEventListener("click", () => {
 
 function renderTabelBermain() {
   const tbody = document.querySelector("#tableBermain tbody");
-  tbody.innerHTML =`<tr><td colspan="3">Loading data jadwal...</td></tr>`;
+  tbody.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="3" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data jadwal...</p>
+      </td>
+    </tr>
+  `;
 
   getAllJadwal()
-    .then(data => {
+    .then(async data => {
       jadwalBermainData = data;
       const tbody = document.querySelector("#tableBermain tbody");
+      await new Promise(resolve => setTimeout(resolve, 500));
       tbody.innerHTML = "";
 
       jadwalBermainData.forEach((item, index) => {
@@ -303,6 +321,8 @@ function renderTabelBermain() {
           }
         });
       });
+      tbody.classList.add("fade-in");
+      setTimeout(() => tbody.classList.remove("fade-in"), 500);
     })
     .catch(() =>showToast("Gagal memuat data jadwal.", "error"));
 }

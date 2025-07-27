@@ -72,24 +72,31 @@ function renderListData(listElement, data, type) {
     li.style.width = '100%';             
     listElement.appendChild(li);
   });
+  listElement.classList.add("fade-in");
+  setTimeout(() => listElement.classList.remove("fade-in"), 500);
 }
 
 function loadData(type) {
-  if (type === 'visi') {
-    getAllVisi()
-      .then(data => renderListData(visiList, data, 'visi'))
-      .catch(err => {
-        showToast('Gagal memuat data visi', "error");
-        console.error(err);
-      });
-  } else {
-    getAllMisi()
-      .then(data => renderListData(misiList, data, 'misi'))
-      .catch(err => {
-        showToast('Gagal memuat data misi', "error");
-        console.error(err);
-      });
-  }
+  const listElement = type === 'visi' ? visiList : misiList;
+
+  listElement.innerHTML = `
+    <li style="list-style: none; text-align: center;">
+      <div class="spinner"></div>
+      <p>Loading data ${type}...</p>
+    </li>
+  `;
+
+  const getDataFn = type === 'visi' ? getAllVisi : getAllMisi;
+
+  getDataFn()
+    .then(async data => {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      renderListData(listElement, data, type);
+    })
+    .catch(err => {
+      showToast(`Gagal memuat data ${type}`, "error");
+      console.error(err);
+    });
 }
 
 function setupCardActions(cardType, listElement) {

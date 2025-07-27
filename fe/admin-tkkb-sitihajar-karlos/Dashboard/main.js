@@ -28,7 +28,7 @@ document.querySelector('#dashboard').innerHTML = `
 
     <div class="welcome-text">
        <img src="/images/bgberanda.png" alt="Welcome Background" class="welcome-bg" />
-      <h2>Selamat Datang, Beta!</h2>
+      <h2>Selamat Datang, Admin!</h2>
       <p>Sistem Informasi Akademik TK & KB Siti Hajar, Jawa Timur</p>
       <button>Tampilan Utama</button>
     </div>

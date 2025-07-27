@@ -67,10 +67,10 @@ function renderTable() {
       <td style="text-align: center;">
         <img src="${guru.img}" alt="Foto" width="100" height="100" style="object-fit: cover;">
       </td>
-      <td class="jabatan" style="max-width: 200px; word-wrap: break-word; white-space: normal;">${guru.title}</td>
-      <td class="nama" style="max-width: 200px; word-wrap: break-word; white-space: normal;">${guru.name}</td>
-      <td class="ttl" style="max-width: 200px; word-wrap: break-word; white-space: normal;">${guru.ttl}</td>
-      <td class="nomor" style="max-width: 200px; word-wrap: break-word; white-space: normal;">${guru.phone}</td>
+      <td class="jabatan" style="max-width: 180px; word-wrap: break-word; white-space: normal;">${guru.title}</td>
+      <td class="nama" style="max-width: 180px; word-wrap: break-word; white-space: normal;">${guru.name}</td>
+      <td class="ttl" style="max-width: 180px; word-wrap: break-word; white-space: normal;">${guru.ttl}</td>
+      <td class="nomor" style="max-width: 180px; word-wrap: break-word; white-space: normal;">${guru.phone}</td>
       <td style="text-align: center;">
         <button class="btn-edit" data-index="${index}">Edit</button>
         <button class="btn-hapus" data-index="${index}">Hapus</button>
@@ -339,10 +339,18 @@ document.body.insertAdjacentHTML("beforeend", `
 
 (async () => {
   const tbody = document.querySelector("#guruTable tbody");
-  tbody.innerHTML =`<tr><td colspan="6">Loading data guru...</td></tr>`;
+    tbody.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="6" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data guru...</p>
+      </td>
+    </tr>`;
 
   try {
     const allGuru = await getAllGuru();
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     guruData = allGuru.map(g => ({
       id: g.id,
       img: g.img,
@@ -352,6 +360,8 @@ document.body.insertAdjacentHTML("beforeend", `
       phone: g.nomor || g.phone
     }));
     renderTable();
+    tbody.classList.add("fade-in");
+    setTimeout(() => tbody.classList.remove("fade-in"), 500);
   } catch (error) {
     showToast("Gagal memuat data guru.", "error");
   }

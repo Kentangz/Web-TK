@@ -58,12 +58,23 @@ const kegiatanPenunjangTable = document.getElementById('kegiatanPenunjangTable')
 const btnTambah = document.getElementById('btnTambah');
 
 function renderKegiatanPenunjang() {
-  kegiatanPenunjangTable.innerHTML = `<tr><td colspan="2">Loading data kegiatan penunjang...</td></tr>`;
-  getAllKegiatanPenunjang().then(data => {
+  kegiatanPenunjangTable.innerHTML = `
+    <tr>
+      <td colspan="2" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data kegiatan penunjang...</p>
+      </td>
+    </tr>
+  `;
+
+  getAllKegiatanPenunjang().then(async data => {
+    await new Promise(resolve => setTimeout(resolve, 500));
     kegiatanPenunjangTable.innerHTML = '';
     if (data && Array.isArray(data) && data.length) {
       data.forEach(item => kegiatanPenunjangTable.appendChild(createRow(item.id, item.activity)));
     }
+    kegiatanPenunjangTable.classList.add("fade-in");
+    setTimeout(() => kegiatanPenunjangTable.classList.remove("fade-in"), 500);
   });
 }
 

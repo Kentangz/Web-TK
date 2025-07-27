@@ -117,32 +117,65 @@ const btnTambahDoa = document.getElementById('btnTambahDoa');
 const btnTambahHadits = document.getElementById('btnTambahHadits');
 
 function renderSurat() {
-  suratTable.innerHTML = `<tr><td colspan="2">Loading data surat...</td></tr>`;
-  getAllSurat().then(data => {
+  suratTable.innerHTML = `    
+    <tr>
+      <td colspan="2" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data surat...</p>
+      </td>
+    </tr>
+  `;
+
+  getAllSurat().then(async data => {
+    await new Promise(resolve => setTimeout(resolve, 500));
     suratTable.innerHTML = '';
     if (Array.isArray(data) && data.length) {
       data.forEach(item => suratTable.appendChild(createRow(item.id, item.surat, 'surat')));
     }
+    suratTable.classList.add("fade-in");
+    setTimeout(() => suratTable.classList.remove("fade-in"), 500);
   });
 }
 
 function renderDoa() {
-  doaTable.innerHTML = `<tr><td colspan="2">Loading data doa...</td></tr>`;
-  getAllDoa().then(data => {
+  doaTable.innerHTML = `    
+    <tr>
+      <td colspan="2" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data doa...</p>
+      </td>
+    </tr>
+  `;
+
+  getAllDoa().then(async data => {
+    await new Promise(resolve => setTimeout(resolve, 500));
     doaTable.innerHTML = '';
     if (Array.isArray(data) && data.length) {
       data.forEach(item => doaTable.appendChild(createRow(item.id, item.doa, 'doa')));
     }
+    doaTable.classList.add("fade-in");
+    setTimeout(() => doaTable.classList.remove("fade-in"), 500);
   });
 }
 
 function renderHadits() {
-  haditsTable.innerHTML = `<tr><td colspan="2">Loading data hadits...</td></tr>`;
-  getAllHadits().then(data => {
+  haditsTable.innerHTML = `   
+    <tr>
+      <td colspan="2" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data hadits...</p>
+      </td>
+    </tr>
+  `;
+
+  getAllHadits().then(async data => {
+    await new Promise(resolve => setTimeout(resolve, 500));
     haditsTable.innerHTML = '';
     if (Array.isArray(data) && data.length) {
       data.forEach(item => haditsTable.appendChild(createRow(item.id, item.hadits, 'hadits')));
     }
+    haditsTable.classList.add("fade-in");
+    setTimeout(() => haditsTable.classList.remove("fade-in"), 500);
   });
 }
 

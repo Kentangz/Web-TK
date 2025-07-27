@@ -58,12 +58,23 @@ const hasilOutputTable = document.getElementById('hasilOutputTable');
 const btnTambah = document.getElementById('btnTambah');
 
 function renderHasilOutput() {
-  hasilOutputTable.innerHTML = `<tr><td colspan="2">Loading data output yang dihasilkan...</td></tr>`;
-  getAllOutput().then(data => {
-     hasilOutputTable.innerHTML = '';
+  hasilOutputTable.innerHTML = `    
+    <tr>
+      <td colspan="2" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data hasil output...</p>
+      </td>
+    </tr>
+  `;
+
+  getAllOutput().then(async data => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    hasilOutputTable.innerHTML = '';
     if (data && Array.isArray(data) && data.length) {
       data.forEach(item => hasilOutputTable.appendChild(createRow(item.id, item.output)));
     }
+    hasilOutputTable.classList.add("fade-in");
+    setTimeout(() => hasilOutputTable.classList.remove("fade-in"), 500);
   });
 }
 

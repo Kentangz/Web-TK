@@ -53,12 +53,17 @@ let editingIndex = null;
 
 function renderTabelUnggulan() {
   const tbody = document.querySelector("#tabelUnggulan tbody");
-  tbody.innerHTML =`<tr><td colspan="4">Loading data kegiatan unggulan...</td></tr>`;
+    tbody.innerHTML = `
+    <tr><td colspan="4" style="text-align: center;">
+      <div class="spinner"></div><br>Loading data kegiatan unggulan...
+    </td></tr>
+  `;
 
   getAllKegiatanUnggulan()
-    .then(data => {
+    .then(async data => {
       kegiatanUnggulanData = data;
       const tbody = document.querySelector("#tabelUnggulan tbody");
+      await new Promise(resolve => setTimeout(resolve, 500));
       tbody.innerHTML = "";
 
       kegiatanUnggulanData.forEach((item, index) => {
@@ -75,6 +80,8 @@ function renderTabelUnggulan() {
         `;
 
         tbody.appendChild(tr);
+        tbody.classList.add("fade-in");
+        setTimeout(() => tbody.classList.remove("fade-in"), 500);
 
         const btnEdit = tr.querySelector(".btn-edit");
         const btnHapus = tr.querySelector(".btn-hapus");

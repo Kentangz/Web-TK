@@ -166,11 +166,19 @@ let editingAlamat = false;
 
 function loadContactPersons() {
   const tbody = document.querySelector("#telpTable tbody");
-  tbody.innerHTML =`<tr><td colspan="3">Loading data contact person...</td></tr>`;
+  tbody.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="3" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data contact person...</p>
+      </td>
+    </tr>
+  `;
 
   getAllContactPerson()
-    .then(contactPersons => {
+    .then(async contactPersons => {
       const tbody = document.querySelector('#telpTable tbody');
+      await new Promise(resolve => setTimeout(resolve, 500));
       tbody.innerHTML = contactPersons.map(item => `
         <tr data-id="${item.id}">
           <td style="max-width: 300px; word-wrap: break-word; white-space: normal;">${item.name}</td>
@@ -181,6 +189,9 @@ function loadContactPersons() {
           </td>
         </tr>
       `).join('');
+
+      tbody.classList.add("fade-in");
+      setTimeout(() => tbody.classList.remove("fade-in"), 500);
 
       tbody.querySelectorAll('tr').forEach(row => setContactPersonActionEvents(row));
     })
@@ -352,11 +363,19 @@ function resetActions(row) {
 
 function loadEmails() {
   const tbody = document.querySelector("#emailTable tbody");
-  tbody.innerHTML =`<tr><td colspan="3">Loading data email...</td></tr>`;
+  tbody.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="3" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data email...</p>
+      </td>
+    </tr>
+  `;
 
   getAllEmail()
-    .then(emails => {
+    .then(async emails => {
       const tbody = document.querySelector('#emailTable tbody');
+      await new Promise(resolve => setTimeout(resolve, 500));
       tbody.innerHTML = emails.map(email => `
         <tr data-id="${email.id}">
           <td style="max-width: 300px; word-wrap: break-word; white-space: normal;">${email.email}</td>
@@ -367,6 +386,9 @@ function loadEmails() {
           </td>
         </tr>
       `).join('');
+
+      tbody.classList.add("fade-in");
+      setTimeout(() => tbody.classList.remove("fade-in"), 500);
 
       tbody.querySelectorAll('tr').forEach(row => setEmailActionEvents(row));
     })
@@ -519,10 +541,19 @@ function resetEmailActions(row) {
 
 function loadInstagram() {
   const tbody = document.querySelector("#instagramTable tbody");
-  tbody.innerHTML =`<tr><td colspan="3">Loading data instagram...</td></tr>`;
+  tbody.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="3" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data instagram...</p>
+      </td>
+    </tr>
+  `;
+
   getAllInstagram()
-    .then(instagrams => {
+    .then(async instagrams => {
       const tbody = document.querySelector('#instagramTable tbody');
+      await new Promise(resolve => setTimeout(resolve, 300));
       tbody.innerHTML = instagrams.map(instagram => `
         <tr data-id="${instagram.id}">
           <td style="max-width: 300px; word-wrap: break-word; white-space: normal;">${instagram.username}</td>
@@ -533,6 +564,9 @@ function loadInstagram() {
           </td>
         </tr>
       `).join('');
+
+      tbody.classList.add("fade-in");
+      setTimeout(() => tbody.classList.remove("fade-in"), 500);
 
       tbody.querySelectorAll('tr').forEach(row => setInstagramActionEvents(row));
     })
@@ -686,10 +720,19 @@ function resetInstagramActions(row) {
 
 function loadAlamat() {
   const tbody = document.querySelector("#alamatTable tbody");
-  tbody.innerHTML =`<tr><td colspan="3">Loading data alamat...</td></tr>`;
+  tbody.innerHTML = `
+    <tr id="loadingRow">
+      <td colspan="3" style="text-align:center">
+        <div class="spinner"></div>
+        <p>Loading data alamat...</p>
+      </td>
+    </tr>
+  `;
+
   getAllAlamat()
-    .then(alamats => {
+    .then(async alamats => {
       const tbody = document.querySelector('#alamatTable tbody');
+      await new Promise(resolve => setTimeout(resolve, 300));
       tbody.innerHTML = alamats.map(alamat => `
         <tr data-id="${alamat.id}">
           <td style="max-width: 300px; word-wrap: break-word; white-space: normal;">${alamat.alamat}</td>
@@ -700,6 +743,9 @@ function loadAlamat() {
           </td>
         </tr>
       `).join('');
+
+      tbody.classList.add("fade-in");
+      setTimeout(() => tbody.classList.remove("fade-in"), 500);
 
       tbody.querySelectorAll('tr').forEach(row => setAlamatActionEvents(row));
     })

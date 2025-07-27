@@ -73,25 +73,33 @@ function renderListData(listElement, data, type) {
     li.style.width = '100%';       
     listElement.appendChild(li);
   });
+  listElement.classList.add("fade-in");
+  setTimeout(() => listElement.classList.remove("fade-in"), 500);
 }
 
 function loadData(type) {
-  if (type === 'tujuan') {
-    getAllTujuan()
-      .then(data => renderListData(tujuanList, data, 'tujuan'))
-      .catch(err => {
-        showToast('Gagal memuat data tujuan', "error");
-        console.error(err);
-      });
-  } else {
-    getAllStrategi()
-      .then(data => renderListData(strategiList, data, 'strategi'))
-      .catch(err => {
-        showToast('Gagal memuat data strategi', "error");
-        console.error(err);
-      });
-  }
+  const listElement = type === 'tujuan' ? tujuanList : strategiList;
+
+  listElement.innerHTML = `
+    <li style="list-style: none; text-align: center;">
+      <div class="spinner"></div>
+      <p>Loading data ${type}...</p>
+    </li>
+  `;
+
+  const getDataFn = type === 'tujuan' ? getAllTujuan : getAllStrategi;
+
+  getDataFn()
+    .then(async data => {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      renderListData(listElement, data, type);
+    })
+    .catch(err => {
+      showToast(`Gagal memuat data ${type}`, "error");
+      console.error(err);
+    });
 }
+
 
 function setupCardActions(cardType, listElement) {
   const tambahBtn = document.querySelector(`.btn-tambah[data-type="${cardType}"]`);
