@@ -22,8 +22,8 @@ export function createFooterHTML() {
       <div class="footer-section right">
         <a href="#"><i class="fab fa-facebook-f social-icon facebook"></i></a>
         <a href="#"><i class="fab fa-twitter social-icon twitter"></i></a>
-        <a href="#"><i class="fab fa-instagram social-icon instagram"></i></a>
-        <a href="#"><i class="fab fa-youtube social-icon youtube"></i></a>
+        <a href="https://www.instagram.com/bundasitihajarkarangploso?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram social-icon instagram"></i></a>
+        <a href="https://youtube.com/@sitihajarkarlos9935?si=sR5RmNJAYS4N7HDV" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube social-icon youtube"></i></a>
       </div>
     </footer>
   `;
