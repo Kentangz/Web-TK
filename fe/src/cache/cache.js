@@ -1,5 +1,5 @@
 //const CACHE_EXPIRY_MS = 5 * 60 * 1000; // 5 menit
-const CACHE_EXPIRY_MS = 30 * 1000; // 30 detik
+const CACHE_EXPIRY_MS = 80 * 1000; // 30 detik
 
 
 export async function fetchWithCache(key, fetchFunction) {
@@ -33,7 +33,12 @@ export async function fetchWithCache(key, fetchFunction) {
     console.log(`🌐 Mengambil data ${key} dari API`);
     const data = await fetchFunction();
 
-    localStorage.setItem(key, JSON.stringify({ data, timestamp: now }));
+    if (data && data.trim && data.trim() !== '') {
+      localStorage.setItem(key, JSON.stringify({ data, timestamp: now }));
+    } else {
+      console.warn(`⚠️ Tidak menyimpan cache untuk ${key} karena data kosong`);
+    }
+
     return data;
   } catch (err) {
     console.error(`❌ Gagal fetch data ${key} dari API`, err);
