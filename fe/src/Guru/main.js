@@ -41,7 +41,7 @@ fetchWithCache('Dataguru', fetchGuru)
     `).join('');
 
 
-    document.querySelector('#guru').innerHTML = `
+    const fullHTML = `
       ${createNavbarHTML({
         logoSrc: logoImage,
         schoolName: 'TK & KB SITI HAJAR',
@@ -60,10 +60,13 @@ fetchWithCache('Dataguru', fetchGuru)
           </div>
         </section>
       </main>
+      ${createFooterHTML()}
     `;
 
+    document.querySelector('#guru').innerHTML = fullHTML;
+
+    // Setelah semuanya fix di DOM, baru aktifkan JS-nya
     initNavbarFunctionality();
-    document.querySelector('#guru').innerHTML += createFooterHTML();
   })
   .catch(err => {
     console.error('Gagal memuat data guru:', err);
